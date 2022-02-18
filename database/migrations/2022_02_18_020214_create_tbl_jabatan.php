@@ -16,6 +16,7 @@ class CreateTblJabatan extends Migration
         Schema::create('tbl_jabatan', function (Blueprint $table) {
             $table->string('id',5)->primary();
             $table->string('nama',15);
+            $table->integer('previlege');
             $table->timestamps();
         });
     }

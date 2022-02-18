@@ -9,4 +9,8 @@ class Jabatan extends Model
     protected $table = "tbl_jabatan";
     
     public $incrementing = false;
+
+    protected $fillable = [
+        'id', 'nama'
+    ];
 }
