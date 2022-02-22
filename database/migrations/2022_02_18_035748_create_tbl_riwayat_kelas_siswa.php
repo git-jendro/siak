@@ -14,7 +14,7 @@ class CreateTblRiwayatKelasSiswa extends Migration
     public function up()
     {
         Schema::create('tbl_riwayat_kelas_siswa', function (Blueprint $table) {
-            $table->string('id', 10);
+            $table->string('id', 10)->primary();
             $table->string('riwaya_kelas_id', 8);
             $table->string('siswa_id', 8);
             $table->timestamps();

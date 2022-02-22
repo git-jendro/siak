@@ -41,6 +41,21 @@ return [
             'provider' => 'users',
         ],
 
+        'staff' => [
+            'driver' => 'session',
+            'provider' => 'staff',
+        ],
+
+        'guru' => [
+            'driver' => 'session',
+            'provider' => 'guru',
+        ],
+
+        'siswa' => [
+            'driver' => 'session',
+            'provider' => 'siswa',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -71,10 +86,20 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'staff' => [
+            'driver' => 'eloquent',
+            'model' => App\Staff::class,
+        ],
+
+        'guru' => [
+            'driver' => 'eloquent',
+            'model' => App\Guru::class,
+        ],
+
+        'siswa' => [
+            'driver' => 'eloquent',
+            'model' => App\Siswa::class,
+        ],
     ],
 
     /*

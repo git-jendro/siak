@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+Route::get('/login', 'AuthController@login')->name('login')->middleware('guest');
+Route::post('/login', 'AuthController@store')->name('login.store');
+// Route::get('/logout', function () {
+//     Auth::logout();
+//     return redirect()->route('login');
+// });
+Route::post('logout', 'AuthController@logout')->name('logout');
+
+Route::get('/dashboard', 'PagesController@dashboard')->middleware('auth')->name('dashboard');
+// Route::prefix('dashboard')->group(['middleware' => ['guru', 'staff', 'siswa']], function () {
+//     Route::resource('/', 'PagesController@dashboard');
+// });

@@ -25,10 +25,9 @@ class CreateTblGuru extends Migration
             $table->boolean('status');
             $table->string('pendidikan', 5);
             $table->string('jurusan', 20);
-            $table->bigInteger('no_telp');
-            $table->string('foto')->nullable();
-            $table->string('username', 10);
-            $table->string('password');
+            $table->string('no_telp', 15);
+            $table->string('foto')->default('sb-admin/img/teacher.jpg')->nullable();
+            $table->string('user_id',11);
             $table->timestamps();
         });
     }

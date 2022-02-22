@@ -62,4 +62,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## ERD
 
-ERD make with [DB Diagram](https://dbdiagram.io/d/620dc5f0485e433543c858c1).
+ERD make with [DB Diagram](https://dbdiagram.io). ERD [URL](https://dbdiagram.io/d/620dc5f0485e433543c858c1)
