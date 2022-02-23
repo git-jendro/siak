@@ -49,6 +49,14 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::post('/store', 'ClassLevelController@store')->name('tingkat-kelas.store');
         Route::patch('/update/{id}', 'ClassLevelController@update')->name('tingkat-kelas.update');
     });
+
+    //Route Mata Pelajaran
+    Route::prefix('sub-kelas')->group(function ()
+    {
+        Route::get('/', 'SubClassController@index')->name('sub-kelas');
+        Route::post('/store', 'SubClassController@store')->name('sub-kelas.store');
+        Route::patch('/update/{id}', 'SubClassController@update')->name('sub-kelas.update');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

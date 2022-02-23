@@ -26,7 +26,7 @@
                                 value="{{ $item->nama }}">
                             @error('nama-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100">
+                                    class="px-3 mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -37,7 +37,7 @@
                                 name="kkm-{{ $item->id }}" placeholder="KKM" value="{{ $item->kkm }}">
                             @error('kkm-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100">
+                                    class="px-3 mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
                                 </div>
                             @enderror
