@@ -33,6 +33,14 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::post('/store', 'SubjectController@store')->name('pelajaran.store');
         Route::patch('/update/{id}', 'SubjectController@update')->name('pelajaran.update');
     });
+
+    //Route Mata Pelajaran
+    Route::prefix('ruangan')->group(function ()
+    {
+        Route::get('/', 'RoomController@index')->name('ruangan');
+        Route::post('/store', 'RoomController@store')->name('ruangan.store');
+        Route::patch('/update/{id}', 'RoomController@update')->name('ruangan.update');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

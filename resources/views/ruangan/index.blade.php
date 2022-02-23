@@ -13,24 +13,24 @@
 @endsection
 
 @section('header')
-    <h1 class="h3 mb-0 text-gray-800">Pelajaran</h1>
-    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+    <h1 class="h3 mb-lg-0 text-gray-800">Ruangan</h1>
+    <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal"
         data-target="#create-modal">
         <i class="fas fa-plus-circle fa-sm text-white-50"></i> Tambah Data
     </button>
-    @include('pelajaran.create')
+    @include('ruangan.create')
 @endsection
 
 @section('contain')
     @if (session('success'))
-        <div class="alert alert-primary" role="alert">
+        <div class="alert alert-info" role="alert">
             {{ session('success') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     @elseif (session('update'))
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-primary" role="alert">
             {{ session('update') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -47,7 +47,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data Pelajaran</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data Ruangan</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -55,16 +55,16 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Pelajaran</th>
-                            <th>KKM</th>
+                            <th>Kode</th>
+                            <th>Nama Ruangan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Pelajaran</th>
-                            <th>KKM</th>
+                            <th>Kode</th>
+                            <th>Nama Ruangan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
@@ -78,17 +78,17 @@
                                     {{ $item->id }}
                                 </td>
                                 <td>
-                                    {{ $item->nama }}
+                                    {{ $item->kode }}
                                 </td>
                                 <td>
-                                    {{ $item->kkm }}
+                                    {{ $item->nama }}
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-link "
                                         data-toggle="modal" data-target="#edit-modal-{{ $item->id }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    @include('pelajaran.edit')
+                                    @include('ruangan.edit')
                                 </td>
                             </tr>
                             @php
@@ -104,7 +104,7 @@
     <script>
         $(document).ready(function() {
             $('#data-master').addClass('active');
-            $('#pelajaran').addClass('active');
+            $('#ruangan').addClass('active');
             if (window.screen.availWidth > 700) {
                 $("#master-dropdown").click();
             }

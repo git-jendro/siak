@@ -83,7 +83,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" id="pelajaran" href="{{ route('pelajaran') }}">Pelajaran</a>
-                        <a class="collapse-item" id="ruangan" href="cards.html">Ruangan</a>
+                        <a class="collapse-item" id="ruangan" href="{{ route('ruangan') }}">Ruangan</a>
                         <a class="collapse-item" id="tingkat-kelas" href="cards.html">Tingkat Kelas</a>
                         <a class="collapse-item" id="sub-kelas" href="cards.html">Sub Kelas</a>
                         <a class="collapse-item" id="kelas" href="cards.html">Kelas</a>

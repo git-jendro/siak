@@ -4,46 +4,43 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Edit Pelajaran</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form Edit Ruangan</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="user" action="{{ route('pelajaran.update', [$item->id]) }}" method="post"
+                <form class="user" action="{{ route('ruangan.update', [$item->id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('patch')
                     @csrf
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" value="{{ $item->id }}" readonly>
-                    </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-
-                            <input type="text"
-                                class="form-control form-control-user @error('nama-' . $item->id) is-invalid @enderror"
-                                name="nama-{{ $item->id }}" placeholder="Nama Mata Pelajaran"
-                                value="{{ $item->nama }}">
-                            @error('nama-' . $item->id)
-                                <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            <input type="text" class="form-control form-control-user" value="{{ $item->id }}"
+                                readonly>
                         </div>
                         <div class="col-sm-6">
-                            <input type="number"
-                                class="form-control form-control-user @error('kkm-' . $item->id) is-invalid @enderror"
-                                name="kkm-{{ $item->id }}" placeholder="KKM" value="{{ $item->kkm }}">
-                            @error('kkm-' . $item->id)
+                            <input type="text"
+                                class="form-control form-control-user @error('kode-' . $item->id) is-invalid @enderror"
+                                name="kode-{{ $item->id }}" placeholder="Kode Ruangan" value="{{ $item->kode }}">
+                            @error('kode-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100">
+                                    class="pl-3 mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <input type="text"
+                            class="form-control form-control-user @error('nama-' . $item->id) is-invalid @enderror"
+                            name="nama-{{ $item->id }}" placeholder="Nama Ruangan" value="{{ $item->nama }}">
+                        @error('nama-' . $item->id)
+                            <div id="edit-error-{{ $item->id }}" class="pl-3 mt-2 error invalid-feedback d-block w-100">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" type="button" data-dismiss="modal">

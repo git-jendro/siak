@@ -10,9 +10,3 @@ $('input[name=kkm]').keyup(function() {
         $(this).val($(this).val().slice(0, -1));
     }
 });
-$(document).ready(function() {
-    if ($('#edit-error-<?php print $item->id; ?>').length) {
-        $('#edit-modal-<?php print $item->id; ?>').modal('show');
-    }
-    return false;
-});
