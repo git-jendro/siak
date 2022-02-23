@@ -6,10 +6,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="SMKN 4">
 
-    <title>SB Admin 2 - Login</title>
+    <title>{{ config('app.name') }}</title>
+
+    <meta name="description" content="Sistem Informasi Akademik SMK Negeri 4">
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="SIAKAD SMK Negeri 4">
+    <meta itemprop="description" content="Sistem Informasi Akademik SMK Negeri 4">
+    <meta itemprop="image" content="{{ asset('logos/logo.png') }}">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="URL SIAKAD">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SIAKAD SMK Negeri 4">
+    <meta property="og:description" content="Sistem Informasi Akademik SMK Negeri 4">
+    <meta property="og:image" content="{{ asset('logos/logo.png') }}">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SIAKAD SMK Negeri 4">
+    <meta name="twitter:description" content="Sistem Informasi Akademik SMK Negeri 4">
+    <meta name="twitter:image" content="{{ asset('logos/logo.png') }}">
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('sb-admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -57,9 +76,9 @@
                                         class="form-control form-control-user @error('password') is-invalid @enderror"
                                         name="password" placeholder="Password">
                                     @error('password')
-                                    <div class="px-3 mt-2 error invalid-feedback d-block w-100">
-                                        {{ $message }}
-                                    </div>
+                                        <div class="px-3 mt-2 error invalid-feedback d-block w-100">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
                                 <div class="form-group mt-4">

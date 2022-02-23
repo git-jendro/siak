@@ -1,5 +1,18 @@
 @extends('layouts.dashboard')
 
+@section('plugins')
+    <!-- Page level plugins -->
+    <script src="{{ asset('sb-admin/vendor/chart.js/Chart.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('sb-admin/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('sb-admin/js/demo/chart-pie-demo.js') }}"></script>
+@endsection
+
+@section('header')
+<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+@endsection
+
 @section('contain')
     <!-- Content Row -->
     <div class="row">
@@ -165,4 +178,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#dashboard').addClass('active');
+        });
+    </script>
 @endsection

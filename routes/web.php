@@ -19,13 +19,23 @@ Route::get('/', function () {
 });
 Route::get('/login', 'AuthController@login')->name('login')->middleware('guest');
 Route::post('/login', 'AuthController@store')->name('login.store');
-// Route::get('/logout', function () {
-//     Auth::logout();
-//     return redirect()->route('login');
-// });
 Route::post('logout', 'AuthController@logout')->name('logout');
 
-Route::get('/dashboard', 'PagesController@dashboard')->middleware('auth')->name('dashboard');
-// Route::prefix('dashboard')->group(['middleware' => ['guru', 'staff', 'siswa']], function () {
-//     Route::resource('/', 'PagesController@dashboard');
-// });
+//Route Dashboard
+Route::prefix('dashboard')->middleware('auth')->group(function ()
+{
+    Route::get('/', 'PagesController@dashboard')->name('dashboard');
+
+    //Route Mata Pelajaran
+    Route::prefix('pelajaran')->group(function ()
+    {
+        Route::get('/', 'SubjectController@index')->name('pelajaran');
+        Route::post('/store', 'SubjectController@store')->name('pelajaran.store');
+        Route::patch('/update/{id}', 'SubjectController@update')->name('pelajaran.update');
+    });
+});
+
+Route::prefix('grup-kelas')->middleware('auth')->group(function ()
+{
+    Route::get('/', 'GroupClassController@index')->name('grup');
+});

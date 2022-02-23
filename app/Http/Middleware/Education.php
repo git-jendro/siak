@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
-class Siswa
+class Education
 {
     /**
      * Handle an incoming request.
@@ -15,8 +16,8 @@ class Siswa
      */
     public function handle($request, Closure $next)
     {
-        if(!auth()->guard('siswa')->check()){
-            return redirect()->route('login');
+        if (Auth::user()->staff->jabatan->previlege = 2) {
+            return route('dashboard');
         }
 
         return $next($request);

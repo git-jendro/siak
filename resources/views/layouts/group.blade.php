@@ -37,7 +37,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('sb-admin/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('sb-admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('sb-admin/vendor/jquery/jquery.min.js') }}"></script>
@@ -57,7 +57,7 @@
                 <div class="sidebar-brand-icon">
                     <img class="img-fluid" src="{{ asset('logos/logo-brand.png') }}">
                 </div>
-                <div class="sidebar-brand-text mx-3">SMKN 4</div>
+                <div class="sidebar-brand-text mx-3">Kelas X</div>
             </a>
 
             <!-- Divider -->
@@ -66,62 +66,13 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item" id="dashboard">
                 <a class="nav-link" href="{{ route('dashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <i class="fas fa-fw fa-arrow-alt-circle-left"></i>
+                    <span>Back To Dashboard</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item" id="data-master">
-                <a class="nav-link collapsed" id="master-dropdown" href="#" data-toggle="collapse" data-target="#dataMaster"
-                    aria-expanded="true" aria-controls="dataMaster">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Data Master</span>
-                </a>
-                <div id="dataMaster" class="collapse" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" id="pelajaran" href="{{ route('pelajaran') }}">Pelajaran</a>
-                        <a class="collapse-item" id="ruangan" href="cards.html">Ruangan</a>
-                        <a class="collapse-item" id="tingkat-kelas" href="cards.html">Tingkat Kelas</a>
-                        <a class="collapse-item" id="sub-kelas" href="cards.html">Sub Kelas</a>
-                        <a class="collapse-item" id="kelas" href="cards.html">Kelas</a>
-                        <a class="collapse-item" id="jurusan" href="cards.html">Jurusan</a>
-                        <a class="collapse-item" id="kurikulum" href="cards.html">Kurikulum</a>
-                        <a class="collapse-item" id="tahun-akademik" href="cards.html">Tahun Akademik</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <li class="nav-item" id="">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-user-cog"></i>
-                    <span>Staff</span></a>
-            </li>
-            <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-chalkboard-teacher"></i>
-                    <span>Guru</span></a>
-            </li>
-            <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-user-graduate"></i>
-                    <span>Peserta Didik</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('grup') }}">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Grup Kelas</span></a>
-            </li>
-            
             <li class="nav-item" id="">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#jadwal" aria-expanded="true"
                     aria-controls="jadwal">
@@ -137,36 +88,33 @@
                 </div>
             </li>
 
-            <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-file-medical-alt"></i>
-                    <span>Nilai</span></a>
-            </li>
-
-            <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-file-invoice"></i>
-                    <span>Rapot</span></a>
-            </li>
-
-            <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-history"></i>
-                    <span>Riwayat Kelas</span></a>
-            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
             
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Mata Pelajaran
+            </div>
 
             <li class="nav-item" id="">
+                <a class="nav-link" href="charts.html">
+                    <i class="fas fa-fw fa-puzzle-piece"></i>
+                    <span>Mata Pelajaran</span></a>
+            </li>
+            <li class="nav-item" id="">
                 <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-file-invoice-dollar"></i>
-                    <span>Pembayaran</span></a>
+                    <i class="fas fa-fw fa-puzzle-piece"></i>
+                    <span>Mata Pelajaran</span></a>
+            </li>
+            <li class="nav-item" id="">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-puzzle-piece"></i>
+                    <span>Mata Pelajaran</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline mt-5">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -393,7 +341,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        @yield('header')
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
 
                     @yield('contain')
@@ -456,9 +404,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('sb-admin/js/sb-admin-2.min.js') }}"></script>
-    <script src="{{ asset('sb-admin/js/custome.js') }}"></script>
-
-    @yield('plugins')
 
 </body>
 

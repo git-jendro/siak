@@ -28,4 +28,9 @@ class Staff extends Authenticatable
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
 }
