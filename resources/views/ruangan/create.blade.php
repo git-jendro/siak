@@ -15,7 +15,7 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-user" placeholder="Kode Ruangan"
+                            <input type="text" class="form-control form-control-user"
                             value="{{ 'RNG'.sprintf('%03u', $data->count()+1) }}" readonly>
                         </div>
                         <div class="col-sm-6">

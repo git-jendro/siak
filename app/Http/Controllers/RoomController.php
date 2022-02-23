@@ -41,7 +41,7 @@ class RoomController extends Controller
 
         try {
             $data = new Ruangan;
-            $data->id = 'RGN' . sprintf('%03u', $data->count() + 1);;
+            $data->id = 'RGN' . sprintf('%03u', $data->count() + 1);
             $data->nama = $request->nama;
             $data->kode = $request->kode;
             $data->save();
@@ -83,16 +83,5 @@ class RoomController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('ruangan')->with('danger', 'Gagal menambahkan data !');
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -42,7 +42,7 @@ class SubjectController extends Controller
 
         try {
             $data = new Pelajaran;
-            $data->id = 'MPJ' . sprintf('%03u', $data->count() + 1);;
+            $data->id = 'MPJ' . sprintf('%03u', $data->count() + 1);
             $data->nama = $request->nama;
             $data->kkm = $request->kkm;
             $data->slug = $this->slug($request->nama);
