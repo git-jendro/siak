@@ -34,7 +34,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'SubjectController@update')->name('pelajaran.update');
     });
 
-    //Route Mata Pelajaran
+    //Route Ruangan
     Route::prefix('ruangan')->group(function ()
     {
         Route::get('/', 'RoomController@index')->name('ruangan');
@@ -42,7 +42,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'RoomController@update')->name('ruangan.update');
     });
 
-    //Route Mata Pelajaran
+    //Route Tingkat Kelas
     Route::prefix('tingkat-kelas')->group(function ()
     {
         Route::get('/', 'ClassLevelController@index')->name('tingkat-kelas');
@@ -50,12 +50,30 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'ClassLevelController@update')->name('tingkat-kelas.update');
     });
 
-    //Route Mata Pelajaran
+    //Route Sub Kelas
     Route::prefix('sub-kelas')->group(function ()
     {
         Route::get('/', 'SubClassController@index')->name('sub-kelas');
         Route::post('/store', 'SubClassController@store')->name('sub-kelas.store');
         Route::patch('/update/{id}', 'SubClassController@update')->name('sub-kelas.update');
+    });
+
+    //Route Jurusan
+    Route::prefix('jurusan')->group(function ()
+    {
+        Route::get('/', 'MajorController@index')->name('jurusan');
+        Route::post('/store', 'MajorController@store')->name('jurusan.store');
+        Route::patch('/update/{id}', 'MajorController@update')->name('jurusan.update');
+        Route::delete('/destroy', 'MajorController@destroy')->name('jurusan.destroy');
+    });
+
+    //Route Kelas
+    Route::prefix('kelas')->group(function ()
+    {
+        Route::get('/', 'ClassController@index')->name('kelas');
+        Route::post('/store', 'ClassController@store')->name('kelas.store');
+        Route::patch('/update/{id}', 'ClassController@update')->name('kelas.update');
+        Route::delete('/destroy', 'ClassController@destroy')->name('kelas.destroy');
     });
 });
 

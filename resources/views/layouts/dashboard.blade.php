@@ -86,8 +86,8 @@
                         <a class="collapse-item" id="ruangan" href="{{ route('ruangan') }}">Ruangan</a>
                         <a class="collapse-item" id="tingkat-kelas" href="{{ route('tingkat-kelas') }}">Tingkat Kelas</a>
                         <a class="collapse-item" id="sub-kelas" href="{{ route('sub-kelas') }}">Sub Kelas</a>
-                        <a class="collapse-item" id="kelas" href="cards.html">Kelas</a>
-                        <a class="collapse-item" id="jurusan" href="cards.html">Jurusan</a>
+                        <a class="collapse-item" id="jurusan" href="{{ route('jurusan') }}">Jurusan</a>
+                        <a class="collapse-item" id="kelas" href="{{ route('kelas') }}">Kelas</a>
                         <a class="collapse-item" id="kurikulum" href="cards.html">Kurikulum</a>
                         <a class="collapse-item" id="tahun-akademik" href="cards.html">Tahun Akademik</a>
                     </div>
