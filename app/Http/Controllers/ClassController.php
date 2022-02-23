@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jurusan;
 use App\Kelas;
+use App\SubKelas;
+use App\TingkatKelas;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -15,8 +18,11 @@ class ClassController extends Controller
     public function index()
     {
         $data = Kelas::all();
+        $tingkat = TingkatKelas::all();
+        $sub = SubKelas::all();
+        $jurusan = Jurusan::all();
 
-        return view('kelas.index', compact('data'));
+        return view('kelas.index', compact('data', 'tingkat', 'sub', 'jurusan'));
     }
 
     /**
@@ -28,23 +34,29 @@ class ClassController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|digits_between:0,3|unique:tbl_sub_kelas,nama|numeric',
+            'tingkat_kelas_id' => 'required|exists:tbl_tingkat_kelas,id',
+            'sub_kelas_id' => 'required|exists:tbl_sub_kelas,id',
+            'jurusan_id' => 'required|exists:tbl_jurusan,id',
         ], [
-            'nama.required' => 'Nama sub kelas tidak boleh kosong !',
-            'nama.digits_between' => 'Nama sub kelas maximal 3 karakter !',
-            'nama.unique' => 'Nama sub kelas sudah ada !',
-            'nama.numeric' => 'Nama sub kelas hanya boleh diisi angka !',
+            'tingkat_kelas_id.required' => 'Tingkat kelas tidak boleh kosong !',
+            'tingkat_kelas_id.exists' => 'Data tingkatan tidak ada !',
+            'sub_kelas_id.required' => 'Sub kelas tidak boleh kosong !',
+            'sub_kelas_id.exists' => 'Data sub kelas tidak ada !',
+            'jurusan_id.required' => 'Jurusan tidak boleh kosong !',
+            'jurusan_id.exists' => 'Data jurusan tidak ada !',
         ]);
 
+        $data = new Kelas;
+        $data->id = 'KLS' . sprintf('%03u', $data->count() + 1);
+        $data->tingkat_kelas_id = $request->tingkat_kelas_id;
+        $data->sub_kelas_id = $request->sub_kelas_id;
+        $data->jurusan_id = $request->jurusan_id;
+        $data->save();
         try {
-            $data = new Kelas;
-            $data->id = 'SBK' . sprintf('%03u', $data->count() + 1);
-            $data->nama = $request->nama;
-            $data->save();
 
-            return redirect()->route('kelas')->with('success', 'Berhasil menambahkan ruangan ' . $request->nama . ' !');
+            return redirect()->route('kelas')->with('success', 'Berhasil menambahkan data kelas !');
         } catch (\Throwable $th) {
-            return redirect()->route('kelas')->with('danger', 'Gagal menambahkan ruangan !');
+            return redirect()->route('kelas')->with('danger', 'Gagal menambahkan kelas !');
         }
     }
 
@@ -58,20 +70,26 @@ class ClassController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama-'.$id => 'required|digits_between:0,3|unique:tbl_sub_kelas,nama|numeric',
+            'tingkat_kelas_id-' . $id => 'required|exists:tbl_tingkat_kelas,id',
+            'sub_kelas_id-' . $id => 'required|exists:tbl_sub_kelas,id',
+            'jurusan_id-' . $id => 'required|exists:tbl_jurusan,id',
         ], [
-            'nama-'.$id.'.required' => 'Nama sub kelas tidak boleh kosong !',
-            'nama-'.$id.'.digits_between' => 'Nama sub kelas maximal 3 karakter !',
-            'nama-'.$id.'.unique' => 'Nama sub kelas tidak boleh sama !',
-            'nama-'.$id.'.numeric' => 'Nama sub kelas hanya boleh diisi angka !',
+            'tingkat_kelas_id-' . $id . '.required' => 'Tingkat kelas tidak boleh kosong !',
+            'tingkat_kelas_id-' . $id . '.exists' => 'Data tingkatan tidak ada !',
+            'sub_kelas_id-' . $id . '.required' => 'Sub kelas tidak boleh kosong !',
+            'sub_kelas_id-' . $id . '.exists' => 'Data sub kelas tidak ada !',
+            'jurusan_id-' . $id . '.required' => 'Jurusan tidak boleh kosong !',
+            'jurusan_id-' . $id . '.exists' => 'Data jurusan tidak ada !',
         ]);
 
         try {
             $data = Kelas::find($id);
-            $data->nama = $request['nama-'.$id];
+            $data->tingkat_kelas_id = $request['tingkat_kelas_id-' . $id];
+            $data->sub_kelas_id = $request['sub_kelas_id-' . $id];
+            $data->jurusan_id = $request['jurusan_id-' . $id];
             $data->save();
 
-            return redirect()->route('kelas')->with('update', 'Berhasil mengubah data ' . $request['nama-'.$id] . ' !');
+            return redirect()->route('kelas')->with('update', 'Berhasil mengubah data kelas !');
         } catch (\Throwable $th) {
             return redirect()->route('kelas')->with('danger', 'Gagal menambahkan data !');
         }

@@ -14,10 +14,10 @@ class CreateTblKelas extends Migration
     public function up()
     {
         Schema::create('tbl_kelas', function (Blueprint $table) {
-            $table->string('id',8)->primary();
+            $table->string('id',6)->primary();
             $table->string('tingkat_kelas_id',5);
             $table->string('sub_kelas_id',6);
-            $table->string('jurusan_id',3);
+            $table->string('jurusan_id',5);
             $table->timestamps();
         });
     }

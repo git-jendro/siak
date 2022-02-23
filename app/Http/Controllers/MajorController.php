@@ -88,15 +88,4 @@ class MajorController extends Controller
             return redirect()->route('jurusan')->with('danger', 'Gagal menambahkan data !');
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

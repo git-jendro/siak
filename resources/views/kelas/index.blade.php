@@ -76,7 +76,7 @@
                                     {{ $item->id }}
                                 </td>
                                 <td>
-                                    {{ $item->nama }}
+                                    {{ $item->tingkat->nama }} {{  $item->jurusan->kode }} {{  $item->sub->nama }} 
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-link "

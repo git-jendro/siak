@@ -28,11 +28,10 @@ class ClassLevelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|max:3|unique:tbl_tingkat_kelas,nama',
+            'nama' => 'required|max:3',
         ], [
             'nama.required' => 'Nama tingkatan tidak boleh kosong !',
             'nama.max' => 'Nama tingkatan maximal 3 karakter !',
-            'nama.unique' => 'Nama tingkatan sudah ada !',
         ]);
 
         try {
@@ -57,11 +56,10 @@ class ClassLevelController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama-'.$id => 'required|max:3|unique:tbl_tingkat_kelas,nama',
+            'nama-'.$id => 'required|max:3',
         ], [
-            'nama-'.$id.'.required' => 'Nama tingkatan tidak boleh kosong !',
-            'nama-'.$id.'.max' => 'Nama tingkatan maximal 3 karakter !',
-            'nama-'.$id.'.unique' => 'Nama tingkatan sudah ada !',
+            'nama-'.$id.'.required' => 'Nama ruangan tidak boleh kosong !',
+            'nama-'.$id.'.max' => 'Nama ruangan maximal 3 karakter !',
         ]);
 
         try {
