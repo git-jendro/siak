@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DetailKurikulum;
 use App\Kurikulum;
+use App\Pelajaran;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 
 class CurriculumController extends Controller
 {
@@ -38,10 +41,11 @@ class CurriculumController extends Controller
         $data = new Kurikulum;
         $data->id = 'KRK' . sprintf('%02u', $data->count() + 1);
         $data->nama = $request->nama;
+        $data->slug = $this->slug($request->nama);
         $data->save();
         try {
 
-            return redirect()->route('kurikulum')->with('success', 'Berhasil menambahkan data '. $request->nama .' !');
+            return redirect()->route('kurikulum')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
             return redirect()->route('kurikulum')->with('danger', 'Gagal menambahkan data !');
         }
@@ -57,21 +61,63 @@ class CurriculumController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama-'.$id => 'required|min:3|max:30',
+            'nama-' . $id => 'required|min:3|max:30',
         ], [
-            'nama-'. $id .'.required' => 'Nama kurikulum tidak boleh kosong !',
-            'nama-'. $id .'.min' => 'Nama kurikulum minimal 3 karakter !',
-            'nama-'. $id .'.max' => 'Nama kurikulum maximal 30 karakter !',
+            'nama-' . $id . '.required' => 'Nama kurikulum tidak boleh kosong !',
+            'nama-' . $id . '.min' => 'Nama kurikulum minimal 3 karakter !',
+            'nama-' . $id . '.max' => 'Nama kurikulum maximal 30 karakter !',
         ]);
 
+        $data = Kurikulum::find($id);
         try {
-            $data = Kurikulum::find($id);
-            $data->tingkat_kelas_id = $request['nama-' . $id];
+            $data->nama = $request['nama-' . $id];
+            $data->slug = $this->slug($request['nama-' . $id]);
             $data->save();
 
-            return redirect()->route('kurikulum')->with('update', 'Berhasil mengubah data ' . $request['nama-'.$id] . ' !');
+            return redirect()->route('kurikulum')->with('update', 'Berhasil mengubah data ' . $request['nama-' . $id] . ' !');
         } catch (\Throwable $th) {
             return redirect()->route('kurikulum')->with('danger', 'Gagal menambahkan data !');
+        }
+    }
+
+    public function pelajaran($slug)
+    {
+        try {
+            $data = Kurikulum::where('slug', $slug)->first();
+            $pelajaran = Pelajaran::all();
+            $detail = DetailKurikulum::where('kurikulum_id', $data->id)->get();
+
+            return view('kurikulum.detail', compact('data', 'pelajaran', 'detail'));
+        } catch (\Throwable $th) {
+            return redirect()->route('kurikulum')->with('danger', 'Gagal menambahkan data !');
+        }
+    }
+
+    public function add_pelajaran(Request $request)
+    {
+        try {
+            $data = new DetailKurikulum;
+            $data->id = Uuid::uuid4()->toString();
+            $data->kurikulum_id = $request->kurikulum_id;
+            $data->pelajaran_id = $request->pelajaran_id;
+            $data->save();
+
+            return response()->json('success');
+        } catch (\Throwable $th) {
+            return response()->json('fail');
+        }
+    }
+
+    public function remove_pelajaran(Request $request)
+    {
+        try {
+            DetailKurikulum::where([
+                ['kurikulum_id', $request->kurikulum_id],
+                ['pelajaran_id', $request->pelajaran_id],
+            ])->delete();
+            return response()->json('success');
+        } catch (\Throwable $th) {
+            return response()->json('fail');
         }
     }
 

@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/dashboard/kurikulum/add_pelajaran', 'CurriculumController@add_pelajaran');
+Route::post('/dashboard/kurikulum/remove_pelajaran', 'CurriculumController@remove_pelajaran');

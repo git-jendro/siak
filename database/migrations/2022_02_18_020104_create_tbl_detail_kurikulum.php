@@ -14,7 +14,7 @@ class CreateTblDetailKurikulum extends Migration
     public function up()
     {
         Schema::create('tbl_detail_kurikulum', function (Blueprint $table) {
-            $table->string('id', 7)->primary();
+            $table->uuid('id')->primary();
             $table->string('kurikulum_id', 6);
             $table->string('pelajaran_id', 6);
             $table->timestamps();

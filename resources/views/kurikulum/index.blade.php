@@ -56,6 +56,7 @@
                             <th>ID</th>
                             <th>Nama Kurikulum</th>
                             <th class="text-center" colspan="2">Aksi</th>
+                            <th style="display:none;">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -63,6 +64,7 @@
                             <th>ID</th>
                             <th>Nama Kurikulum</th>
                             <th class="text-center" colspan="2">Aksi</th>
+                            <th style="display:none;">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -78,8 +80,8 @@
                                     {{ $item->nama }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-books fa-sm text-white-50"></i> Kelola data pelajaran
+                                    <a href="{{ route('kurikulum.pelajaran', [$item->slug]) }}" class="btn btn-sm btn-primary shadow-sm">
+                                        <i class="fas fa-book fa-sm text-white-50 mr-2"></i> Kelola pelajaran
                                     </a>
                                 </td>
                                 <td class="text-center">
@@ -89,6 +91,7 @@
                                     </button>
                                     @include('kurikulum.edit')
                                 </td>
+                                <td style="display:none;"></td>
                             </tr>
                             @php
                                 $i++;

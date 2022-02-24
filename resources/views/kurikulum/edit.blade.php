@@ -1,68 +1,31 @@
-<!-- Logout Modal-->
 <div class="modal fade" id="edit-modal-{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Edit Kelas</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form Edit Kurikulum</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="user" action="{{ route('kelas.update', [$item->id]) }}" method="post"
+                <form class="user" action="{{ route('kurikulum.update', [$item->id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('patch')
                     @csrf
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" value="{{ $item->id }}"
-                                readonly>
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control @error('tingkat_kelas_id-'. $item->id) is-invalid @enderror"
-                            name="tingkat_kelas_id-{{ $item->id }}">
-                            <option value="">Pilih Tingkat Kelas</option>
-                            @foreach ($tingkat as $ting)
-                                <option value="{{ $ting->id }}" {{ $ting->id == $item->tingkat_kelas_id ? 'selected' : '' }}>{{ $ting->nama }}</option>
-                            @endforeach
-                        </select>
-                        @error('tingkat_kelas_id-'. $item->id)
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ $item->id }}" readonly>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <select class="form-control @error('jurusan_id-'. $item->id) is-invalid @enderror"
-                            name="jurusan_id-{{ $item->id }}">
-                            <option value="">Pilih Jurusan</option>
-                            @foreach ($jurusan as $jur)
-                                <option value="{{ $jur->id }}" {{ $jur->id == $item->jurusan_id ? 'selected' : '' }}>{{ $jur->kode }} ({{ $jur->nama }})</option>
-                            @endforeach
-                        </select>
-                        @error('jurusan_id-'. $item->id)
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control @error('sub_kelas_id-'. $item->id) is-invalid @enderror"
-                            name="sub_kelas_id-{{ $item->id }}">
-                            <option value="">Pilih Sub Kelas</option>
-                            @foreach ($sub as $subk)
-                                <option value="{{ $subk->id }}" {{ $subk->id == $item->sub_kelas_id ? 'selected' : '' }}>{{ $subk->nama }}</option>
-                            @endforeach
-                        </select>
-                        @error('sub_kelas_id-'. $item->id)
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control @error('nama-' . $item->id) is-invalid @enderror"
+                            name="nama-{{ $item->id }}" placeholder="Nama Kurikulum"
+                            value="{{ $item->nama }}">
+                        @error('nama-' . $item->id)
+                            <div id="edit-error-{{ $item->id }}"
+                                class="mt-2 error invalid-feedback d-block w-100 text-left">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
             </div>
             <div class="modal-footer">

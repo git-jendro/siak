@@ -64,7 +64,6 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::get('/', 'MajorController@index')->name('jurusan');
         Route::post('/store', 'MajorController@store')->name('jurusan.store');
         Route::patch('/update/{id}', 'MajorController@update')->name('jurusan.update');
-        Route::delete('/destroy', 'MajorController@destroy')->name('jurusan.destroy');
     });
 
     //Route Kelas
@@ -73,16 +72,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::get('/', 'ClassController@index')->name('kelas');
         Route::post('/store', 'ClassController@store')->name('kelas.store');
         Route::patch('/update/{id}', 'ClassController@update')->name('kelas.update');
-        Route::delete('/destroy', 'ClassController@destroy')->name('kelas.destroy');
     });
 
-    //Route Kelas
+    //Route Kurikulum
     Route::prefix('kurikulum')->group(function ()
     {
         Route::get('/', 'CurriculumController@index')->name('kurikulum');
         Route::post('/store', 'CurriculumController@store')->name('kurikulum.store');
         Route::patch('/update/{id}', 'CurriculumController@update')->name('kurikulum.update');
-        Route::delete('/destroy', 'CurriculumController@destroy')->name('kurikulum.destroy');
+        Route::get('/pelajaran/{slug}', 'CurriculumController@pelajaran')->name('kurikulum.pelajaran');
     });
 });
 
