@@ -15,7 +15,7 @@ class CreateTblKurikulum extends Migration
     {
         Schema::create('tbl_kurikulum', function (Blueprint $table) {
             $table->string('id', 5)->primary();
-            $table->string('nama', 15);
+            $table->string('nama', 30);
             $table->timestamps();
         });
     }

@@ -48,9 +48,9 @@ class SubjectController extends Controller
             $data->slug = $this->slug($request->nama);
             $data->save();
 
-            return redirect()->route('pelajaran')->with('success', 'Berhasil menambahkan pelajaran ' . $request->nama . ' !');
+            return redirect()->route('pelajaran')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
-            return redirect()->route('pelajaran')->with('danger', 'Gagal menambahkan pelajaran !');
+            return redirect()->route('pelajaran')->with('danger', 'Gagal menambahkan data !');
         }
     }
 

@@ -15,15 +15,15 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-user"
+                            <input type="text" class="form-control"
                                 value="{{ 'SBK' . sprintf('%03u', $data->count() + 1) }}" readonly>
                         </div>
                         <div class="col-sm-6">
                             <input type="text"
-                                class="form-control form-control-user @error('nama') is-invalid @enderror" name="nama"
+                                class="form-control @error('nama') is-invalid @enderror" name="nama"
                                 placeholder="Nama Sub Kelas" value="{{ old('nama') }}">
                             @error('nama')
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror

@@ -15,29 +15,29 @@
                     @method('patch')
                     @csrf
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" value="{{ $item->id }}" readonly>
+                        <input type="text" class="form-control" value="{{ $item->id }}" readonly>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
 
                             <input type="text"
-                                class="form-control form-control-user @error('nama-' . $item->id) is-invalid @enderror"
+                                class="form-control @error('nama-' . $item->id) is-invalid @enderror"
                                 name="nama-{{ $item->id }}" placeholder="Nama Mata Pelajaran"
                                 value="{{ $item->nama }}">
                             @error('nama-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100 text-left">
+                                    class="mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                         <div class="col-sm-6">
                             <input type="number"
-                                class="form-control form-control-user @error('kkm-' . $item->id) is-invalid @enderror"
+                                class="form-control @error('kkm-' . $item->id) is-invalid @enderror"
                                 name="kkm-{{ $item->id }}" placeholder="KKM" value="{{ $item->kkm }}">
                             @error('kkm-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="px-3 mt-2 error invalid-feedback d-block w-100 text-left">
+                                    class="mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
                                 </div>
                             @enderror

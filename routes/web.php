@@ -75,6 +75,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'ClassController@update')->name('kelas.update');
         Route::delete('/destroy', 'ClassController@destroy')->name('kelas.destroy');
     });
+
+    //Route Kelas
+    Route::prefix('kurikulum')->group(function ()
+    {
+        Route::get('/', 'CurriculumController@index')->name('kurikulum');
+        Route::post('/store', 'CurriculumController@store')->name('kurikulum.store');
+        Route::patch('/update/{id}', 'CurriculumController@update')->name('kurikulum.update');
+        Route::delete('/destroy', 'CurriculumController@destroy')->name('kurikulum.destroy');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

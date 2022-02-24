@@ -15,15 +15,15 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-user"
+                            <input type="text" class="form-control"
                             value="{{ 'RNG'.sprintf('%03u', $data->count()+1) }}" readonly>
                         </div>
                         <div class="col-sm-6">
                             <input type="text"
-                                class="form-control form-control-user @error('kode') is-invalid @enderror" name="kode"
+                                class="form-control @error('kode') is-invalid @enderror" name="kode"
                                 placeholder="Kode Ruangan"  value="{{ old('kode') }}">
                             @error('kode')
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -31,10 +31,10 @@
                     </div>
                     <div class="form-group">
                         <input type="text"
-                                class="form-control form-control-user @error('nama') is-invalid @enderror" name="nama"
+                                class="form-control @error('nama') is-invalid @enderror" name="nama"
                                 placeholder="Nama Ruangan"  value="{{ old('nama') }}">
                             @error('nama')
-                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror

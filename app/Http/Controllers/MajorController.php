@@ -48,9 +48,9 @@ class MajorController extends Controller
             $data->nama = $request->nama;
             $data->save();
 
-            return redirect()->route('jurusan')->with('success', 'Berhasil menambahkan ruangan ' . $request->nama . ' !');
+            return redirect()->route('jurusan')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
-            return redirect()->route('jurusan')->with('danger', 'Gagal menambahkan ruangan !');
+            return redirect()->route('jurusan')->with('danger', 'Gagal menambahkan data !');
         }
     }
 

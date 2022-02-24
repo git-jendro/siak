@@ -13,12 +13,11 @@
 @endsection
 
 @section('header')
-    <h1 class="h3 mb-lg-0 text-gray-800">Kelas</h1>
-    <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-        data-target="#create-modal">
+    <h1 class="h3 mb-lg-0 text-gray-800">Kurikulum</h1>
+    <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#create-modal">
         <i class="fas fa-plus-circle fa-sm text-white-50"></i> Tambah Data
     </button>
-    @include('kelas.create')
+    @include('kurikulum.create')
 @endsection
 
 @section('contain')
@@ -47,7 +46,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data Kelas</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data Kurikulum</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -55,15 +54,15 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Kelas</th>
-                            <th class="text-center">Aksi</th>
+                            <th>Nama Kurikulum</th>
+                            <th class="text-center" colspan="2">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Nama Kelas</th>
-                            <th class="text-center">Aksi</th>
+                            <th>Nama Kurikulum</th>
+                            <th class="text-center" colspan="2">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -76,18 +75,23 @@
                                     {{ $item->id }}
                                 </td>
                                 <td>
-                                    {{ $item->tingkat->nama }} {{  $item->jurusan->kode }} {{  $item->sub->nama }} 
+                                    {{ $item->nama }}
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link "
-                                        data-toggle="modal" data-target="#edit-modal-{{ $item->id }}">
+                                    <a href="#" class="btn btn-sm btn-primary shadow-sm">
+                                        <i class="fas fa-books fa-sm text-white-50"></i> Kelola data pelajaran
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                        data-target="#edit-modal-{{ $item->id }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
+                                    @include('kurikulum.edit')
                                 </td>
-                                @include('kelas.edit')
                             </tr>
                             @php
-                                $i++
+                                $i++;
                             @endphp
                         @endforeach
                     </tbody>
@@ -99,7 +103,7 @@
     <script>
         $(document).ready(function() {
             $('#data-master').addClass('active');
-            $('#kelas').addClass('active');
+            $('#kurikulum').addClass('active');
             if (window.screen.availWidth > 700) {
                 $("#master-dropdown").click();
             }

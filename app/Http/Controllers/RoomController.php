@@ -46,9 +46,9 @@ class RoomController extends Controller
             $data->kode = $request->kode;
             $data->save();
 
-            return redirect()->route('ruangan')->with('success', 'Berhasil menambahkan ruangan ' . $request->nama . ' !');
+            return redirect()->route('ruangan')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
-            return redirect()->route('ruangan')->with('danger', 'Gagal menambahkan ruangan !');
+            return redirect()->route('ruangan')->with('danger', 'Gagal menambahkan data !');
         }
     }
 

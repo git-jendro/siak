@@ -40,9 +40,9 @@ class ClassLevelController extends Controller
             $data->nama = $request->nama;
             $data->save();
 
-            return redirect()->route('tingkat-kelas')->with('success', 'Berhasil menambahkan ruangan ' . $request->nama . ' !');
+            return redirect()->route('tingkat-kelas')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
-            return redirect()->route('tingkat-kelas')->with('danger', 'Gagal menambahkan ruangan !');
+            return redirect()->route('tingkat-kelas')->with('danger', 'Gagal menambahkan data !');
         }
     }
 

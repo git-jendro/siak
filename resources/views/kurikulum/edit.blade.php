@@ -28,7 +28,7 @@
                             @endforeach
                         </select>
                         @error('tingkat_kelas_id-'. $item->id)
-                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -44,7 +44,7 @@
                             @endforeach
                         </select>
                         @error('jurusan_id-'. $item->id)
-                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -58,7 +58,7 @@
                             @endforeach
                         </select>
                         @error('sub_kelas_id-'. $item->id)
-                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror

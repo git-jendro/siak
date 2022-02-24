@@ -56,7 +56,7 @@ class ClassController extends Controller
 
             return redirect()->route('kelas')->with('success', 'Berhasil menambahkan data kelas !');
         } catch (\Throwable $th) {
-            return redirect()->route('kelas')->with('danger', 'Gagal menambahkan kelas !');
+            return redirect()->route('kelas')->with('danger', 'Gagal menambahkan data !');
         }
     }
 

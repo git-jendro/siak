@@ -7,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="SMKN 4">
+    <meta name="description" content="Sistem Informasi Akademik SMK Negeri 4">
 
     <title>{{ config('app.name') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('logos/logo.ico') }}">
 
-    <meta name="description" content="Sistem Informasi Akademik SMK Negeri 4">
 
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="SIAKAD SMK Negeri 4">
@@ -88,7 +89,7 @@
                         <a class="collapse-item" id="sub-kelas" href="{{ route('sub-kelas') }}">Sub Kelas</a>
                         <a class="collapse-item" id="jurusan" href="{{ route('jurusan') }}">Jurusan</a>
                         <a class="collapse-item" id="kelas" href="{{ route('kelas') }}">Kelas</a>
-                        <a class="collapse-item" id="kurikulum" href="cards.html">Kurikulum</a>
+                        <a class="collapse-item" id="kurikulum" href="{{ route('kurikulum') }}">Kurikulum</a>
                         <a class="collapse-item" id="tahun-akademik" href="cards.html">Tahun Akademik</a>
                     </div>
                 </div>

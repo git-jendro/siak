@@ -16,16 +16,16 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-user" value="{{ $item->id }}"
+                            <input type="text" class="form-control" value="{{ $item->id }}"
                                 readonly>
                         </div>
                         <div class="col-sm-6">
                             <input type="text"
-                                class="form-control form-control-user @error('kode-' . $item->id) is-invalid @enderror"
+                                class="form-control @error('kode-' . $item->id) is-invalid @enderror"
                                 name="kode-{{ $item->id }}" placeholder="Kode Jurusan" value="{{ $item->kode }}">
                             @error('kode-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
-                                    class="pl-3 mt-2 error invalid-feedback d-block w-100 text-left">
+                                    class="mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -33,11 +33,11 @@
                     </div>
                     <div class="form-group">
                         <input type="text"
-                            class="form-control form-control-user @error('nama-' . $item->id) is-invalid @enderror"
+                            class="form-control @error('nama-' . $item->id) is-invalid @enderror"
                             name="nama-{{ $item->id }}" placeholder="Nama Jurusan" value="{{ $item->nama }}">
                         @error('nama-' . $item->id)
                             <div id="edit-error-{{ $item->id }}"
-                                class="pl-3 mt-2 error invalid-feedback d-block w-100 text-left">
+                                class="mt-2 error invalid-feedback d-block w-100 text-left">
                                 {{ $message }}
                             </div>
                         @enderror

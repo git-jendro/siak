@@ -42,9 +42,9 @@ class SubClassController extends Controller
             $data->nama = $request->nama;
             $data->save();
 
-            return redirect()->route('sub-kelas')->with('success', 'Berhasil menambahkan ruangan ' . $request->nama . ' !');
+            return redirect()->route('sub-kelas')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
-            return redirect()->route('sub-kelas')->with('danger', 'Gagal menambahkan ruangan !');
+            return redirect()->route('sub-kelas')->with('danger', 'Gagal menambahkan data !');
         }
     }
 
