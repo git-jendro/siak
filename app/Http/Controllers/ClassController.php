@@ -46,13 +46,13 @@ class ClassController extends Controller
             'jurusan_id.exists' => 'Data jurusan tidak ada !',
         ]);
 
-        $data = new Kelas;
-        $data->id = 'KLS' . sprintf('%03u', $data->count() + 1);
-        $data->tingkat_kelas_id = $request->tingkat_kelas_id;
-        $data->sub_kelas_id = $request->sub_kelas_id;
-        $data->jurusan_id = $request->jurusan_id;
-        $data->save();
         try {
+            $data = new Kelas;
+            $data->id = 'KLS' . sprintf('%03u', $data->count() + 1);
+            $data->tingkat_kelas_id = $request->tingkat_kelas_id;
+            $data->sub_kelas_id = $request->sub_kelas_id;
+            $data->jurusan_id = $request->jurusan_id;
+            $data->save();
 
             return redirect()->route('kelas')->with('success', 'Berhasil menambahkan data kelas !');
         } catch (\Throwable $th) {

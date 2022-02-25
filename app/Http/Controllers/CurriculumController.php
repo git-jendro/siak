@@ -38,12 +38,12 @@ class CurriculumController extends Controller
             'nama.max' => 'Nama kurikulum maximal 30 karakter !',
         ]);
 
-        $data = new Kurikulum;
-        $data->id = 'KRK' . sprintf('%02u', $data->count() + 1);
-        $data->nama = $request->nama;
-        $data->slug = $this->slug($request->nama);
-        $data->save();
         try {
+            $data = new Kurikulum;
+            $data->id = 'KRK' . sprintf('%02u', $data->count() + 1);
+            $data->nama = $request->nama;
+            $data->slug = $this->slug($request->nama);
+            $data->save();
 
             return redirect()->route('kurikulum')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
         } catch (\Throwable $th) {
@@ -68,8 +68,8 @@ class CurriculumController extends Controller
             'nama-' . $id . '.max' => 'Nama kurikulum maximal 30 karakter !',
         ]);
 
-        $data = Kurikulum::find($id);
         try {
+            $data = Kurikulum::find($id);
             $data->nama = $request['nama-' . $id];
             $data->slug = $this->slug($request['nama-' . $id]);
             $data->save();

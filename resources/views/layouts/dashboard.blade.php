@@ -90,7 +90,7 @@
                         <a class="collapse-item" id="jurusan" href="{{ route('jurusan') }}">Jurusan</a>
                         <a class="collapse-item" id="kelas" href="{{ route('kelas') }}">Kelas</a>
                         <a class="collapse-item" id="kurikulum" href="{{ route('kurikulum') }}">Kurikulum</a>
-                        <a class="collapse-item" id="tahun-akademik" href="cards.html">Tahun Akademik</a>
+                        <a class="collapse-item" id="tahun-akademik" href="{{ route('tahun-akademik') }}">Tahun Akademik</a>
                     </div>
                 </div>
             </li>

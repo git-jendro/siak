@@ -17,6 +17,7 @@ class CreateTblTahunAkademik extends Migration
             $table->string('id',5)->primary();
             $table->string('nama',30);
             $table->string('semester',30);
+            $table->boolean('status');
             $table->timestamps();
         });
     }

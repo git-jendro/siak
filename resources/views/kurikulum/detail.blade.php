@@ -13,11 +13,15 @@
 @endsection
 
 @section('header')
-    <h1 class="h3 mb-lg-0 text-gray-800">Kelola Pelajaran Kurikulum</h1>
-    {{-- <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#create-modal">
-        <i class="fas fa-plus-circle fa-sm text-white-50"></i> Tambah Data
-    </button> --}}
-    @include('kurikulum.create')
+<div class="col-12">
+    <a href="{{ url()->previous() }}" class="btn btn-link" style="text-decoration: none; padding-left:0; padding-top:0;">
+        <i class="fas fa-fw fa-arrow-alt-circle-left fa-2x"></i>
+    </a>
+        <h1 class="h3 mb-lg-0 text-gray-800 d-inline">
+            Kelola Pelajaran Kurikulum
+        </h1>
+</div>
+    
 @endsection
 
 @section('contain')

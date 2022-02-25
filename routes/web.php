@@ -82,6 +82,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'CurriculumController@update')->name('kurikulum.update');
         Route::get('/pelajaran/{slug}', 'CurriculumController@pelajaran')->name('kurikulum.pelajaran');
     });
+
+    //Route Tahun Akademik
+    Route::prefix('tahun-akademik')->group(function ()
+    {
+        Route::get('/', 'AcademicController@index')->name('tahun-akademik');
+        Route::post('/store', 'AcademicController@store')->name('tahun-akademik.store');
+        Route::patch('/update/{id}', 'AcademicController@update')->name('tahun-akademik.update');
+        Route::post('/active/{id}', 'AcademicController@active')->name('tahun-akademik.active');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()
