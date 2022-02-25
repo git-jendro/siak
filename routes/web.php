@@ -91,6 +91,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'AcademicController@update')->name('tahun-akademik.update');
         Route::post('/active/{id}', 'AcademicController@active')->name('tahun-akademik.active');
     });
+
+    //Route Staff
+    Route::prefix('staff')->group(function ()
+    {
+        Route::get('/', 'StaffController@index')->name('staff');
+        Route::post('/store', 'StaffController@store')->name('staff.store');
+        Route::patch('/update/{id}', 'StaffController@update')->name('staff.update');
+        Route::delete('/destroy/{id}', 'StaffController@destroy')->name('staff.destroy');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

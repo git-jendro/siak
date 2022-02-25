@@ -19,7 +19,6 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-
                             <input type="text"
                                 class="form-control @error('nama-' . $item->id) is-invalid @enderror"
                                 name="nama-{{ $item->id }}" placeholder="Nama Mata Pelajaran"

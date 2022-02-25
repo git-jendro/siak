@@ -13,8 +13,8 @@
 @endsection
 
 @section('header')
-    <h1 class="h3 mb-0 text-gray-800">Pelajaran</h1>
-    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+    <h1 class="h3 mb-lg-0 text-gray-800">Pelajaran</h1>
+    <button type="button" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal"
         data-target="#create-modal">
         <i class="fas fa-plus-circle fa-sm text-white-50"></i> Tambah Data
     </button>

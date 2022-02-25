@@ -98,17 +98,17 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item" id="">
-                <a class="nav-link" href="charts.html">
+            <li class="nav-item" id="staff">
+                <a class="nav-link" href="{{ route('staff') }}">
                     <i class="fas fa-fw fa-user-cog"></i>
                     <span>Staff</span></a>
             </li>
-            <li class="nav-item" id="">
+            <li class="nav-item" id="guru">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-chalkboard-teacher"></i>
                     <span>Guru</span></a>
             </li>
-            <li class="nav-item" id="">
+            <li class="nav-item" id="peserta-didik">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-user-graduate"></i>
                     <span>Peserta Didik</span></a>
@@ -356,16 +356,16 @@
                                 </span>
                                 @if (Auth::user()->staff)
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset(Auth::user()->staff->foto) }}">
+                                        src="{{ asset('storage/'.Auth::user()->staff->foto) }}">
                                 @elseif(Auth::user()->guru)
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset(Auth::user()->guru->foto) }}">
+                                        src="{{ asset('storage/'.Auth::user()->guru->foto) }}">
                                 @elseif(Auth::user()->siswa)
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset(Auth::user()->siswa->foto) }}">
+                                        src="{{ asset('storage/'.Auth::user()->siswa->foto) }}">
                                 @elseif(Auth::user()->walimurid)
                                     <img class="img-profile rounded-circle"
-                                        src="{{ asset(Auth::user()->walimurid->foto) }}">
+                                        src="{{ asset('storage/'.Auth::user()->walimurid->foto) }}">
                                 @endif
                             </a>
                             <!-- Dropdown - User Information -->

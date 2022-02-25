@@ -33,4 +33,9 @@ class Staff extends Authenticatable
     {
         return $this->belongsTo(Jabatan::class, 'jabatan_id');
     }
+
+    public function agama()
+    {
+        return $this->belongsTo(Agama::class, 'agama_id');
+    }
 }

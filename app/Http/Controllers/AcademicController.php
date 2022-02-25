@@ -53,7 +53,7 @@ class AcademicController extends Controller
             $data->status = $request->status;
             $data->save();
 
-            return redirect()->route('tahun-akademik')->with('success', 'Berhasil menambahkan data tahun-akademik !');
+            return redirect()->route('tahun-akademik')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('tahun-akademik')->with('danger', 'Gagal menambahkan data !');
         }
@@ -94,7 +94,7 @@ class AcademicController extends Controller
             $data->status = $request['status-' . $id];
             $data->save();
 
-            return redirect()->route('tahun-akademik')->with('update', 'Berhasil mengubah data tahun-akademik !');
+            return redirect()->route('tahun-akademik')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
             return redirect()->route('tahun-akademik')->with('danger', 'Gagal menambahkan data !');
         }

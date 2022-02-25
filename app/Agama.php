@@ -13,4 +13,9 @@ class Agama extends Model
     protected $fillable = [
         'id', 'nama'
     ];
+
+    public function staff()
+    {
+        return $this->hasMany(Staff::class, 'agama_id');
+    }
 }

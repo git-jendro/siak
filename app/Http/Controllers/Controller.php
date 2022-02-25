@@ -29,4 +29,12 @@ class Controller extends BaseController
             return Storage::delete($param);
         }
     }
+
+    function generateUUID($prefix, $length) {
+        $random = $prefix;
+        for ($i = 0; $i < $length; $i++) {
+          $random .= rand(0, 1) ? rand(0, 9) : rand(0, 9);
+        }
+        return $random;
+      }
 }
