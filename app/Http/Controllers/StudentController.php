@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Agama;
-use App\Jabatan;
-use App\Staff;
+use App\Kelas;
+use App\Siswa;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Ramsey\Uuid\Uuid;
 
-class StaffController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +18,11 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $data = Staff::all();
-        $jabatan = Jabatan::all();
+        $data = Siswa::all();
         $agama = Agama::all();
+        $kelas = Kelas::all();
 
-        return view('staff.index', compact('data', 'jabatan', 'agama'));
+        return view('siswa.index', compact('data', 'agama', 'kelas'));
     }
 
     /**
@@ -40,11 +37,13 @@ class StaffController extends Controller
             'nama' => 'required|min:3|max:100|regex:/^[\.a-zA-Z, ]*$/',
             'agama_id' => 'required|exists:tbl_agama,id',
             'jenis_kelamin' => 'required|in:L,P',
+            'status' => 'required|in:0,1,2',
             'tempat_lahir' => 'required|min:3|max:30|regex:/^[a-zA-Z ]*$/',
             'tanggal_lahir' => 'required|date_format:d-m-Y',
             'alamat' => 'required|min:5|max:1000',
-            'jabatan_id' => 'required|exists:tbl_jabatan,id',
+            'kelas_id' => 'required|exists:tbl_kelas,id',
             'no_telp' => 'required|digits_between:10,13|numeric',
+            'nisn' => 'required|numeric|digits:8',
             'username' => 'required|min:3|max:20|unique:tbl_user,username',
             'password' => 'required|min:6|max:20',
             'foto' => 'required|image|max:3000',
@@ -64,16 +63,22 @@ class StaffController extends Controller
             'tanggal_lahir.date_format' => 'Format tanggal salah !',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong !',
             'jenis_kelamin.in' => 'Data tidak cocok !',
+            'status.required' => 'Status mengajar tidak boleh kosong !',
+            'status.in' => 'Data tidak cocok !',
             'agama_id.required' => 'Agama tidak boleh kosong !',
             'agama_id.exists' => 'Data tidak cocok !',
-            'jabatan_id.required' => 'Jabatan tidak boleh kosong !',
-            'jabatan_id.exists' => 'Data tidak cocok !',
+            'kelas_id.required' => 'Kelas tidak boleh kosong !',
+            'kelas_id.exists' => 'Data tidak cocok !',
             'no_telp.required' => 'Nomor telepon tidak boleh kosong !',
-            'no_telp.digits_between' => 'Nomor telpon minimal 10 dijit maximal 13 dijit !',
-            'no_telp.numeric' => 'Nomor telpon hanya boleh diisi angka !',
+            'no_telp.digits_between' => 'Nomor telepon minimal 10 dijit maximal 13 dijit !',
+            'no_telp.numeric' => 'Nomor telepon hanya boleh diisi angka !',
+            'nisn.required' => 'NISN tidak boleh kosong !',
+            'nisn.digits' => 'NISN terdiri dari 8 dijit !',
+            'nisn.numeric' => 'NISN hanya boleh diisi angka !',
             'username.required' => 'Username tidak boleh kosong !',
             'username.min' => 'Username minimal 3 karakter !',
             'username.max' => 'Username maximal 20 karakter !',
+            'username.unique' => 'Username telah digunakan !',
             'password.required' => 'Password tidak boleh kosong !',
             'password.min' => 'Password terlalu pendek !',
             'password.max' => 'Password terlalu panjang !',
@@ -82,32 +87,34 @@ class StaffController extends Controller
             'foto.max' => 'Ukuran foto terlalu besat !',
         ]);
 
+        $filename = $request->foto->getClientOriginalName();
+        $path = 'Siswa/' . $request->nama . '/Foto';
+        $kelas = Kelas::find($request->kelas_id);
+        $data = new Siswa;
+        $data->id = $this->generateUUID('SIS', 5);
+        $data->nama = $request->nama;
+        $data->nisn = $request->nisn;
+        $data->status = $request->status;
+        $data->agama_id = $request->agama_id;
+        $data->jenis_kelamin = $request->jenis_kelamin;
+        $data->tempat_lahir = $request->tempat_lahir;
+        $data->tanggal_lahir = $request->tanggal_lahir;
+        $data->alamat = $request->alamat;
+        $data->kelas_id = $request->kelas_id;
+        $data->jurusan_id = $kelas->jurusan->id;
+        $data->no_telp = $request->no_telp;
+        $user = new User();
+        $user->id = $this->generateUUID('USR', 8);
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        $data->user_id = $user->id;
+        $data->foto = $request->foto->storeAs($path, $filename);
+        $data->save();
         try {
-            $user = new User;
-            $user->id = $this->generateUUID('USR', 8);
-            $user->username = $request->username;
-            $user->password = Hash::make($request->password);
-            $user->save();
-
-            $filename = $request->foto->getClientOriginalName();
-            $path = 'Staff/' . $request->nama . '/Foto';
-
-            $data = new Staff;
-            $data->id = $this->generateUUID('STF', 3);
-            $data->nama = $request->nama;
-            $data->agama_id = $request->agama_id;
-            $data->jenis_kelamin = $request->jenis_kelamin;
-            $data->tempat_lahir = $request->tempat_lahir;
-            $data->tanggal_lahir = $request->tanggal_lahir;
-            $data->alamat = $request->alamat;
-            $data->jabatan_id = $request->jabatan_id;
-            $data->no_telp = $request->no_telp;
-            $data->user_id = $user->id;
-            $data->foto = $request->foto->storeAs($path, $filename);
-            $data->save();
-            return redirect()->route('staff')->with('success', 'Berhasil menambahkan data !');
+            return redirect()->route('siswa')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menambahkan data !');
+            return redirect()->route('siswa')->with('danger', 'Gagal menambahkan data !');
         }
     }
 
@@ -124,11 +131,13 @@ class StaffController extends Controller
             'nama-' . $id => 'required|min:3|max:100|regex:/^[\.a-zA-Z, ]*$/',
             'agama_id-' . $id => 'required|exists:tbl_agama,id',
             'jenis_kelamin-' . $id => 'required|in:L,P',
+            'status-' . $id => 'required|in:0,1,2',
             'tempat_lahir-' . $id => 'required|min:3|max:30|regex:/^[a-zA-Z ]*$/',
             'tanggal_lahir-' . $id => 'required|date_format:d-m-Y',
             'alamat-' . $id => 'required|min:5|max:1000',
-            'jabatan_id-' . $id => 'required|exists:tbl_jabatan,id',
-            'no_telp-' . $id => 'required|numeric|digits_between:10,13',
+            'kelas_id-' . $id => 'required|exists:tbl_kelas,id',
+            'no_telp-' . $id => 'required|digits_between:10,13|numeric',
+            'nisn-' . $id => 'required|numeric|digits:8',
         ], [
             'nama-' . $id . '.required' => 'Nama tidak boleh kosong !',
             'nama-' . $id . '.min' => 'Nama minimal 3 karakter !',
@@ -145,13 +154,18 @@ class StaffController extends Controller
             'tanggal_lahir-' . $id . '.date_format' => 'Format tanggal salah !',
             'jenis_kelamin-' . $id . '.required' => 'Jenis kelamin tidak boleh kosong !',
             'jenis_kelamin-' . $id . '.in' => 'Data tidak cocok !',
+            'status-' . $id . '.required' => 'Status mengajar tidak boleh kosong !',
+            'status-' . $id . '.in' => 'Data tidak cocok !',
             'agama_id-' . $id . '.required' => 'Agama tidak boleh kosong !',
             'agama_id-' . $id . '.exists' => 'Data tidak cocok !',
-            'jabatan_id-' . $id . '.required' => 'Jabatan tidak boleh kosong !',
-            'jabatan_id-' . $id . '.exists' => 'Data tidak cocok !',
+            'kelas_id-' . $id . '.required' => 'Kelas tidak boleh kosong !',
+            'kelas_id-' . $id . '.exists' => 'Data tidak cocok !',
             'no_telp-' . $id . '.required' => 'Nomor telepon tidak boleh kosong !',
-            'no_telp-' . $id . '.digits_between' => 'Nomor telpon minimal 10 dijit maximal 13 dijit !',
-            'no_telp-' . $id . '.numeric' => 'Nomor telpon hanya boleh diisi angka !',
+            'no_telp-' . $id . '.digits_between' => 'Nomor telepon minimal 10 dijit maximal 13 dijit !',
+            'no_telp-' . $id . '.numeric' => 'Nomor telepon hanya boleh diisi angka !',
+            'nisn-' . $id . '.required' => 'NISN tidak boleh kosong !',
+            'nisn-' . $id . '.digits' => 'NISN terdiri dari 8 dijit !',
+            'nisn-' . $id . '.numeric' => 'NISN hanya boleh diisi angka !',
         ]);
 
         if (request()->has('foto-' . $id)) {
@@ -165,7 +179,7 @@ class StaffController extends Controller
 
         if (request('username-' . $id) != null) {
             $request->validate([
-                'username-' . $id => 'min:3|max:20|unique:tbl_user,username',
+                'username' => 'min:3|max:20|unique:tbl_user,username',
             ], [
                 'username-' . $id . '.min' => 'Username minimal 3 karakter !',
                 'username-' . $id . '.max' => 'Username maximal 20 karakter !',
@@ -183,75 +197,39 @@ class StaffController extends Controller
         }
 
         try {
-            $data = Staff::find($id);
+            $kelas = Kelas::find($request['kelas_id-' . $id]);
+            $data = Siswa::find($id);
             $data->nama = $request['nama-' . $id];
+            $data->nisn = $request['nisn-' . $id];
+            $data->status = $request['status-' . $id];
             $data->agama_id = $request['agama_id-' . $id];
             $data->jenis_kelamin = $request['jenis_kelamin-' . $id];
             $data->tempat_lahir = $request['tempat_lahir-' . $id];
             $data->tanggal_lahir = $request['tanggal_lahir-' . $id];
             $data->alamat = $request['alamat-' . $id];
-            $data->jabatan_id = $request['jabatan_id-' . $id];
+            $data->kelas_id = $request['kelas_id-' . $id];
+            $data->jurusan_id = $kelas->jurusan->id;
             $data->no_telp = $request['no_telp-' . $id];
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
-                $path = 'Staff/' . $request['nama-' . $id] . '/Foto';
+                $path = 'Siswa/' . $request['nama-' . $id] . '/Foto';
                 $this->deleteFile($data->foto);
                 $data->foto = $request['foto-' . $id]->storeAs($path, $filename);
             }
             $data->save();
 
-            
             $user = User::find($data->user_id);
             if (request('username-' . $id) != null) {
                 $user->username = $request['username-' . $id];
             }
-            $user->save();
             if (request('password-' . $id) != null) {
                 $user->password = Hash::make($request['password-' . $id]);
             }
             $user->save();
 
-            return redirect()->route('staff')->with('update', 'Berhasil mengubah data !');
+            return redirect()->route('siswa')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menambahkan data !');
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        try {
-            $conn = Jabatan::select('id')->where('previlege', 2);
-            $count = Staff::whereHas('jabatan', function ($q) use ($conn) {
-                $q->whereIn('jabatan_id', $conn);
-            })->count();
-            $data = Staff::find($id);
-            if ($data->user_id == Auth::user()->id) {
-                return redirect()->route('staff')->with('danger', 'Tidak dapat menghapus akun yang sedang login !');
-            } elseif ($count <= 1) {
-                return redirect()->route('staff')->with('danger', 'Gagal menghapus data karena jabatan Keuangan tidak boleh kosong !');
-            }
-            User::where('id', $data->user->id)->delete();
-            Staff::destroy($id);
-            return redirect()->route('staff')->with('danger', 'Berhasil menghapus data !');
-        } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menghapus data !');
+            return redirect()->route('siswa')->with('danger', 'Gagal mengubah data !');
         }
     }
 }

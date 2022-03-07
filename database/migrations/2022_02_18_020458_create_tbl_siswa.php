@@ -20,11 +20,11 @@ class CreateTblSiswa extends Migration
             $table->string('agama_id', 5);
             $table->string('jenis_kelamin', 5);
             $table->string('tempat_lahir', 30);
-            $table->date('tanggal_lahir');
+            $table->string('tanggal_lahir', 10);
             $table->longText('alamat');
             $table->boolean('status');
             $table->string('kelas_id', 8);
-            $table->string('jurusan', 20);
+            $table->string('jurusan_id', 5);
             $table->string('no_telp', 15);
             $table->string('foto')->default('sb-admin/img/student.jpg')->nullable();
             $table->string('user_id',11);

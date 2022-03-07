@@ -100,6 +100,24 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'StaffController@update')->name('staff.update');
         Route::delete('/destroy/{id}', 'StaffController@destroy')->name('staff.destroy');
     });
+
+    //Route Guru
+    Route::prefix('guru')->group(function ()
+    {
+        Route::get('/', 'TeacherController@index')->name('guru');
+        Route::post('/store', 'TeacherController@store')->name('guru.store');
+        Route::patch('/update/{id}', 'TeacherController@update')->name('guru.update');
+        Route::post('/active/{id}', 'TeacherController@active')->name('guru.active');
+    });
+
+    //Route Siswa
+    Route::prefix('siswa')->group(function ()
+    {
+        Route::get('/', 'StudentController@index')->name('siswa');
+        Route::post('/store', 'StudentController@store')->name('siswa.store');
+        Route::patch('/update/{id}', 'StudentController@update')->name('siswa.update');
+        Route::post('/active/{id}', 'StudentController@active')->name('siswa.active');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

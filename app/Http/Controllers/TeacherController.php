@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Agama;
-use App\Jabatan;
-use App\Staff;
+use App\Guru;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Ramsey\Uuid\Uuid;
 
-class StaffController extends Controller
+class TeacherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +17,10 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $data = Staff::all();
-        $jabatan = Jabatan::all();
+        $data = Guru::all();
         $agama = Agama::all();
 
-        return view('staff.index', compact('data', 'jabatan', 'agama'));
+        return view('guru.index', compact('data', 'agama'));
     }
 
     /**
@@ -40,11 +35,14 @@ class StaffController extends Controller
             'nama' => 'required|min:3|max:100|regex:/^[\.a-zA-Z, ]*$/',
             'agama_id' => 'required|exists:tbl_agama,id',
             'jenis_kelamin' => 'required|in:L,P',
+            'status' => 'required|in:0,1',
             'tempat_lahir' => 'required|min:3|max:30|regex:/^[a-zA-Z ]*$/',
             'tanggal_lahir' => 'required|date_format:d-m-Y',
             'alamat' => 'required|min:5|max:1000',
-            'jabatan_id' => 'required|exists:tbl_jabatan,id',
+            'pendidikan' => 'required|regex:/^[a-zA-Z0-9 ]*$/|max:30|min:2',
+            'jurusan' => 'required|regex:/^[\.a-zA-Z ]*$/|max:50|min:5',
             'no_telp' => 'required|digits_between:10,13|numeric',
+            'nuptk' => 'required|numeric|digits:16',
             'username' => 'required|min:3|max:20|unique:tbl_user,username',
             'password' => 'required|min:6|max:20',
             'foto' => 'required|image|max:3000',
@@ -53,6 +51,14 @@ class StaffController extends Controller
             'nama.min' => 'Nama minimal 3 karakter !',
             'nama.max' => 'Nama maximal 100 karakter !',
             'nama.regex' => 'Nama hanya boleh diisi huruf, . (titik) dan , (koma) !',
+            'jurusan.required' => 'Jurusan tidak boleh kosong !',
+            'jurusan.min' => 'Jurusan minimal 5 karakter !',
+            'jurusan.max' => 'Jurusan maximal 50 karakter !',
+            'jurusan.regex' => 'Jurusan hanya boleh diisi huruf !',
+            'pendidikan.required' => 'Pendidikan terakhir tidak boleh kosong !',
+            'pendidikan.min' => 'Pendidikan terakhir minimal 3 karakter !',
+            'pendidikan.max' => 'Pendidikan terakhir maximal 30 karakter !',
+            'pendidikan.regex' => 'Pendidikan terakhir hanya boleh diisi huruf dan angka !',
             'tempat_lahir.required' => 'Tempat lahir tidak boleh kosong !',
             'tempat_lahir.min' => 'Tempat lahir minimal 3 karakter !',
             'tempat_lahir.max' => 'Tempat lahir maximal 30 karakter !',
@@ -64,16 +70,20 @@ class StaffController extends Controller
             'tanggal_lahir.date_format' => 'Format tanggal salah !',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong !',
             'jenis_kelamin.in' => 'Data tidak cocok !',
+            'status.required' => 'Status mengajar tidak boleh kosong !',
+            'status.in' => 'Data tidak cocok !',
             'agama_id.required' => 'Agama tidak boleh kosong !',
             'agama_id.exists' => 'Data tidak cocok !',
-            'jabatan_id.required' => 'Jabatan tidak boleh kosong !',
-            'jabatan_id.exists' => 'Data tidak cocok !',
             'no_telp.required' => 'Nomor telepon tidak boleh kosong !',
-            'no_telp.digits_between' => 'Nomor telpon minimal 10 dijit maximal 13 dijit !',
-            'no_telp.numeric' => 'Nomor telpon hanya boleh diisi angka !',
+            'no_telp.digits_between' => 'Nomor telepon minimal 10 dijit maximal 13 dijit !',
+            'no_telp.numeric' => 'Nomor telepon hanya boleh diisi angka !',
+            'nuptk.required' => 'NUPTK tidak boleh kosong !',
+            'nuptk.digits' => 'NUPTK terdiri dari 16 dijit !',
+            'nuptk.numeric' => 'NUPTK hanya boleh diisi angka !',
             'username.required' => 'Username tidak boleh kosong !',
             'username.min' => 'Username minimal 3 karakter !',
             'username.max' => 'Username maximal 20 karakter !',
+            'username.unique' => 'Username telah digunakan !',
             'password.required' => 'Password tidak boleh kosong !',
             'password.min' => 'Password terlalu pendek !',
             'password.max' => 'Password terlalu panjang !',
@@ -83,31 +93,33 @@ class StaffController extends Controller
         ]);
 
         try {
-            $user = new User;
-            $user->id = $this->generateUUID('USR', 8);
-            $user->username = $request->username;
-            $user->password = Hash::make($request->password);
-            $user->save();
-
             $filename = $request->foto->getClientOriginalName();
-            $path = 'Staff/' . $request->nama . '/Foto';
-
-            $data = new Staff;
-            $data->id = $this->generateUUID('STF', 3);
+            $path = 'Guru/' . $request->nama . '/Foto';
+    
+            $data = new Guru;
+            $data->id = $this->generateUUID('GRU', 4);
             $data->nama = $request->nama;
+            $data->nuptk = $request->nuptk;
+            $data->status = $request->status;
             $data->agama_id = $request->agama_id;
             $data->jenis_kelamin = $request->jenis_kelamin;
             $data->tempat_lahir = $request->tempat_lahir;
             $data->tanggal_lahir = $request->tanggal_lahir;
             $data->alamat = $request->alamat;
-            $data->jabatan_id = $request->jabatan_id;
+            $data->pendidikan = $request->pendidikan;
+            $data->jurusan = $request->jurusan;
             $data->no_telp = $request->no_telp;
+            $user = new User;
+            $user->id = $this->generateUUID('USR', 8);
+            $user->username = $request->username;
+            $user->password = Hash::make($request->password);
+            $user->save();
             $data->user_id = $user->id;
             $data->foto = $request->foto->storeAs($path, $filename);
             $data->save();
-            return redirect()->route('staff')->with('success', 'Berhasil menambahkan data !');
+            return redirect()->route('guru')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menambahkan data !');
+            return redirect()->route('guru')->with('danger', 'Gagal menambahkan data !');
         }
     }
 
@@ -124,16 +136,27 @@ class StaffController extends Controller
             'nama-' . $id => 'required|min:3|max:100|regex:/^[\.a-zA-Z, ]*$/',
             'agama_id-' . $id => 'required|exists:tbl_agama,id',
             'jenis_kelamin-' . $id => 'required|in:L,P',
+            'status-' . $id => 'required|in:0,1',
             'tempat_lahir-' . $id => 'required|min:3|max:30|regex:/^[a-zA-Z ]*$/',
             'tanggal_lahir-' . $id => 'required|date_format:d-m-Y',
             'alamat-' . $id => 'required|min:5|max:1000',
-            'jabatan_id-' . $id => 'required|exists:tbl_jabatan,id',
-            'no_telp-' . $id => 'required|numeric|digits_between:10,13',
+            'pendidikan-' . $id => 'required|regex:/^[a-zA-Z0-9 ]*$/|max:30|min:2',
+            'jurusan-' . $id => 'required|regex:/^[\.a-zA-Z ]*$/|max:50|min:5',
+            'no_telp-' . $id => 'required|digits_between:10,13|numeric',
+            'nuptk-' . $id => 'required|numeric|digits:16',
         ], [
             'nama-' . $id . '.required' => 'Nama tidak boleh kosong !',
             'nama-' . $id . '.min' => 'Nama minimal 3 karakter !',
             'nama-' . $id . '.max' => 'Nama maximal 100 karakter !',
             'nama-' . $id . '.regex' => 'Nama hanya boleh diisi huruf, . (titik) dan , (koma) !',
+            'jurusan-' . $id . '.required' => 'Jurusan tidak boleh kosong !',
+            'jurusan-' . $id . '.min' => 'Jurusan minimal 5 karakter !',
+            'jurusan-' . $id . '.max' => 'Jurusan maximal 50 karakter !',
+            'jurusan-' . $id . '.regex' => 'Jurusan hanya boleh diisi huruf !',
+            'pendidikan-' . $id . '.required' => 'Pendidikan terakhir tidak boleh kosong !',
+            'pendidikan-' . $id . '.min' => 'Pendidikan terakhir minimal 3 karakter !',
+            'pendidikan-' . $id . '.max' => 'Pendidikan terakhir maximal 30 karakter !',
+            'pendidikan-' . $id . '.regex' => 'Pendidikan terakhir hanya boleh diisi huruf dan angka !',
             'tempat_lahir-' . $id . '.required' => 'Tempat lahir tidak boleh kosong !',
             'tempat_lahir-' . $id . '.min' => 'Tempat lahir minimal 3 karakter !',
             'tempat_lahir-' . $id . '.max' => 'Tempat lahir maximal 30 karakter !',
@@ -145,13 +168,16 @@ class StaffController extends Controller
             'tanggal_lahir-' . $id . '.date_format' => 'Format tanggal salah !',
             'jenis_kelamin-' . $id . '.required' => 'Jenis kelamin tidak boleh kosong !',
             'jenis_kelamin-' . $id . '.in' => 'Data tidak cocok !',
+            'status-' . $id . '.required' => 'Status mengajar tidak boleh kosong !',
+            'status-' . $id . '.in' => 'Data tidak cocok !',
             'agama_id-' . $id . '.required' => 'Agama tidak boleh kosong !',
             'agama_id-' . $id . '.exists' => 'Data tidak cocok !',
-            'jabatan_id-' . $id . '.required' => 'Jabatan tidak boleh kosong !',
-            'jabatan_id-' . $id . '.exists' => 'Data tidak cocok !',
             'no_telp-' . $id . '.required' => 'Nomor telepon tidak boleh kosong !',
-            'no_telp-' . $id . '.digits_between' => 'Nomor telpon minimal 10 dijit maximal 13 dijit !',
-            'no_telp-' . $id . '.numeric' => 'Nomor telpon hanya boleh diisi angka !',
+            'no_telp-' . $id . '.digits_between' => 'Nomor telepon minimal 10 dijit maximal 13 dijit !',
+            'no_telp-' . $id . '.numeric' => 'Nomor telepon hanya boleh diisi angka !',
+            'nuptk-' . $id . '.required' => 'NUPTK tidak boleh kosong !',
+            'nuptk-' . $id . '.digits' => 'NUPTK terdiri dari 16 dijit !',
+            'nuptk-' . $id . '.numeric' => 'NUPTK hanya boleh diisi angka !',
         ]);
 
         if (request()->has('foto-' . $id)) {
@@ -165,7 +191,7 @@ class StaffController extends Controller
 
         if (request('username-' . $id) != null) {
             $request->validate([
-                'username-' . $id => 'min:3|max:20|unique:tbl_user,username',
+                'username' => 'min:3|max:20|unique:tbl_user,username',
             ], [
                 'username-' . $id . '.min' => 'Username minimal 3 karakter !',
                 'username-' . $id . '.max' => 'Username maximal 20 karakter !',
@@ -183,37 +209,38 @@ class StaffController extends Controller
         }
 
         try {
-            $data = Staff::find($id);
+            $data = Guru::find($id);
             $data->nama = $request['nama-' . $id];
+            $data->nuptk = $request['nuptk-' . $id];
+            $data->status = $request['status-' . $id];
             $data->agama_id = $request['agama_id-' . $id];
             $data->jenis_kelamin = $request['jenis_kelamin-' . $id];
             $data->tempat_lahir = $request['tempat_lahir-' . $id];
             $data->tanggal_lahir = $request['tanggal_lahir-' . $id];
             $data->alamat = $request['alamat-' . $id];
-            $data->jabatan_id = $request['jabatan_id-' . $id];
+            $data->pendidikan = $request['pendidikan-' . $id];
+            $data->jurusan = $request['jurusan-' . $id];
             $data->no_telp = $request['no_telp-' . $id];
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
-                $path = 'Staff/' . $request['nama-' . $id] . '/Foto';
+                $path = 'Guru/' . $request['nama-' . $id] . '/Foto';
                 $this->deleteFile($data->foto);
                 $data->foto = $request['foto-' . $id]->storeAs($path, $filename);
             }
             $data->save();
-
             
-            $user = User::find($data->user_id);
+            $user = User::find($data->user_id);        
             if (request('username-' . $id) != null) {
                 $user->username = $request['username-' . $id];
             }
-            $user->save();
             if (request('password-' . $id) != null) {
                 $user->password = Hash::make($request['password-' . $id]);
             }
             $user->save();
 
-            return redirect()->route('staff')->with('update', 'Berhasil mengubah data !');
+            return redirect()->route('guru')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menambahkan data !');
+            return redirect()->route('guru')->with('danger', 'Gagal mengubah data !');
         }
     }
 
@@ -234,24 +261,20 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function active($id)
     {
         try {
-            $conn = Jabatan::select('id')->where('previlege', 2);
-            $count = Staff::whereHas('jabatan', function ($q) use ($conn) {
-                $q->whereIn('jabatan_id', $conn);
-            })->count();
-            $data = Staff::find($id);
-            if ($data->user_id == Auth::user()->id) {
-                return redirect()->route('staff')->with('danger', 'Tidak dapat menghapus akun yang sedang login !');
-            } elseif ($count <= 1) {
-                return redirect()->route('staff')->with('danger', 'Gagal menghapus data karena jabatan Keuangan tidak boleh kosong !');
+            $data = Guru::find($id);
+            if ($data->status == 1) {
+                $data->status = 0;
+                $data->save();
+            } elseif ($data->status == 0) {
+                $data->status = 1;
+                $data->save();
             }
-            User::where('id', $data->user->id)->delete();
-            Staff::destroy($id);
-            return redirect()->route('staff')->with('danger', 'Berhasil menghapus data !');
+            return redirect()->route('guru')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
-            return redirect()->route('staff')->with('danger', 'Gagal menghapus data !');
+            return redirect()->route('guru')->with('danger', 'Gagal mengubah data !');
         }
     }
 }

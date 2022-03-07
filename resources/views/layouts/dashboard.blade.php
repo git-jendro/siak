@@ -104,12 +104,12 @@
                     <span>Staff</span></a>
             </li>
             <li class="nav-item" id="guru">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('guru') }}">
                     <i class="fas fa-fw fa-chalkboard-teacher"></i>
                     <span>Guru</span></a>
             </li>
             <li class="nav-item" id="peserta-didik">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('siswa') }}">
                     <i class="fas fa-fw fa-user-graduate"></i>
                     <span>Peserta Didik</span></a>
             </li>
@@ -139,19 +139,19 @@
             </li>
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('staff') }}">
                     <i class="fas fa-fw fa-file-medical-alt"></i>
                     <span>Nilai</span></a>
             </li>
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('staff') }}">
                     <i class="fas fa-fw fa-file-invoice"></i>
                     <span>Rapot</span></a>
             </li>
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('staff') }}">
                     <i class="fas fa-fw fa-history"></i>
                     <span>Riwayat Kelas</span></a>
             </li>
@@ -160,7 +160,7 @@
             <hr class="sidebar-divider">
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{ route('staff') }}">
                     <i class="fas fa-fw fa-file-invoice-dollar"></i>
                     <span>Pembayaran</span></a>
             </li>
@@ -451,7 +451,6 @@
             </div>
         </div>
     </div>
-
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('sb-admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 

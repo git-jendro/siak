@@ -103,7 +103,7 @@
     // Event shortcuts
     show: null,
     hide: null,
-    pick: null
+    pick: null,
   };
 
   var IS_BROWSER = typeof window !== 'undefined';

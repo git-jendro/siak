@@ -4,28 +4,41 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Staff</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Guru</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="user" action="{{ route('staff.store') }}" method="post"
+                <form class="user" action="{{ route('guru.store') }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group">
+                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
+                            value="{{ old('nama') }}" placeholder="Nama">
+                        @error('nama')
+                            <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="text" class="form-control"
-                                value="{{ 'STF' . sprintf('%03u', $data->count() + 1) }}" readonly>
+                            <input type="text" class="form-control @error('nuptk') is-invalid @enderror"
+                                name="nuptk" value="{{ old('nuptk') }}" placeholder="NUPTK">
+                            @error('nuptk')
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
-                            <select class="form-control @error('jabatan_id') is-invalid @enderror" name="jabatan_id">
-                                <option value="">Pilih Jabatan</option>
-                                @foreach ($jabatan as $jab)
-                                    <option value="{{ $jab->id }}" {{ old('jabatan_id') == $jab->id ? 'selected' : '' }}>{{ $jab->nama }}</option>
-                                @endforeach
+                            <select class="form-control @error('status') is-invalid @enderror" name="status">
+                                <option value="">Pilih Status Mengajar</option>
+                                <option value="0" {{ old('status') == 1 ? 'selected' : '' }}>Aktif</option>
+                                <option value="1" {{ old('status') == 0 ? 'selected' : '' }}>Tidak Aktif</option>
                             </select>
-                            @error('jabatan_id')
+                            @error('status')
                                 <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
@@ -60,14 +73,25 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                            value="{{ old('nama') }}" placeholder="Nama">
-                        @error('nama')
-                            <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control @error('pendidikan') is-invalid @enderror"
+                                name="pendidikan" value="{{ old('pendidikan') }}" placeholder="Pendidikan Terkahir">
+                            @error('pendidikan')
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control @error('jurusan') is-invalid @enderror" name="jurusan" value="{{ old('jurusan') }}"
+                                placeholder="Jurusan Pedidikan Terakhir">
+                            @error('jurusan')
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -143,6 +167,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-4 px-0 prev-create mb-2">
+                            {{ old('foto') }}
                             <label for="create-image">Example file input</label>
                         </div>
                         <input type="file" class="form-control-file @error('foto') is-invalid @enderror" id="create-image" name="foto">
