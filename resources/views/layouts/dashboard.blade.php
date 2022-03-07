@@ -118,8 +118,14 @@
             <hr class="sidebar-divider">
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('grup') }}">
+                <a class="nav-link" href="{{ route('walikelas') }}">
                     <i class="fas fa-fw fa-users"></i>
+                    <span>Wali Kelas</span></a>
+            </li>
+
+            <li class="nav-item" id="">
+                <a class="nav-link" href="{{ route('grup') }}">
+                    <i class="fas fa-fw fa-layer-group"></i>
                     <span>Grup Kelas</span></a>
             </li>
             
@@ -131,7 +137,7 @@
                 </a>
                 <div id="jadwal" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="buttons.html">Jadwal Pelajaran</a>
+                        <a class="collapse-item" href="{{ route('jadwal-pelajaran') }}">Jadwal Pelajaran</a>
                         <a class="collapse-item" href="cards.html">Jadwal UTS</a>
                         <a class="collapse-item" href="cards.html">Jadwal UAS</a>
                     </div>

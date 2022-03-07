@@ -63,8 +63,7 @@
                             <th>Foto</th>
                             <th>Nama Guru</th>
                             <th>Status Mengajar</th>
-                            <th class="text-center" colspan="3">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -73,56 +72,54 @@
                             <th>Foto</th>
                             <th>Nama Guru</th>
                             <th>Status Mengajar</th>
-                            <th class="text-center" colspan="3">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
                                     {{ $item->nuptk }}
                                 </td>
                                 <td class="text-center">
-                                    <img class="rounded-circle img-fluid" src="{{ asset('storage/'.$item->foto) }}"
+                                    <img class="rounded-circle img-fluid" src="{{ asset('storage/' . $item->foto) }}"
                                         alt="{{ $item->nama }}" style="width: 30px">
                                 </td>
                                 <td>
                                     {{ $item->nama }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </td>
                                 <td class="text-center">
-                                    <form action="{{ route('guru.active', $item->id) }}" method="post" enctype="multipart/form-data">
-                                        @csrf
-                                        <button class="btn btn-warning" type="submit">
-                                            {{ $item->status == 0 ? 'Aktifkan' : 'Non Aktifkan' }}
-                                        </button>
-                                    </form>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#show-modal-{{ $item->id }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-lg-6">
+                                            <form action="{{ route('guru.active', $item->id) }}" method="post"
+                                                enctype="multipart/form-data" class="d-inline">
+                                                @csrf
+                                                <button class="btn btn-warning btn-sm" type="submit">
+                                                    {{ $item->status == 0 ? 'Aktifkan' : 'Non Aktifkan' }}
+                                                </button>
+                                            </form>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button type="button" class="btn btn-sm btn-link" data-toggle="modal"
+                                                data-target="#show-modal-{{ $item->id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button type="button" class="btn btn-sm btn-link" data-toggle="modal"
+                                                data-target="#edit-modal-{{ $item->id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                                 @include('guru.show')
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#edit-modal-{{ $item->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
                                 @include('guru.edit')
-                                <td style="display:none;"></td>
                             </tr>
-                            @php
-                                $i++;
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

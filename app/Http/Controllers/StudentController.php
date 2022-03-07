@@ -87,31 +87,31 @@ class StudentController extends Controller
             'foto.max' => 'Ukuran foto terlalu besat !',
         ]);
 
-        $filename = $request->foto->getClientOriginalName();
-        $path = 'Siswa/' . $request->nama . '/Foto';
-        $kelas = Kelas::find($request->kelas_id);
-        $data = new Siswa;
-        $data->id = $this->generateUUID('SIS', 5);
-        $data->nama = $request->nama;
-        $data->nisn = $request->nisn;
-        $data->status = $request->status;
-        $data->agama_id = $request->agama_id;
-        $data->jenis_kelamin = $request->jenis_kelamin;
-        $data->tempat_lahir = $request->tempat_lahir;
-        $data->tanggal_lahir = $request->tanggal_lahir;
-        $data->alamat = $request->alamat;
-        $data->kelas_id = $request->kelas_id;
-        $data->jurusan_id = $kelas->jurusan->id;
-        $data->no_telp = $request->no_telp;
-        $user = new User();
-        $user->id = $this->generateUUID('USR', 8);
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password);
-        $user->save();
-        $data->user_id = $user->id;
-        $data->foto = $request->foto->storeAs($path, $filename);
-        $data->save();
         try {
+            $filename = $request->foto->getClientOriginalName();
+            $kelas = Kelas::find($request->kelas_id);
+            $data = new Siswa;
+            $data->id = $this->generateUUID('SIS', 5);
+            $path = 'Siswa/' . $data->id . '/Foto';
+            $data->nama = $request->nama;
+            $data->nisn = $request->nisn;
+            $data->status = $request->status;
+            $data->agama_id = $request->agama_id;
+            $data->jenis_kelamin = $request->jenis_kelamin;
+            $data->tempat_lahir = $request->tempat_lahir;
+            $data->tanggal_lahir = $request->tanggal_lahir;
+            $data->alamat = $request->alamat;
+            $data->kelas_id = $request->kelas_id;
+            $data->jurusan_id = $kelas->jurusan->id;
+            $data->no_telp = $request->no_telp;
+            $user = new User();
+            $user->id = $this->generateUUID('USR', 8);
+            $user->username = $request->username;
+            $user->password = Hash::make($request->password);
+            $data->user_id = $user->id;
+            $data->foto = $request->foto->storeAs($path, $filename);
+            $data->save();
+            $user->save();
             return redirect()->route('siswa')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('siswa')->with('danger', 'Gagal menambahkan data !');
@@ -212,7 +212,7 @@ class StudentController extends Controller
             $data->no_telp = $request['no_telp-' . $id];
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
-                $path = 'Siswa/' . $request['nama-' . $id] . '/Foto';
+                $path = 'Siswa/' . $id . '/Foto';
                 $this->deleteFile($data->foto);
                 $data->foto = $request['foto-' . $id]->storeAs($path, $filename);
             }

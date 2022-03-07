@@ -68,8 +68,7 @@
                             <th>Nama Peserta Didik</th>
                             <th>Kelas</th>
                             <th>Status Bersekolah</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -79,14 +78,10 @@
                             <th>Nama Peserta Didik</th>
                             <th>Kelas</th>
                             <th>Status Bersekolah</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -113,24 +108,20 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#show-modal-{{ $item->id }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#show-modal-{{ $item->id }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#edit-modal-{{ $item->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
                                 </td>
                                 @include('siswa.show')
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#edit-modal-{{ $item->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
                                 @include('siswa.edit')
-                                <td style="display:none;"></td>
                             </tr>
-                            @php
-                                $i++;
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

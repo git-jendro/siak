@@ -56,6 +56,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Tingkatan</th>
+                            <th>Kurikulum</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -63,13 +64,11 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Tingkatan</th>
+                            <th>Kurikulum</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -77,6 +76,9 @@
                                 </td>
                                 <td>
                                     {{ $item->nama }}
+                                </td>
+                                <td>
+                                    {{ $item->kurikulum->nama }}
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-link "
@@ -86,9 +88,6 @@
                                     @include('tingkat-kelas.edit')
                                 </td>
                             </tr>
-                            @php
-                                $i++
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

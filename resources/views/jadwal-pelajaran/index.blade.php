@@ -13,15 +13,15 @@
 @endsection
 
 @section('header')
-<div class="col-12">
-    <a href="{{ url()->previous() }}" class="btn btn-link" style="text-decoration: none; padding-left:0; padding-top:0;">
-        <i class="fas fa-fw fa-arrow-alt-circle-left fa-2x"></i>
-    </a>
+    <div class="col-12">
+        <a href="{{ url()->previous() }}" class="btn btn-link"
+            style="text-decoration: none; padding-left:0; padding-top:0;">
+            <i class="fas fa-fw fa-arrow-alt-circle-left fa-2x"></i>
+        </a>
         <h1 class="h3 mb-lg-0 text-gray-800 d-inline">
             Kelola Pelajaran Kurikulum
         </h1>
-</div>
-    
+    </div>
 @endsection
 
 @section('contain')
@@ -48,64 +48,62 @@
         </div>
     @endif
     <!-- DataTales Example -->
-    <div class="row">
-        <div class="col-lg-4 my-md-2">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Kurikulum</h6>
-                </div>
-                <div class="card-body">
-                    <h4 class="h4 mb-lg-0 text-gray-800">{{ $data->nama }}</h4>
-                </div>
+    <div class="col-lg-4 my-md-2">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Kurikulum</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="h4 mb-lg-0 text-gray-800">{{ $data->nama }}</h4>
             </div>
         </div>
-        <div class="col-lg-8 my-md-2">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Kurikulum</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+    </div>
+    <div class="col-lg-8 my-md-2">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Data Kurikulum</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Kurikulum</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Kurikulum</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <meta name="_token" content="{{ csrf_token() }}">
+                            @foreach ($pelajaran as $item)
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Nama Pelajaran</th>
-                                    <th class="text-center">Aksi</th>
+                                    <td>
+                                        {{ $item->id }}
+                                    </td>
+                                    <td>
+                                        {{ $item->nama }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-check">
+                                            <input class="form-check-input" onclick="pelajaran('{{ $item->id }}')"
+                                                id="subject-{{ $item->id }}" type="checkbox"
+                                                value="{{ $item->id }}"
+                                                @foreach ($detail as $det) {{ $item->id == $det->pelajaran_id ? 'checked' : '' }} @endforeach>
+                                        </div>
+                                    </td>
+                                    @include('kurikulum.add-detail')
+                                    @include('kurikulum.remove-detail')
                                 </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama Pelajaran</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <meta name="_token" content="{{ csrf_token() }}">
-                                @foreach ($pelajaran as $item)
-                                    <tr>
-                                        <td>
-                                            {{ $item->id }}
-                                        </td>
-                                        <td>
-                                            {{ $item->nama }}
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" onclick="pelajaran('{{ $item->id }}')"
-                                                    id="subject-{{ $item->id }}" type="checkbox"
-                                                    value="{{ $item->id }}"
-                                                    @foreach ($detail as $det) {{ $item->id == $det->pelajaran_id ? 'checked' : '' }} @endforeach>
-                                            </div>
-                                        </td>
-                                        @include('kurikulum.add-detail')
-                                        @include('kurikulum.remove-detail')
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

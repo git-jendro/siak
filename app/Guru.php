@@ -10,6 +10,9 @@ class Guru extends Model
     
     public $incrementing = false;
 
+    public $fillable = [
+        'id', 'nuptk', 'nama', 'agama_id', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'status', 'pendidikan', 'jurusan', 'no_telp', 'foto', 'user_id'
+    ];
     
     public function user()
     {

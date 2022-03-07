@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Detail Staff</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Form Detail Peserta Didik</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -17,10 +17,10 @@
                 </div>
                 <div class="d-flex justify-content-center mb-2">
                     <div class="col-5 mb-1 pl-5 mb-sm-0">
-                        NUPTK
+                        NISN
                     </div>
                     <div class="col-lg-6">
-                        : <b>{{ $item->nuptk }}</b>
+                        : <b>{{ $item->nisn }}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mb-2">
@@ -33,10 +33,26 @@
                 </div>
                 <div class="d-flex justify-content-center mb-2">
                     <div class="col-5 mb-1 pl-5 mb-sm-0">
-                        Status Mengajar
+                        Kelas
                     </div>
                     <div class="col-lg-6">
-                        : <b>{{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}</b>
+                        : <b>{{ $item->kelas->tingkat->nama }} {{ $item->kelas->jurusan->kode }} {{ $item->kelas->sub->nama }}</b>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="col-5 mb-1 pl-5 mb-sm-0">
+                        Status Bersekolah
+                    </div>
+                    <div class="col-lg-6">
+                        : <b>
+                            @if ($item->status == 1)
+                                Aktif
+                            @elseif ($item->status == 2)
+                                Lulus
+                            @else
+                                Keluar/Pindah
+                            @endif
+                        </b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mb-2">
@@ -77,14 +93,6 @@
                     </div>
                     <div class="col-lg-6">
                         : <b>{{ $item->no_telp }}</b>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center mb-2">
-                    <div class="col-5 mb-1 pl-5 mb-sm-0">
-                        Pendidikan Terakhir
-                    </div>
-                    <div class="col-lg-6">
-                        : <b>{{ $item->pendidikan }} ({{ $item->jurusan }})</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mb-2">

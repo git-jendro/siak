@@ -83,17 +83,11 @@ class StaffController extends Controller
         ]);
 
         try {
-            $user = new User;
-            $user->id = $this->generateUUID('USR', 8);
-            $user->username = $request->username;
-            $user->password = Hash::make($request->password);
-            $user->save();
-
             $filename = $request->foto->getClientOriginalName();
-            $path = 'Staff/' . $request->nama . '/Foto';
-
+            
             $data = new Staff;
             $data->id = $this->generateUUID('STF', 3);
+            $path = 'Staff/' . $data->id . '/Foto';
             $data->nama = $request->nama;
             $data->agama_id = $request->agama_id;
             $data->jenis_kelamin = $request->jenis_kelamin;
@@ -102,9 +96,14 @@ class StaffController extends Controller
             $data->alamat = $request->alamat;
             $data->jabatan_id = $request->jabatan_id;
             $data->no_telp = $request->no_telp;
+            $user = new User;
+            $user->id = $this->generateUUID('USR', 8);
+            $user->username = $request->username;
+            $user->password = Hash::make($request->password);
             $data->user_id = $user->id;
             $data->foto = $request->foto->storeAs($path, $filename);
             $data->save();
+            $user->save();
             return redirect()->route('staff')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('staff')->with('danger', 'Gagal menambahkan data !');
@@ -194,7 +193,7 @@ class StaffController extends Controller
             $data->no_telp = $request['no_telp-' . $id];
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
-                $path = 'Staff/' . $request['nama-' . $id] . '/Foto';
+                $path = 'Staff/' . $id . '/Foto';
                 $this->deleteFile($data->foto);
                 $data->foto = $request['foto-' . $id]->storeAs($path, $filename);
             }

@@ -56,8 +56,7 @@
                             <th>ID</th>
                             <th>Nama Tahun Akademik</th>
                             <th>Semester</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -65,14 +64,10 @@
                             <th>ID</th>
                             <th>Nama Tahun Akademik</th>
                             <th>Semester</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -85,25 +80,21 @@
                                     {{ $item->semester == 1 ? 'Ganjil' : 'Genap' }}
                                 </td>
                                 <td class="text-center">
-                                    <form action="{{ route('tahun-akademik.active', $item->id) }}" method="post" enctype="multipart/form-data">
-                                        @csrf
-                                        <button class="btn btn-warning" type="submit" {{ $item->status == 1 ? 'disabled' : '' }}>
-                                            {{ $item->status == 0 ? 'Aktifkan' : 'Aktif' }}
+                                    <div class="d-flex justify-content-around">
+                                        <form action="{{ route('tahun-akademik.active', $item->id) }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <button class="btn btn-warning" type="submit" {{ $item->status == 1 ? 'disabled' : '' }}>
+                                                {{ $item->status == 0 ? 'Aktifkan' : 'Aktif' }}
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#edit-modal-{{ $item->id }}">
+                                            <i class="fas fa-edit"></i>
                                         </button>
-                                    </form>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#edit-modal-{{ $item->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                    </div>
                                 </td>
                                 @include('tahun-akademik.edit')
-                                <td style="display:none;"></td>
                             </tr>
-                            @php
-                                $i++;
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

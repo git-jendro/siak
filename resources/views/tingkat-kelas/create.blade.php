@@ -15,19 +15,33 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-user"
-                            value="{{ 'TGK'.sprintf('%02u', $data->count()+1) }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ 'TGK' . sprintf('%02u', $data->count() + 1) }}" readonly>
                         </div>
                         <div class="col-sm-6">
                             <input type="text"
-                                class="form-control form-control-user @error('nama') is-invalid @enderror" name="nama"
-                                placeholder="Nama Tingkatan"  value="{{ old('nama') }}">
+                                class="form-control @error('nama') is-invalid @enderror" name="nama"
+                                placeholder="Nama Tingkatan" value="{{ old('nama') }}">
                             @error('nama')
                                 <div id="create-error" class="pl-3 mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control @error('kurikulum_id') is-invalid @enderror"
+                                name="kurikulum_id">
+                                <option value="">Pilih Kurikulum</option>
+                                @foreach ($kurikulum as $kur)
+                                    <option value="{{ $kur->id }}">{{ $kur->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('kurikulum_id')
+                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                     </div>
             </div>
             <div class="modal-footer">
@@ -42,4 +56,3 @@
         </div>
     </div>
 </div>
-

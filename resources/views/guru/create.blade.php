@@ -35,8 +35,8 @@
                         <div class="col-sm-6">
                             <select class="form-control @error('status') is-invalid @enderror" name="status">
                                 <option value="">Pilih Status Mengajar</option>
-                                <option value="0" {{ old('status') == 1 ? 'selected' : '' }}>Aktif</option>
-                                <option value="1" {{ old('status') == 0 ? 'selected' : '' }}>Tidak Aktif</option>
+                                <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Tidak Aktif</option>
                             </select>
                             @error('status')
                                 <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">

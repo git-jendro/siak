@@ -67,9 +67,6 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -86,9 +83,6 @@
                                 </td>
                                 @include('kelas.edit')
                             </tr>
-                            @php
-                                $i++
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

@@ -63,8 +63,7 @@
                             <th>Foto</th>
                             <th>Nama Staff</th>
                             <th>Jabatan</th>
-                            <th class="text-center" colspan="3">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -73,21 +72,17 @@
                             <th>Foto</th>
                             <th>Nama Staff</th>
                             <th>Jabatan</th>
-                            <th class="text-center" colspan="3">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
                                     {{ $item->id }}
                                 </td>
                                 <td class="text-center">
-                                    <img class="rounded-circle img-fluid" src="{{ asset('storage/'.$item->foto) }}"
+                                    <img class="rounded-circle img-fluid" src="{{ asset('storage/' . $item->foto) }}"
                                         alt="{{ $item->nama }}" style="width: 30px">
                                 </td>
                                 <td>
@@ -97,31 +92,25 @@
                                     {{ $item->jabatan->nama }}
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#show-modal-{{ $item->id }}">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#show-modal-{{ $item->id }}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#edit-modal-{{ $item->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#delete-modal-{{ $item->id }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
                                 </td>
                                 @include('staff.show')
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#edit-modal-{{ $item->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
                                 @include('staff.edit')
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#delete-modal-{{ $item->id }}">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
                                 @include('staff.delete')
-                                <td style="display:none;"></td>
                             </tr>
-                            @php
-                                $i++;
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

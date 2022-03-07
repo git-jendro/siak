@@ -55,22 +55,17 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Kurikulum</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>ID</th>
                             <th>Nama Kurikulum</th>
-                            <th class="text-center" colspan="2">Aksi</th>
-                            <th style="display:none;">Aksi</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -80,22 +75,18 @@
                                     {{ $item->nama }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('kurikulum.pelajaran', [$item->slug]) }}" class="btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-book fa-sm text-white-50 mr-2"></i> Kelola pelajaran
-                                    </a>
+                                    <div class="d-flex justify-content-around">
+                                        <a href="{{ route('kurikulum.pelajaran', [$item->slug]) }}" class="btn btn-sm btn-primary shadow-sm">
+                                            <i class="fas fa-book fa-sm text-white-50 mr-2"></i> Kelola pelajaran
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
+                                            data-target="#edit-modal-{{ $item->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-link " data-toggle="modal"
-                                        data-target="#edit-modal-{{ $item->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
                                     @include('kurikulum.edit')
-                                </td>
-                                <td style="display:none;"></td>
                             </tr>
-                            @php
-                                $i++;
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

@@ -69,9 +69,6 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @foreach ($data as $item)
                             <tr>
                                 <td>
@@ -91,9 +88,6 @@
                                     @include('jurusan.edit')
                                 </td>
                             </tr>
-                            @php
-                                $i++
-                            @endphp
                         @endforeach
                     </tbody>
                 </table>

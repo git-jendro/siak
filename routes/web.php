@@ -118,6 +118,24 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::patch('/update/{id}', 'StudentController@update')->name('siswa.update');
         Route::post('/active/{id}', 'StudentController@active')->name('siswa.active');
     });
+
+    //Route Walikelas
+    Route::prefix('walikelas')->group(function ()
+    {
+        Route::get('/', 'HomeroomTreacherController@index')->name('walikelas');
+        Route::post('/store', 'HomeroomTreacherController@store')->name('walikelas.store');
+        Route::patch('/update/{id}', 'HomeroomTreacherController@update')->name('walikelas.update');
+        Route::post('/active/{id}', 'HomeroomTreacherController@active')->name('walikelas.active');
+    });
+
+    //Route Jadwal Pelajaran
+    Route::prefix('jadwal-pelajaran')->group(function ()
+    {
+        Route::get('/', 'LessonScheduleController@index')->name('jadwal-pelajaran');
+        Route::post('/store', 'LessonScheduleController@store')->name('jadwal-pelajaran.store');
+        Route::patch('/update/{id}', 'LessonScheduleController@update')->name('jadwal-pelajaran.update');
+        Route::post('/active/{id}', 'LessonScheduleController@active')->name('jadwal-pelajaran.active');
+    });
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

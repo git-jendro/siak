@@ -14,7 +14,8 @@ class CreateTblRiwayatKelas extends Migration
     public function up()
     {
         Schema::create('tbl_riwayat_kelas', function (Blueprint $table) {
-            $table->string('id', 8);
+            $table->string('id', 8)->primary();
+            $table->string('tahun_akademik_id', 5);
             $table->string('kelas', 15);
             $table->string('guru_id', 7);
             $table->timestamps();
