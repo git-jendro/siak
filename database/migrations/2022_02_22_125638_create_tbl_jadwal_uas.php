@@ -14,7 +14,7 @@ class CreateTblJadwalUas extends Migration
     public function up()
     {
         Schema::create('tbl_jadwal_uas', function (Blueprint $table) {
-            $table->string('id', 9);
+            $table->string('id', 9)->primary();
             $table->string('kelas_id', 8);
             $table->string('tahun_akademik_id', 5);
             $table->string('pelajaran_id', 6);

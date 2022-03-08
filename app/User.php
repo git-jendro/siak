@@ -37,14 +37,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Staff::class, 'user_id', 'id');
     }
-
-    // public function address()
-    // {
-    //     return $this->hasOne(Address::class);
-    // }
-
-    // public function order()
-    // {
-    //     return $this->hasMany(Order::class);
-    // }
+    public function guru()
+    {
+        return $this->hasOne(Guru::class, 'user_id', 'id');
+    }
 }

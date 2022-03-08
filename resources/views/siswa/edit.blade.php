@@ -14,8 +14,8 @@
                     @method('patch')
                     @csrf
                     <div class="form-group">
-                        <input type="text" class="form-control @error('nama-' . $item->id) is-invalid @enderror" name="nama-{{ $item->id }}"
-                            value="{{ $item->nama }}" placeholder="Nama">
+                        <input type="text" class="form-control @error('nama-' . $item->id) is-invalid @enderror"
+                            name="nama-{{ $item->id }}" value="{{ $item->nama }}" placeholder="Nama">
                         @error('nama-' . $item->id)
                             <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                 {{ $message }}
@@ -24,8 +24,8 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="text" class="form-control @error('nisn-' . $item->id) is-invalid @enderror" name="nisn-{{ $item->id }}"
-                                value="{{ $item->nisn }}" placeholder="NISN">
+                            <input type="text" class="form-control @error('nisn-' . $item->id) is-invalid @enderror"
+                                name="nisn-{{ $item->id }}" value="{{ $item->nisn }}" placeholder="NISN">
                             @error('nisn-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
@@ -33,7 +33,8 @@
                             @enderror
                         </div>
                         <div class="col-sm-6">
-                            <select class="form-control @error('status-' . $item->id) is-invalid @enderror" name="status-{{ $item->id }}">
+                            <select class="form-control @error('status-' . $item->id) is-invalid @enderror"
+                                name="status-{{ $item->id }}">
                                 <option value="">Pilih Status Bersekolah</option>
                                 <option value="1" {{ $item->status == 1 ? 'selected' : '' }}>Aktif</option>
                                 <option value="2" {{ $item->status == 2 ? 'selected' : '' }}>Lulus</option>
@@ -48,7 +49,8 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                            <select class="form-control @error('agama_id-' . $item->id) is-invalid @enderror" name="agama_id-{{ $item->id }}">
+                            <select class="form-control @error('agama_id-' . $item->id) is-invalid @enderror"
+                                name="agama_id-{{ $item->id }}">
                                 <option value="">Pilih Agama</option>
                                 @foreach ($agama as $agm)
                                     <option value="{{ $agm->id }}"
@@ -80,22 +82,39 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control @error('kelas_id-' . $item->id) is-invalid @enderror"
-                                name="kelas_id-{{ $item->id }}" style="width:100%;" id="create-kelas">
-                                <option value="">Pilih Kelas</option>
-                                @foreach ($kelas as $kls)
-                                    <option value="{{ $kls->id }}"{{ $item->kelas_id == $kls->id ? 'selected' : '' }}>{{ $kls->tingkat->nama }}&nbsp;{{ $kls->jurusan->kode }}&nbsp;{{ $kls->sub->nama }}</option>
-                                @endforeach
-                            </select>
-                            @error('kelas_id-' . $item->id)
-                                <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            name="kelas_id-{{ $item->id }}" style="width:100%;"
+                            id="edit-kelas-{{ $item->id }}">
+                            <option value="">Pilih Kelas</option>
+                            @foreach ($kelas as $kls)
+                                <option value="{{ $kls->id }}"
+                                    {{ $item->kelas_id == $kls->id ? 'selected' : '' }}>
+                                    {{ $kls->tingkat->nama }}&nbsp;{{ $kls->jurusan->kode }}&nbsp;{{ $kls->sub->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('kelas_id-' . $item->id)
+                            <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                        <script>
+                            $(document).ready(function() {
+                                $('#edit-kelas-<?php print $item->id; ?>').select2({
+                                    matcher: function(params, data) {
+                                        return ignoreDotAndWhitespace(params, data);
+                                    },
+                                    dropdownParent: $("#edit-modal-<?php print $item->id; ?>"),
+                                    placeholder: "Pilih Kelas"
+                                });
+                            });
+                        </script>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="text" class="form-control @error('tempat_lahir-' . $item->id) is-invalid @enderror"
-                                name="tempat_lahir-{{ $item->id }}" value="{{ $item->tempat_lahir }}" placeholder="Tempat Lahir">
+                            <input type="text"
+                                class="form-control @error('tempat_lahir-' . $item->id) is-invalid @enderror"
+                                name="tempat_lahir-{{ $item->id }}" value="{{ $item->tempat_lahir }}"
+                                placeholder="Tempat Lahir">
                             @error('tempat_lahir-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
@@ -104,9 +123,10 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="input-group" id="date">
-                                <input type="text" class="form-control @error('tanggal_lahir-' . $item->id) is-invalid @enderror"
-                                    data-toggle="datepicker" name="tanggal_lahir-{{ $item->id }}" value="{{ $item->tanggal_lahir }}"
-                                    placeholder="Tanggal Lahir">
+                                <input type="text"
+                                    class="form-control @error('tanggal_lahir-' . $item->id) is-invalid @enderror"
+                                    data-toggle="datepicker" name="tanggal_lahir-{{ $item->id }}"
+                                    value="{{ $item->tanggal_lahir }}" placeholder="Tanggal Lahir">
                                 <span class="input-group-append">
                                     <span class="input-group-text bg-light d-block">
                                         <i class="fa fa-calendar"></i>
@@ -126,8 +146,10 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-phone-alt"></i></div>
                                 </div>
-                                <input type="text" class="form-control @error('no_telp-' . $item->id) is-invalid @enderror"
-                                    name="no_telp-{{ $item->id }}" value="{{ $item->no_telp }}" placeholder="Nomor Telepon">
+                                <input type="text"
+                                    class="form-control @error('no_telp-' . $item->id) is-invalid @enderror"
+                                    name="no_telp-{{ $item->id }}" value="{{ $item->no_telp }}"
+                                    placeholder="Nomor Telepon">
                             </div>
                         </div>
                         @error('no_telp-' . $item->id)
@@ -137,7 +159,8 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control @error('alamat-' . $item->id) is-invalid @enderror" name="alamat-{{ $item->id }}" rows="5"
+                        <textarea class="form-control @error('alamat-' . $item->id) is-invalid @enderror"
+                            name="alamat-{{ $item->id }}" rows="5"
                             placeholder="Alamat">{{ $item->alamat }}</textarea>
                         @error('alamat-' . $item->id)
                             <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
@@ -147,9 +170,11 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="text" class="form-control @error('username-' . $item->id) is-invalid @enderror"
-                                name="username-{{ $item->id }}" value="{{ $item->username }}" placeholder="Username">
-                                <sub>*Masukan username jika anda ingin merubah username</sub>
+                            <input type="text"
+                                class="form-control @error('username-' . $item->id) is-invalid @enderror"
+                                name="username-{{ $item->id }}" value="{{ $item->username }}"
+                                placeholder="Username">
+                            <sub>*Masukan username jika anda ingin merubah username</sub>
                             @error('username-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
@@ -157,9 +182,11 @@
                             @enderror
                         </div>
                         <div class="col-sm-6">
-                            <input type="password" class="form-control @error('password-' . $item->id) is-invalid @enderror"
-                                name="password-{{ $item->id }}" value="{{ $item->password }}" placeholder="Password">
-                                <sub>*Masukan password jika anda ingin merubah password</sub>
+                            <input type="password"
+                                class="form-control @error('password-' . $item->id) is-invalid @enderror"
+                                name="password-{{ $item->id }}" value="{{ $item->password }}"
+                                placeholder="Password">
+                            <sub>*Masukan password jika anda ingin merubah password</sub>
                             @error('password-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                     {{ $message }}
@@ -173,7 +200,7 @@
                                 alt="{{ $item->name }}">
                         </div>
                         <input type="file" class="form-control-file @error('foto-' . $item->id) is-invalid @enderror"
-                        id="edit-image-{{ $item->id }}" name="foto-{{ $item->id }}">
+                            id="edit-image-{{ $item->id }}" name="foto-{{ $item->id }}">
                         @error('foto-' . $item->id)
                             <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                 {{ $message }}

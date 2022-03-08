@@ -78,18 +78,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <select class="form-control @error('kelas_id') is-invalid @enderror"
-                                name="kelas_id" style="width:100%;" id="create-kelas">
-                                <option value="">Pilih Kelas</option>
-                                @foreach ($kelas as $kls)
-                                    <option value="{{ $kls->id }}"{{ old('kelas_id') == $kls->id ? 'selected' : '' }}>{{ $kls->tingkat->nama }}&nbsp;{{ $kls->jurusan->kode }}&nbsp;{{ $kls->sub->nama }}</option>
-                                @endforeach
-                            </select>
-                            @error('kelas_id')
-                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        <select class="form-control @error('kelas_id') is-invalid @enderror" name="kelas_id"
+                            style="width:100%;" id="create-kelas">
+                            <option value="">Pilih Kelas</option>
+                            @foreach ($kelas as $kls)
+                                <option value="{{ $kls->id }}"
+                                    {{ old('kelas_id') == $kls->id ? 'selected' : '' }}>
+                                    {{ $kls->tingkat->nama }}&nbsp;{{ $kls->jurusan->kode }}&nbsp;{{ $kls->sub->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('kelas_id')
+                            <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -208,7 +211,7 @@
                 return ignoreDotAndWhitespace(params, data);
             },
             dropdownParent: $("#create-modal"),
-            placeholder: "Cari.."
+            placeholder: "Pilih Kelas"
         });
     });
 </script>

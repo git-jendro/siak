@@ -102,7 +102,7 @@
                         Username
                     </div>
                     <div class="col-lg-6">
-                        : <b>{{ $item->user != null ? $item->user->nama : '' }}</b>
+                        : <b>{{ $item->user->username }}</b>
                     </div>
                 </div>
             </div>

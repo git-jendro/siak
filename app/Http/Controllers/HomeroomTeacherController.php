@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Guru;
 use App\Kelas;
 use App\TahunAkademik;
+use App\Walikelas;
 use Illuminate\Http\Request;
 
 class HomeroomTeacherController extends Controller
@@ -15,71 +17,38 @@ class HomeroomTeacherController extends Controller
      */
     public function index()
     {
-        $data = Kelas::all();
+        $data = Walikelas::all();
+        $guru = Guru::all();
         $tahun = TahunAkademik::where('status', 1)->first();
 
-        return view('tingkat-kelas.index', compact('data', 'tahun'));
+        return view('walikelas.index', compact('data', 'tahun', 'guru'));
     }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nama' => 'required|max:3',
-    //         'kurikulum_id' => 'required|exists:tbl_kurikulum,id',
-    //     ], [
-    //         'nama.required' => 'Nama tingkatan tidak boleh kosong !',
-    //         'nama.max' => 'Nama tingkatan maximal 3 karakter !',
-    //         'kurikulum_id.required' => 'Kurikulum tidak boleh kosong !',
-    //         'kurikulum_id.exists' => 'Data tidak cocok !',
-    //     ]);
+    public function modal_walikelas($guru_id)
+    {
+        try {
+            $guru = Guru::find($guru_id);
+            return response()->json($guru);
+        } catch (\Throwable $th) {
+            return response()->json(409);
+        }
+    }
 
-    //     try {
-    //         $data = new TingkatKelas;
-    //         $data->id = 'TGK' . sprintf('%02u', $data->count() + 1);
-    //         $data->nama = $request->nama;
-    //         $data->kurikulum_id = $request->kurikulum_id;
-    //         $data->save();
+    public function store(Request $request)
+    {
+        try {   
+            $data = Walikelas::find($request->id);
+            $count = Walikelas::where('guru_id', $request->guru_id)->count();
+            if ($count < 1) {
+                $data->guru_id = $request->guru_id;
+                $data->save();
+                return response()->json(200);
+            } else {
+                return response()->json(409);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(409);
+        }
+    }
 
-    //         return redirect()->route('tingkat-kelas')->with('success', 'Berhasil menambahkan data ' . $request->nama . ' !');
-    //     } catch (\Throwable $th) {
-    //         return redirect()->route('tingkat-kelas')->with('danger', 'Gagal menambahkan data !');
-    //     }
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'nama-'.$id => 'required|max:3',
-    //         'kurikulum_id-'.$id => 'required|exists:tbl_kurikulum,id',
-    //     ], [
-    //         'nama-'.$id.'.required' => 'Nama ruangan tidak boleh kosong !',
-    //         'nama-'.$id.'.max' => 'Nama ruangan maximal 3 karakter !',
-    //         'kurikulum_id-'.$id.'.required' => 'Kurikulum tidak boleh kosong !',
-    //         'kurikulum_id-'.$id.'.exists' => 'Data tidak cocok !',
-    //     ]);
-
-    //     try {
-    //         $data = TingkatKelas::find($id);
-    //         $data->nama = $request['nama-'.$id];
-    //         $data->kurikulum_id = $request['kurikulum_id-'.$id];
-    //         $data->save();
-
-    //         return redirect()->route('tingkat-kelas')->with('update', 'Berhasil mengubah data ' . $request['nama-'.$id] . ' !');
-    //     } catch (\Throwable $th) {
-    //         return redirect()->route('tingkat-kelas')->with('danger', 'Gagal menambahkan data !');
-    //     }
-    // }
 }

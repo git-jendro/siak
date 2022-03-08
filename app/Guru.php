@@ -23,4 +23,9 @@ class Guru extends Model
     {
         return $this->belongsTo(Agama::class, 'agama_id');
     }
+
+    public function walikelas()
+    {
+        return $this->hasOne(Walikelas::class, 'guru_id');
+    }
 }

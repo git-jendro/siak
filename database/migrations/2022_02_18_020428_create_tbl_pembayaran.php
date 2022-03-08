@@ -14,7 +14,7 @@ class CreateTblPembayaran extends Migration
     public function up()
     {
         Schema::create('tbl_pembayaran', function (Blueprint $table) {
-            $table->string('id', 10);
+            $table->string('id', 10)->primary();
             $table->string('detail_pembayaran_id', 8);
             $table->string('siswa_id', 8);
             $table->boolean('status');

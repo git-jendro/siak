@@ -6,6 +6,7 @@ use App\Jurusan;
 use App\Kelas;
 use App\SubKelas;
 use App\TingkatKelas;
+use App\Walikelas;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -53,6 +54,10 @@ class ClassController extends Controller
             $data->sub_kelas_id = $request->sub_kelas_id;
             $data->jurusan_id = $request->jurusan_id;
             $data->save();
+            $wakel = new Walikelas;
+            $wakel->id = $this->generateUUID('WKL', 2);
+            $wakel->kelas_id = $data->id;
+            $wakel->save();
 
             return redirect()->route('kelas')->with('success', 'Berhasil menambahkan data kelas !');
         } catch (\Throwable $th) {

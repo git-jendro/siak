@@ -19,7 +19,6 @@ class TeacherController extends Controller
     {
         $data = Guru::all();
         $agama = Agama::all();
-
         return view('guru.index', compact('data', 'agama'));
     }
 

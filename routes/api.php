@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/dashboard/kurikulum/add_pelajaran', 'CurriculumController@add_pelajaran');
 Route::post('/dashboard/kurikulum/remove_pelajaran', 'CurriculumController@remove_pelajaran');
+Route::get('/dashboard/walikelas/{guru_id}', 'HomeroomTeacherController@modal_walikelas');
+Route::post('/dashboard/walikelas/store', 'HomeroomTeacherController@store');

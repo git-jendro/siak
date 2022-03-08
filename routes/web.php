@@ -122,10 +122,10 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
     //Route Walikelas
     Route::prefix('walikelas')->group(function ()
     {
-        Route::get('/', 'HomeroomTreacherController@index')->name('walikelas');
-        Route::post('/store', 'HomeroomTreacherController@store')->name('walikelas.store');
-        Route::patch('/update/{id}', 'HomeroomTreacherController@update')->name('walikelas.update');
-        Route::post('/active/{id}', 'HomeroomTreacherController@active')->name('walikelas.active');
+        Route::get('/', 'HomeroomTeacherController@index')->name('walikelas');
+        Route::post('/store', 'HomeroomTeacherController@store')->name('walikelas.store');
+        Route::patch('/update/{id}', 'HomeroomTeacherController@update')->name('walikelas.update');
+        Route::post('/active/{id}', 'HomeroomTeacherController@active')->name('walikelas.active');
     });
 
     //Route Jadwal Pelajaran

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class JadwalPelajaran extends Model
 {
-    protected $table = "tbl_jadwal_peljaran";
+    protected $table = "tbl_jadwal_pelajaran";
     
     public $incrementing = false;
 }

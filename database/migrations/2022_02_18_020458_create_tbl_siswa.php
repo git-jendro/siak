@@ -14,7 +14,7 @@ class CreateTblSiswa extends Migration
     public function up()
     {
         Schema::create('tbl_siswa', function (Blueprint $table) {
-            $table->string('id', 8);
+            $table->string('id', 8)->primary();
             $table->bigInteger('nisn');
             $table->string('nama', 100);
             $table->string('agama_id', 5);

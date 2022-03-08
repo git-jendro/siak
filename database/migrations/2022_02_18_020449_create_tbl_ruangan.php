@@ -14,7 +14,7 @@ class CreateTblRuangan extends Migration
     public function up()
     {
         Schema::create('tbl_ruangan', function (Blueprint $table) {
-            $table->string('id', 6);
+            $table->string('id', 6)->primary();
             $table->string('kode', 20);
             $table->string('nama', 50);
             $table->timestamps();

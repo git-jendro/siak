@@ -14,7 +14,7 @@ class CreateTblJadwalPelajaranDetail extends Migration
     public function up()
     {
         Schema::create('tbl_jadwal_pelajaran_detail', function (Blueprint $table) {
-            $table->string('id', 9);
+            $table->string('id', 9)->primary();
             $table->string('jadwal_pelajaran_id', 8);
             $table->string('pelajaran_id', 6);
             $table->string('guru_id', 6);
