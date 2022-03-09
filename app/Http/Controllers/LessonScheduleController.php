@@ -16,10 +16,8 @@ class LessonScheduleController extends Controller
     public function index()
     {
         $data = JadwalPelajaran::all();
-        $tahun = TahunAkademik::all();
-        $kelas = Kelas::all();
 
-        return view('siswa.index', compact('data', 'tahun', 'kelas'));
+        return view('jadwal-pelajaran.index', compact('data'));
     }
 
     /**
@@ -83,10 +81,7 @@ class LessonScheduleController extends Controller
             'foto.image' => 'Format foto tidak didukung !',
             'foto.max' => 'Ukuran foto terlalu besat !',
         ]);
-
-        $filename = $request->foto->getClientOriginalName();
-        $path = 'JadwalPelajaran/' . $request->nama . '/Foto';
-        $kelas = Kelas::find($request->kelas_id);
+        // $kelas = Kelas::find($request->kelas_id);
         $data = new JadwalPelajaran;
         $data->id = $this->generateUUID('SIS', 5);
         $data->nama = $request->nama;
@@ -98,20 +93,11 @@ class LessonScheduleController extends Controller
         $data->tanggal_lahir = $request->tanggal_lahir;
         $data->alamat = $request->alamat;
         $data->kelas_id = $request->kelas_id;
-        $data->jurusan_id = $kelas->jurusan->id;
-        $data->no_telp = $request->no_telp;
-        $user = new User();
-        $user->id = $this->generateUUID('USR', 8);
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password);
-        $user->save();
-        $data->user_id = $user->id;
-        $data->foto = $request->foto->storeAs($path, $filename);
         $data->save();
         try {
-            return redirect()->route('siswa')->with('success', 'Berhasil menambahkan data !');
+            return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
-            return redirect()->route('siswa')->with('danger', 'Gagal menambahkan data !');
+            return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal menambahkan data !');
         }
     }
 
@@ -194,7 +180,7 @@ class LessonScheduleController extends Controller
         }
 
         try {
-            $kelas = Kelas::find($request['kelas_id-' . $id]);
+            // $kelas = Kelas::find($request['kelas_id-' . $id]);
             $data = JadwalPelajaran::find($id);
             $data->nama = $request['nama-' . $id];
             $data->nisn = $request['nisn-' . $id];
@@ -205,28 +191,11 @@ class LessonScheduleController extends Controller
             $data->tanggal_lahir = $request['tanggal_lahir-' . $id];
             $data->alamat = $request['alamat-' . $id];
             $data->kelas_id = $request['kelas_id-' . $id];
-            $data->jurusan_id = $kelas->jurusan->id;
-            $data->no_telp = $request['no_telp-' . $id];
-            if (request()->has('foto-' . $id)) {
-                $filename = $request['foto-' . $id]->getClientOriginalName();
-                $path = 'JadwalPelajaran/' . $request['nama-' . $id] . '/Foto';
-                $this->deleteFile($data->foto);
-                $data->foto = $request['foto-' . $id]->storeAs($path, $filename);
-            }
             $data->save();
 
-            $user = User::find($data->user_id);
-            if (request('username-' . $id) != null) {
-                $user->username = $request['username-' . $id];
-            }
-            if (request('password-' . $id) != null) {
-                $user->password = Hash::make($request['password-' . $id]);
-            }
-            $user->save();
-
-            return redirect()->route('siswa')->with('update', 'Berhasil mengubah data !');
+            return redirect()->route('jadwal-pelajaran')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
-            return redirect()->route('siswa')->with('danger', 'Gagal mengubah data !');
+            return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal mengubah data !');
         }
     }
 }

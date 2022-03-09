@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TahunAkademik;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -37,5 +38,11 @@ class Controller extends BaseController
             $random .= rand(0, 1) ? rand(0, 9) : rand(0, 9);
         }
         return $random;
+    }
+
+    public function tahun_akademik()
+    {
+        $tahun = TahunAkademik::where('status', 1)->first();
+        return $tahun;
     }
 }

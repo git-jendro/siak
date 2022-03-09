@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Kelas;
+use App\RiwayatKelas;
 use App\TahunAkademik;
+use App\Walikelas;
 use Illuminate\Http\Request;
 
 class AcademicController extends Controller
@@ -50,10 +53,15 @@ class AcademicController extends Controller
             $data->id = 'TAK' . sprintf('%02u', $data->count() + 1);
             $data->nama = $request->nama;
             $data->semester = $request->semester;
-            $data->status = $request->status;
+            $count = TahunAkademik::where('status', 1)->count();
+            if ($count < 1) {
+                $data->status = 1;
+            } else {
+                $data->status = $request->status;
+            }
             $data->save();
-
             return redirect()->route('tahun-akademik')->with('success', 'Berhasil menambahkan data !');
+
         } catch (\Throwable $th) {
             return redirect()->route('tahun-akademik')->with('danger', 'Gagal menambahkan data !');
         }
@@ -109,6 +117,27 @@ class AcademicController extends Controller
             }
             $data->status = 1;
             $data->save();
+            $conn = RiwayatKelas::where([
+                ['kelas_id', '=', $data->id],
+                ['tahun_akademik_id', '=', $id],
+            ])->first();
+            $conn = RiwayatKelas::where('tahun_akademik_id', '=', $id)->count();
+            $kelas = Kelas::all();
+            if ($conn < 1) {
+                if ($kelas != null) {
+                    foreach ($kelas as $kls) {
+                        $wakel = new Walikelas;
+                        $wakel->id = $this->generateUUID('WKL', 2);
+                        $wakel->kelas_id = $data->id;
+                        $wakel->save();
+                        $kelas = new RiwayatKelas;
+                        $kelas->id = $this->generateUUID('RYK', 5);
+                        $kelas->kelas_id = $kls->id;
+                        $kelas->tahun_akademik_id = $id;
+                        $kelas->save();
+                    }
+                }
+            }
 
             return redirect()->route('tahun-akademik')->with('update', 'Berhasil mengaktifkan data !');
         } catch (\Throwable $th) {

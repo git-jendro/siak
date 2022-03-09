@@ -15,7 +15,7 @@ class CreateTblWalikelas extends Migration
     {
         Schema::create('tbl_walikelas', function (Blueprint $table) {
             $table->string('id',5)->primary();
-            $table->string('guru_id',7);
+            $table->string('guru_id',7)->nullable();
             $table->string('kelas_id',6);
             $table->timestamps();
         });

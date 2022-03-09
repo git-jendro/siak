@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jurusan;
 use App\Kelas;
+use App\RiwayatKelas;
 use App\SubKelas;
 use App\TingkatKelas;
 use App\Walikelas;
@@ -58,6 +59,18 @@ class ClassController extends Controller
             $wakel->id = $this->generateUUID('WKL', 2);
             $wakel->kelas_id = $data->id;
             $wakel->save();
+            $tahun = $this->tahun_akademik();
+            $conn = RiwayatKelas::where([
+                ['kelas_id', '=', $data->id],
+                ['tahun_akademik_id', '=', $tahun->id],
+            ])->first();
+            if ($conn == null) {
+                $kelas = new RiwayatKelas;
+                $kelas->id = $this->generateUUID('RYK', 5);
+                $kelas->kelas_id = $data->id;
+                $kelas->tahun_akademik_id = $tahun->id;
+                $kelas->save();
+            }
 
             return redirect()->route('kelas')->with('success', 'Berhasil menambahkan data kelas !');
         } catch (\Throwable $th) {
@@ -93,6 +106,21 @@ class ClassController extends Controller
             $data->sub_kelas_id = $request['sub_kelas_id-' . $id];
             $data->jurusan_id = $request['jurusan_id-' . $id];
             $data->save();
+            $tahun = $this->tahun_akademik();
+            $wakel = new Walikelas;
+            $wakel->id = $this->generateUUID('WKL', 2);
+            $wakel->kelas_id = $data->id;
+            $wakel->save();
+            $conn = RiwayatKelas::where([
+                ['kelas_id', '=', $data->id],
+                ['tahun_akademik_id', '=', $tahun->id],
+            ])->first();
+            $kelas = RiwayatKelas::find($conn->id);
+            $kelas->kelas_id = $data->id;
+            if ($tahun->id != null) {
+                $kelas->tahun_akademik_id = $tahun->id;
+            }
+            $kelas->save();
 
             return redirect()->route('kelas')->with('update', 'Berhasil mengubah data kelas !');
         } catch (\Throwable $th) {

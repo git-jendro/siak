@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Agama;
 use App\Kelas;
+use App\RiwayatKelas;
+use App\RiwayatKelasSiswa;
 use App\Siswa;
 use App\User;
 use Illuminate\Http\Request;
@@ -87,32 +89,43 @@ class StudentController extends Controller
             'foto.max' => 'Ukuran foto terlalu besat !',
         ]);
 
+        $filename = $request->foto->getClientOriginalName();
+        $kelas = Kelas::find($request->kelas_id);
+        $data = new Siswa;
+        $data->id = $this->generateUUID('SIS', 5);
+        $path = 'Siswa/' . $data->id . '/Foto';
+        $data->nama = $request->nama;
+        $data->nisn = $request->nisn;
+        $data->status = $request->status;
+        $data->agama_id = $request->agama_id;
+        $data->jenis_kelamin = $request->jenis_kelamin;
+        $data->tempat_lahir = $request->tempat_lahir;
+        $data->tanggal_lahir = $request->tanggal_lahir;
+        $data->alamat = $request->alamat;
+        $data->kelas_id = $request->kelas_id;
+        $data->jurusan_id = $kelas->jurusan->id;
+        $data->no_telp = $request->no_telp;
+        $user = new User();
+        $user->id = $this->generateUUID('USR', 8);
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $data->user_id = $user->id;
+        $data->foto = $request->foto->storeAs($path, $filename);
+        $user->save();
+        $tahun = $this->tahun_akademik();
+        $conn = RiwayatKelas::where([
+            ['kelas_id', '=', $data->kelas_id],
+            ['tahun_akademik_id', '=', $tahun->id],
+        ])->first();
+        $rsiswa = new RiwayatKelasSiswa;
+        $rsiswa->id = $this->generateUUID('RKS', 7);
+        $rsiswa->riwayat_kelas_id = $conn->id;
+        $rsiswa->siswa_id = $data->id;
+        $rsiswa->save();
+        $data->save();
+
+        return redirect()->route('siswa')->with('success', 'Berhasil menambahkan data !');
         try {
-            $filename = $request->foto->getClientOriginalName();
-            $kelas = Kelas::find($request->kelas_id);
-            $data = new Siswa;
-            $data->id = $this->generateUUID('SIS', 5);
-            $path = 'Siswa/' . $data->id . '/Foto';
-            $data->nama = $request->nama;
-            $data->nisn = $request->nisn;
-            $data->status = $request->status;
-            $data->agama_id = $request->agama_id;
-            $data->jenis_kelamin = $request->jenis_kelamin;
-            $data->tempat_lahir = $request->tempat_lahir;
-            $data->tanggal_lahir = $request->tanggal_lahir;
-            $data->alamat = $request->alamat;
-            $data->kelas_id = $request->kelas_id;
-            $data->jurusan_id = $kelas->jurusan->id;
-            $data->no_telp = $request->no_telp;
-            $user = new User();
-            $user->id = $this->generateUUID('USR', 8);
-            $user->username = $request->username;
-            $user->password = Hash::make($request->password);
-            $data->user_id = $user->id;
-            $data->foto = $request->foto->storeAs($path, $filename);
-            $data->save();
-            $user->save();
-            return redirect()->route('siswa')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('siswa')->with('danger', 'Gagal menambahkan data !');
         }
@@ -168,37 +181,63 @@ class StudentController extends Controller
             'nisn-' . $id . '.numeric' => 'NISN hanya boleh diisi angka !',
         ]);
 
-        if (request()->has('foto-' . $id)) {
-            $request->validate([
-                'foto-' . $id => 'image|max:3000',
-            ], [
-                'foto-' . $id . '.image' => 'Format foto tidak didukung !',
-                'foto-' . $id . '.max' => 'Ukuran foto terlalu besat !',
-            ]);
-        }
-
-        if (request('username-' . $id) != null) {
-            $request->validate([
-                'username' => 'min:3|max:20|unique:tbl_user,username',
-            ], [
-                'username-' . $id . '.min' => 'Username minimal 3 karakter !',
-                'username-' . $id . '.max' => 'Username maximal 20 karakter !',
-                'username-' . $id . '.unique' => 'Username telah digunakan !',
-            ]);
-        }
-
-        if (request('password-' . $id) != null) {
-            $request->validate([
-                'password-' . $id => 'min:6|max:20',
-            ], [
-                'password-' . $id . '.min' => 'Password terlalu pendek !',
-                'password-' . $id . '.max' => 'Password terlalu panjang !',
-            ]);
-        }
-
         try {
+            if (request()->has('foto-' . $id)) {
+                $request->validate([
+                    'foto-' . $id => 'image|max:3000',
+                ], [
+                    'foto-' . $id . '.image' => 'Format foto tidak didukung !',
+                    'foto-' . $id . '.max' => 'Ukuran foto terlalu besat !',
+                ]);
+            }
+
+            if (request('username-' . $id) != null) {
+                $request->validate([
+                    'username' => 'min:3|max:20|unique:tbl_user,username',
+                ], [
+                    'username-' . $id . '.min' => 'Username minimal 3 karakter !',
+                    'username-' . $id . '.max' => 'Username maximal 20 karakter !',
+                    'username-' . $id . '.unique' => 'Username telah digunakan !',
+                ]);
+            }
+
+            if (request('password-' . $id) != null) {
+                $request->validate([
+                    'password-' . $id => 'min:6|max:20',
+                ], [
+                    'password-' . $id . '.min' => 'Password terlalu pendek !',
+                    'password-' . $id . '.max' => 'Password terlalu panjang !',
+                ]);
+            }
+
             $kelas = Kelas::find($request['kelas_id-' . $id]);
             $data = Siswa::find($id);
+
+            $tahun = $this->tahun_akademik();
+            $conn1 = RiwayatKelas::where([
+                ['kelas_id', '=', $data->kelas_id],
+                ['tahun_akademik_id', '=', $tahun->id],
+            ])->first();
+            $conn2 = RiwayatKelas::where([
+                ['kelas_id', '=', $request['kelas_id-' . $id]],
+                ['tahun_akademik_id', '=', $tahun->id],
+            ])->first();
+            $siswa = RiwayatKelasSiswa::where([
+                ['riwayat_kelas_id', $conn1->id],
+                ['siswa_id', $data->id]
+            ]);
+            $s_con = $siswa->first();
+            if ($s_con != null) {
+                $siswa->update([
+                    'riwayat_kelas_id' => $conn2->id,
+                ]);
+            } else {
+                $rsiswa = new RiwayatKelasSiswa;
+                $rsiswa->id = $this->generateUUID('RKS', 7);
+                $rsiswa->riwayat_kelas_id = $conn1->id;
+                $rsiswa->siswa_id = $data->id;
+                $rsiswa->save();
+            }
             $data->nama = $request['nama-' . $id];
             $data->nisn = $request['nisn-' . $id];
             $data->status = $request['status-' . $id];
@@ -226,6 +265,8 @@ class StudentController extends Controller
                 $user->password = Hash::make($request['password-' . $id]);
             }
             $user->save();
+
+
 
             return redirect()->route('siswa')->with('update', 'Berhasil mengubah data !');
         } catch (\Throwable $th) {
