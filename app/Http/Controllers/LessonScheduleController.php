@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Guru;
 use App\JadwalPelajaran;
+use App\JadwalPelajaranDetail;
+use App\Jurusan;
+use App\Kelas;
+use App\Pelajaran;
+use App\Ruangan;
+use App\SubKelas;
 use App\TahunAkademik;
+use App\TingkatKelas;
 use Illuminate\Http\Request;
 
 class LessonScheduleController extends Controller
@@ -15,9 +23,15 @@ class LessonScheduleController extends Controller
      */
     public function index()
     {
-        $data = JadwalPelajaran::all();
+        $data = JadwalPelajaran::orderBy('created_at', 'asc')->with('detail')->first();
+        $pelajaran = Pelajaran::all();
+        $tingkat = TingkatKelas::all();
+        $jurusan = Jurusan::all();
+        $sub = SubKelas::all();
+        $ruangan = Ruangan::all();
+        $guru = Guru::all();
 
-        return view('jadwal-pelajaran.index', compact('data'));
+        return view('jadwal-pelajaran.index', compact('data', 'pelajaran', 'tingkat', 'jurusan', 'sub', 'ruangan', 'guru'));
     }
 
     /**
@@ -28,74 +42,26 @@ class LessonScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|min:3|max:100|regex:/^[\.a-zA-Z, ]*$/',
-            'agama_id' => 'required|exists:tbl_agama,id',
-            'jenis_kelamin' => 'required|in:L,P',
-            'status' => 'required|in:0,1,2',
-            'tempat_lahir' => 'required|min:3|max:30|regex:/^[a-zA-Z ]*$/',
-            'tanggal_lahir' => 'required|date_format:d-m-Y',
-            'alamat' => 'required|min:5|max:1000',
-            'kelas_id' => 'required|exists:tbl_kelas,id',
-            'no_telp' => 'required|digits_between:10,13|numeric',
-            'nisn' => 'required|numeric|digits:8',
-            'username' => 'required|min:3|max:20|unique:tbl_user,username',
-            'password' => 'required|min:6|max:20',
-            'foto' => 'required|image|max:3000',
-        ], [
-            'nama.required' => 'Nama tidak boleh kosong !',
-            'nama.min' => 'Nama minimal 3 karakter !',
-            'nama.max' => 'Nama maximal 100 karakter !',
-            'nama.regex' => 'Nama hanya boleh diisi huruf, . (titik) dan , (koma) !',
-            'tempat_lahir.required' => 'Tempat lahir tidak boleh kosong !',
-            'tempat_lahir.min' => 'Tempat lahir minimal 3 karakter !',
-            'tempat_lahir.max' => 'Tempat lahir maximal 30 karakter !',
-            'tempat_lahir.regex' => 'Tempat lahir hanya boleh diisi huruf',
-            'alamat.required' => 'Alamat tidak boleh kosong !',
-            'alamat.min' => 'Alamat minimal 5 karakter !',
-            'alamat.max' => 'Alamat maximal 1000 karakter !',
-            'tanggal_lahir.required' => 'Tanggal lahir tidak boleh kosong !',
-            'tanggal_lahir.date_format' => 'Format tanggal salah !',
-            'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong !',
-            'jenis_kelamin.in' => 'Data tidak cocok !',
-            'status.required' => 'Status mengajar tidak boleh kosong !',
-            'status.in' => 'Data tidak cocok !',
-            'agama_id.required' => 'Agama tidak boleh kosong !',
-            'agama_id.exists' => 'Data tidak cocok !',
-            'kelas_id.required' => 'Kelas tidak boleh kosong !',
-            'kelas_id.exists' => 'Data tidak cocok !',
-            'no_telp.required' => 'Nomor telepon tidak boleh kosong !',
-            'no_telp.digits_between' => 'Nomor telepon minimal 10 dijit maximal 13 dijit !',
-            'no_telp.numeric' => 'Nomor telepon hanya boleh diisi angka !',
-            'nisn.required' => 'NISN tidak boleh kosong !',
-            'nisn.digits' => 'NISN terdiri dari 8 dijit !',
-            'nisn.numeric' => 'NISN hanya boleh diisi angka !',
-            'username.required' => 'Username tidak boleh kosong !',
-            'username.min' => 'Username minimal 3 karakter !',
-            'username.max' => 'Username maximal 20 karakter !',
-            'username.unique' => 'Username telah digunakan !',
-            'password.required' => 'Password tidak boleh kosong !',
-            'password.min' => 'Password terlalu pendek !',
-            'password.max' => 'Password terlalu panjang !',
-            'foto.required' => 'Foto tidak boleh kosong !',
-            'foto.image' => 'Format foto tidak didukung !',
-            'foto.max' => 'Ukuran foto terlalu besat !',
-        ]);
-        // $kelas = Kelas::find($request->kelas_id);
-        $data = new JadwalPelajaran;
-        $data->id = $this->generateUUID('SIS', 5);
-        $data->nama = $request->nama;
-        $data->nisn = $request->nisn;
-        $data->status = $request->status;
-        $data->agama_id = $request->agama_id;
-        $data->jenis_kelamin = $request->jenis_kelamin;
-        $data->tempat_lahir = $request->tempat_lahir;
-        $data->tanggal_lahir = $request->tanggal_lahir;
-        $data->alamat = $request->alamat;
-        $data->kelas_id = $request->kelas_id;
-        $data->save();
+
+        $kelas = Kelas::all();
+        $tahun = $this->tahun_akademik();
+        foreach ($kelas as $kls) {
+            $data = new JadwalPelajaran;
+            $data->id = $this->generateUUID('JWP', 5);
+            $data->kelas_id = $kls->id;
+            $data->tahun_akademik_id = $tahun->id;
+            $data->slug = $this->slug('Jadwal Pelajaran Kelas' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . 'Tahun Akademik ' . $tahun->nama);
+            foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pelajaran) {
+                $detail = new JadwalPelajaranDetail;
+                $detail->id = $this->generateUUID('DJW', 6);
+                $detail->jadwal_pelajaran_id = $data->id;
+                $detail->pelajaran_id = $pelajaran->pelajaran_id;
+                $detail->save();
+            }
+            $data->save();
+        }
+        return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
         try {
-            return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal menambahkan data !');
         }

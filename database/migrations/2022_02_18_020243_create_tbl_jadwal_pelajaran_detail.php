@@ -17,10 +17,10 @@ class CreateTblJadwalPelajaranDetail extends Migration
             $table->string('id', 9)->primary();
             $table->string('jadwal_pelajaran_id', 8);
             $table->string('pelajaran_id', 6);
-            $table->string('guru_id', 6);
-            $table->string('jam', 15);
-            $table->string('ruangan_id', 4);
-            $table->string('hari', 6);
+            $table->string('guru_id', 6)->nullable();
+            $table->string('jam', 15)->nullable();
+            $table->string('ruangan_id', 4)->nullable();
+            $table->string('hari', 6)->nullable();
             $table->timestamps();
         });
     }

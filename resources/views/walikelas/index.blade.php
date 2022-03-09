@@ -93,11 +93,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('guru_id-' . $item->id)
-                                        <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
                                     <script>
                                         $(document).ready(function() {
                                             $('#create-guru-<?php print $item->id; ?>').select2({
