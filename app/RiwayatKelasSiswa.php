@@ -16,6 +16,6 @@ class RiwayatKelasSiswa extends Model
 
     public function riwayat()
     {
-        return $this->belongsTo(RiwayatKelas::class, 'riwaya_kelas_id');
+        return $this->belongsTo(RiwayatKelas::class, 'riwayat_kelas_id');
     }
 }

@@ -84,7 +84,7 @@
                                     Jadwal Pelajaran
                                     <span id="header-jadwal">{{ $data->kelas->tingkat->nama ?? 'Kelas'}}
                                         {{ $data->kelas->jurusan->kode ?? ''}} {{ $data->kelas->sub->nama ?? ''}}</span> <br>
-                                    {{ 'Tahun Akademik '.$data->tahun->nama ?? ''}}
+                                        {{$data == null ? '' : 'Tahun Akademik '}}{{$data->tahun->nama ?? ''}}
                                 </h5>
                             </th>
                         </tr>

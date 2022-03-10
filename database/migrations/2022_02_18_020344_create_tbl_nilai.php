@@ -14,18 +14,11 @@ class CreateTblNilai extends Migration
     public function up()
     {
         Schema::create('tbl_nilai', function (Blueprint $table) {
-            $table->string('id', 10)->primary();
-            $table->string('jadwal_peljaran_id', 8);
-            $table->integer('tugas_1');
-            $table->integer('tugas_2');
-            $table->integer('tugas_3');
-            $table->integer('tugas_4');
-            $table->integer('tugas_5');
-            $table->integer('uts');
-            $table->integer('uas');
-            $table->float('nilai');
-            $table->string('grade',2);
-            $table->string('status', 15);
+            $table->string('id', 8)->primary();
+            $table->string('kelas_id', 8);
+            $table->string('tahun_akademik_id', 5);
+            $table->string('siswa_id', 8);
+            $table->string('slug');
             $table->timestamps();
         });
     }

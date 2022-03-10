@@ -19,7 +19,6 @@
     </button>
     @include('tahun-akademik.create')
 @endsection
-
 @section('contain')
     @if (session('success'))
         <div class="alert alert-info" role="alert">

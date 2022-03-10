@@ -19,26 +19,14 @@
                                 value="{{ $item->id }}" readonly>
                         </div>
                         <div class="col-sm-6">
-                            <select class="form-control @error('status-'. $item->id) is-invalid @enderror" name="status-{{ $item->id }}">
-                                <option value="">Pilih Status</option>
-                                <option value="0" {{ $item->status == 0 ? 'selected' : '' }}>Tidak Aktif</option>
-                                <option value="1" {{ $item->status == 1 ? 'selected' : '' }}>Aktif</option>
-                            </select>
-                            @error('status-'. $item->id)
-                                <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control @error('nama-'. $item->id) is-invalid @enderror" name="nama-{{ $item->id }}"
+                            <input type="text" class="form-control @error('nama-'. $item->id) is-invalid @enderror" name="nama-{{ $item->id }}"
                             value="{{ $item->nama }}" placeholder="Nama Tahun Akademik">
                         @error('nama-'. $item->id)
                             <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">
                                 {{ $message }}
                             </div>
                         @enderror
+                        </div>
                     </div>
                     <div class="form-group">
                         <select class="form-control @error('semester-'. $item->id) is-invalid @enderror" name="semester-{{ $item->id }}">

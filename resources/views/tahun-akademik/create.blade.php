@@ -19,26 +19,14 @@
                                 value="{{ 'TAK' . sprintf('%02u', $data->count() + 1) }}" readonly>
                         </div>
                         <div class="col-sm-6">
-                            <select class="form-control @error('status') is-invalid @enderror" name="status">
-                                <option value="">Pilih Status</option>
-                                <option value="0">Tidak Aktif</option>
-                                <option value="1">Aktif</option>
-                            </select>
-                            @error('status')
-                                <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
                             value="{{ old('nama') }}" placeholder="Nama Tahun Akademik">
                         @error('nama')
                             <div id="create-error" class="mt-2 error invalid-feedback d-block w-100">
                                 {{ $message }}
                             </div>
                         @enderror
+                        </div>
                     </div>
                     <div class="form-group">
                         <select class="form-control @error('semester') is-invalid @enderror" name="semester">
