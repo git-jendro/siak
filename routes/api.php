@@ -26,5 +26,8 @@ Route::get('/dashboard/walikelas/{guru_id}', 'HomeroomTeacherController@modal_wa
 Route::post('/dashboard/walikelas/store', 'HomeroomTeacherController@store');
 
 //Route Jadwal
-Route::get('/dashboard/jadwal-pelajaran/{tingkat}', 'LessonScheduleController@filter_jurusan');
+Route::get('/dashboard/jadwal-pelajaran/kelas/{tingkat_id}/{jurusan_id}', 'LessonScheduleController@filter_kelas');
+Route::get('/dashboard/jadwal-pelajaran/tingkat/{tingkat_id}', 'LessonScheduleController@filter_tingkat');
+Route::get('/dashboard/jadwal-pelajaran/jurusan/{jurusan_id}', 'LessonScheduleController@filter_jurusan');
+Route::get('/dashboard/jadwal-pelajaran/jadwal/{kelas_id}', 'LessonScheduleController@filter_jadwal');
 

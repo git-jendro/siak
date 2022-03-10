@@ -10,7 +10,6 @@ use App\Kelas;
 use App\Pelajaran;
 use App\Ruangan;
 use App\SubKelas;
-use App\TahunAkademik;
 use App\TingkatKelas;
 use Illuminate\Http\Request;
 
@@ -27,11 +26,11 @@ class LessonScheduleController extends Controller
         $pelajaran = Pelajaran::all();
         $tingkat = TingkatKelas::all();
         $jurusan = Jurusan::all();
-        $sub = SubKelas::all();
+        $kelas = Kelas::all();
         $ruangan = Ruangan::all();
         $guru = Guru::all();
 
-        return view('jadwal-pelajaran.index', compact('data', 'pelajaran', 'tingkat', 'jurusan', 'sub', 'ruangan', 'guru'));
+        return view('jadwal-pelajaran.index', compact('data', 'pelajaran', 'tingkat', 'jurusan', 'kelas', 'ruangan', 'guru'));
     }
 
     /**
@@ -66,6 +65,49 @@ class LessonScheduleController extends Controller
         try {
         } catch (\Throwable $th) {
             return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal menambahkan data !');
+        }
+    }
+
+    public function filter_kelas($tingkat_id, $jurusan_id)
+    {
+        try {
+            $data = Kelas::where([
+                ['tingkat_kelas_id',$tingkat_id],
+                ['jurusan_id',$jurusan_id],
+            ])->with('tingkat', 'jurusan', 'sub',)->get();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json(409);
+        }
+    }
+    
+    public function filter_tingkat($tingkat_id)
+    {
+        try {
+            $data = Kelas::where('tingkat_kelas_id', $tingkat_id)->with('tingkat', 'jurusan', 'sub',)->get();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json(409);
+        }
+    }
+    
+    public function filter_jurusan($jurusan_id)
+    {
+        try {
+            $data = Kelas::where('jurusan_id', $jurusan_id)->with('tingkat', 'jurusan', 'sub',)->get();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json(409);
+        }
+    }
+    
+    public function filter_jadwal($kelas_id)
+    {
+        return response()->json('konek');
+        try {
+            // $data = Kelas::where('jurusan_id', $jurusan_id)->with('tingkat', 'jurusan', 'sub',)->get();
+        } catch (\Throwable $th) {
+            return response()->json(409);
         }
     }
 }

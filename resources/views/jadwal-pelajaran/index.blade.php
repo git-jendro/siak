@@ -52,7 +52,7 @@
                 <div class="col-lg-9">
                     <div class="form-group row">
                         <div class="col-sm-4 mb-3 mb-sm-0">
-                            <select class="form-control" id="tingkat">
+                            <select class="form-control" id="filter_tingkat">
                                 <option value="">Pilih Tingkat Kelas</option>
                                 @foreach ($tingkat as $tngk)
                                     <option value="{{ $tngk->id }}">{{ $tngk->nama }}</option>
@@ -60,7 +60,7 @@
                             </select>
                         </div>
                         <div class="col-sm-4 mb-3 mb-sm-0">
-                            <select class="form-control" id="jurusan">
+                            <select class="form-control" id="filter_jurusan">
                                 <option value="">Pilih Jurusan</option>
                                 @foreach ($jurusan as $jrs)
                                     <option value="{{ $jrs->id }}">{{ $jrs->kode }} ({{ $jrs->nama }})</option>
@@ -68,8 +68,12 @@
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <select class="form-control" id="kelas">
+                            <select class="form-control" id="filter_kelas">
                                 <option value="">Pilih Kelas</option>
+                                @foreach ($kelas as $kls)
+                                    <option value="{{ $kls->id }}">{{ $kls->tingkat->nama }}
+                                        {{ $kls->jurusan->kode }} {{ $kls->sub->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -82,9 +86,10 @@
                             <th colspan="5">
                                 <h5 class="font-weight-bold text-center my-auto">
                                     Jadwal Pelajaran
-                                    <span id="header-jadwal">{{ $data->kelas->tingkat->nama ?? 'Kelas'}}
-                                        {{ $data->kelas->jurusan->kode ?? ''}} {{ $data->kelas->sub->nama ?? ''}}</span> <br>
-                                        {{$data == null ? '' : 'Tahun Akademik '}}{{$data->tahun->nama ?? ''}}
+                                    <span id="header-jadwal">{{ $data->kelas->tingkat->nama ?? 'Kelas' }}
+                                        {{ $data->kelas->jurusan->kode ?? '' }}
+                                        {{ $data->kelas->sub->nama ?? '' }}</span> <br>
+                                    {{ $data == null ? '' : 'Tahun Akademik ' }}{{ $data->tahun->nama ?? '' }}
                                 </h5>
                             </th>
                         </tr>
@@ -105,7 +110,7 @@
                             <th>Jam</th>
                         </tr>
                     </tfoot>
-                    <tbody>
+                    <tbody id="tbody_jadwal">
                         <meta name="_token" content="{{ csrf_token() }}">
                         @if (!is_null($data))
                             @foreach ($data->detail as $item)
@@ -117,9 +122,10 @@
                                         <select class="form-control" id="ruangan-{{ $item->id }}">
                                             <option value="">Pilih Ruangan</option>
                                             @foreach ($ruangan as $rgn)
-                                            <option value="{{ $rgn->id }}" {{ $rgn->id == $item->guru_id ? 'selected' : '' }}>
-                                                {{ $rgn->nama }}
-                                            </option>
+                                                <option value="{{ $rgn->id }}"
+                                                    {{ $rgn->id == $item->guru_id ? 'selected' : '' }}>
+                                                    {{ $rgn->nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -129,18 +135,12 @@
                                             id="create-guru-{{ $item->id }}" onchange="kelas('{{ $item->id }}')">
                                             <option value=""></option>
                                             @foreach ($guru as $gr)
-                                                <option value="{{ $gr->id }}" {{ $gr->id == $item->guru_id ? 'selected' : '' }}>
+                                                <option value="{{ $gr->id }}"
+                                                    {{ $gr->id == $item->guru_id ? 'selected' : '' }}>
                                                     {{ $gr->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <script>
-                                            $(document).ready(function() {
-                                                $('#create-guru-<?php print $item->id; ?>').select2({
-                                                    placeholder: "Pilih Guru Pengajar",
-                                                });
-                                            });
-                                        </script>
                                     </td>
                                     <td>
                                         <select class="form-control" id="ruangan-{{ $item->id }}">
@@ -153,15 +153,22 @@
                                         </select>
                                     </td>
                                 </tr>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#create-guru-<?php print $item->id; ?>').select2({
+                                            placeholder: "Pilih Guru Pengajar",
+                                        });
+                                    });
+                                </script>
                             @endforeach
                         @else
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                         @endif
                     </tbody>
                 </table>
@@ -170,6 +177,80 @@
     </div>
 
     <script>
-
+        $('#filter_tingkat').change(function(e) {
+            var _token = $('meta[name="_token"]').attr('content');
+            var tingkat_id = $(this).val();
+            var jurusan_id = $('#filter_jurusan').val();
+            if (jurusan_id) {
+                $.ajax({
+                    type: "get",
+                    url: "/api/dashboard/jadwal-pelajaran/kelas/" + tingkat_id + "/" + jurusan_id,
+                    dataType: "json",
+                    success: function(res) {
+                        $('#filter_kelas').html('<option value="">Pilih Kelas</option>');
+                        $.each(res, function(index, value) {
+                            $('#filter_kelas').append('<option value="' + value.id + '">' +value.tingkat.nama + ' ' + value.jurusan.kode + ' ' + value.sub.nama + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: "get",
+                    url: "/api/dashboard/jadwal-pelajaran/tingkat/" + tingkat_id,
+                    dataType: "json",
+                    success: function(res) {
+                        $('#filter_kelas').html('<option value="">Pilih Kelas</option>');
+                        $.each(res, function(index, value) {
+                            $('#filter_kelas').append('<option value="' + value.id + '">' +value.tingkat.nama + ' ' + value.jurusan.kode + ' ' + value.sub.nama + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+        $('#filter_jurusan').change(function(e) {
+            var _token = $('meta[name="_token"]').attr('content');
+            var jurusan_id = $(this).val();
+            var tingkat_id = $('#filter_tingkat').val();
+            if (tingkat_id) {
+                $.ajax({
+                    type: "get",
+                    url: "/api/dashboard/jadwal-pelajaran/kelas/" + tingkat_id + "/" + jurusan_id,
+                    dataType: "json",
+                    success: function(res) {
+                        $('#filter_kelas').html('<option value="">Pilih Kelas</option>');
+                        $.each(res, function(index, value) {
+                            $('#filter_kelas').append('<option value="' + value.id + '">' +value.tingkat.nama + ' ' + value.jurusan.kode + ' ' + value.sub.nama + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: "get",
+                    url: "/api/dashboard/jadwal-pelajaran/jurusan/" + jurusan_id,
+                    dataType: "json",
+                    success: function(res) {
+                        $('#filter_kelas').html('<option value="">Pilih Kelas</option>');
+                        $.each(res, function(index, value) {
+                            $('#filter_kelas').append('<option value="' + value.id + '">' +value.tingkat.nama + ' ' + value.jurusan.kode + ' ' + value.sub.nama + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+        $('#filter_kelas').change(function(e) {
+            var _token = $('meta[name="_token"]').attr('content');
+            var kelas_id = $(this).val();
+            $.ajax({
+                type: "get",
+                url: "/api/dashboard/jadwal-pelajaran/jadwal/" + kelas_id,
+                dataType: "json",
+                success: function(res) {
+                    $('#tbody_jadwal').html('');
+                    $.each(res, function (index, value) { 
+                         $('#tbody_jadwal').append(content);
+                    });
+                }
+            });
+        });
     </script>
 @endsection
