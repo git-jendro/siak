@@ -31,4 +31,7 @@ Route::get('/dashboard/jadwal-pelajaran/tingkat/{tingkat_id}', 'LessonScheduleCo
 Route::get('/dashboard/jadwal-pelajaran/jurusan/{jurusan_id}', 'LessonScheduleController@filter_jurusan');
 Route::get('/dashboard/jadwal-pelajaran/jadwal/{kelas_id}', 'LessonScheduleController@filter_jadwal');
 Route::post('/dashboard/jadwal-pelajaran/store', 'LessonScheduleController@store_jadwal');
+Route::get('/dashboard/jadwal-pelajaran/check_ruangan/{ruangan_id}/{hari}/{mulai}', 'LessonScheduleController@check_ruangan');
+Route::get('/dashboard/jadwal-pelajaran/check_guru/{guru_id}/{hari}/{mulai}', 'LessonScheduleController@check_guru');
+Route::get('/dashboard/jadwal-pelajaran/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'LessonScheduleController@check_both');
 

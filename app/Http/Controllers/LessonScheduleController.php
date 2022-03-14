@@ -114,6 +114,7 @@ class LessonScheduleController extends Controller
             $hari = JadwalPelajaranDetail::HARI;
             $mulai = JadwalPelajaranDetail::JAM;
             $selesai = JadwalPelajaranDetail::JAM;
+            $kelas = Kelas::where('id', $kelas_id)->with('tingkat', 'jurusan', 'sub')->first();
             return response()->json([
                 'data' => $data,
                 'ruangan' => $ruangan,
@@ -121,36 +122,160 @@ class LessonScheduleController extends Controller
                 'hari' => $hari,
                 'mulai' => $mulai,
                 'selesai' => $selesai,
+                'kelas' => $kelas,
             ]);
         } catch (\Throwable $th) {
             return response()->json(409);
         }
     }
 
-    public function store_jadwal(Request $request)
+    public function check_ruangan($ruangan_id, $hari, $mulai)
     {
         $con1 = JadwalPelajaranDetail::where([
-            ['ruangan_id', $request->ruangan],
-            ['hari', $request->hari],
-            ['jam', 'like', '%' . substr($request->start, 0, -3)],
+            ['ruangan_id', $ruangan_id],
+            ['hari', $hari],
+            ['mulai', $mulai]
         ])->count();
         $con2 = JadwalPelajaranDetail::where([
-            ['guru_id', $request->guru],
-            ['hari', $request->hari],
-            ['jam','like', '%' . substr($request->start, 0, -3)],
+            ['ruangan_id', $ruangan_id],
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
         ])->count();
         if ($con1 >= 1) {
-            return response()->json('ruangan');
+            return response()->json(false);
         } else if ($con2 >= 1) {
-            return response()->json('guru');
+            return response()->json(false);
         } else {
+            return response()->json(true);
+        }
+        
+    }
+
+    public function check_guru($guru_id, $hari, $mulai)
+    {
+        $con1 = JadwalPelajaranDetail::where([
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['mulai', $mulai]
+        ])->count();
+        $con2 = JadwalPelajaranDetail::where([
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
+        ])->count();
+        if ($con1 >= 1) {
+            return response()->json(false);
+        } else if ($con2 >= 1) {
+            return response()->json(false);
+        } else {
+            return response()->json(true);
+        }
+    }
+
+    public function check_both($ruangan_id, $guru_id, $hari, $mulai)
+    {
+        $con1 = JadwalPelajaranDetail::where([
+            ['ruangan_id', $ruangan_id],
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['mulai', $mulai]
+        ])->count();
+        $con2 = JadwalPelajaranDetail::where([
+            ['ruangan_id', $ruangan_id],
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
+        ])->count();
+        $conr1 = JadwalPelajaranDetail::where([
+            ['ruangan_id', $ruangan_id],
+            ['hari', $hari],
+            ['mulai', $mulai]
+        ])->count();
+        $conr2 = JadwalPelajaranDetail::where([
+            ['ruangan_id', $ruangan_id],
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
+        ])->count();
+        $cong1 = JadwalPelajaranDetail::where([
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['mulai', $mulai]
+        ])->count();
+        $cong2 = JadwalPelajaranDetail::where([
+            ['guru_id', $guru_id],
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
+        ])->count();
+        $conh1 = JadwalPelajaranDetail::where([
+            ['hari', $hari],
+            ['mulai', $mulai]
+        ])->count();
+        $conh2 = JadwalPelajaranDetail::where([
+            ['hari', $hari],
+            ['selesai', '>', $mulai]
+        ])->count();
+        if ($con1 >= 1) {
+            return response()->json(false);
+        } else if ($con2 >= 1) {
+            return response()->json(false);
+        } else if ($conr1 >= 1) {
+            return response()->json('ruangan');
+        } else if ($conr2 >= 1) {
+            return response()->json('ruangan');
+        } else if ($cong1 >= 1) {
+            return response()->json('guru');
+        } else if ($cong2 >= 1) {
+            return response()->json('guru');
+        } else if ($conh1 >= 1) {
+            return response()->json('hari');
+        } else if ($conh2 >= 1) {
+            return response()->json('hari');
+        } else {
+            return response()->json(true);
+        }
+    }
+
+    public function store_jadwal(Request $request)
+    {
+        // $con1 = JadwalPelajaranDetail::where([
+        //     ['ruangan_id', $request->ruangan],
+        //     ['hari', $request->hari],
+        //     ['mulai', $request->start],
+        // ])->count();
+        // $con2 = JadwalPelajaranDetail::where([
+        //     ['ruangan_id', $request->ruangan],
+        //     ['hari', $request->hari],
+        //     ['selesai', '>=', $request->start],
+        // ])->count();
+        // $con3 = JadwalPelajaranDetail::where([
+        //     ['guru_id', $request->guru],
+        //     ['hari', $request->hari],
+        //     ['mulai', $request->start],
+        // ])->count();
+        // $con4 = JadwalPelajaranDetail::where([
+        //     ['guru_id', $request->guru],
+        //     ['hari', $request->hari],
+        //     ['selesai', '>=', $request->start],
+        // ])->count();
+        // $con5 = JadwalPelajaranDetail::where([
+        //     ['hari', $request->hari],
+        //     ['mulai', $request->start],
+        // ])->count();
+        // if ($con1 >= 1) {
+        //     return response()->json('ruangan');
+        // } else if ($con2 >= 1) {
+        //     return response()->json('guru');
+        // } else if ($con3 >= 1) {
+        //     return response()->json('hari');
+        // } else {
             $jadwal = JadwalPelajaranDetail::find($request->id);
             $jadwal->guru_id = $request->guru;
             $jadwal->ruangan_id = $request->ruangan;
             $jadwal->hari = $request->hari;
-            $jadwal->jam = substr($request->start, 0, -3) . ' - ' . substr($request->end, 0, -3);
+            $jadwal->mulai = $request->start;
+            $jadwal->selesai = $request->end;
             $jadwal->save();
             return response()->json(200);
-        }
+        // }
     }
 }
