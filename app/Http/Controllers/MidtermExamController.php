@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Guru;
 use App\JadwalPelajaran;
 use App\JadwalPelajaranDetail;
+use App\JadwalUTS;
 use App\Jurusan;
 use App\Kelas;
 use App\Pelajaran;
 use App\Ruangan;
 use App\TingkatKelas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
-class LessonScheduleController extends Controller
+class MidtermExamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class LessonScheduleController extends Controller
      */
     public function index()
     {
-        $data = JadwalPelajaran::orderBy('created_at', 'asc')->with('detail')->first();
+        $data = JadwalUTS::orderBy('created_at', 'asc')->with('detail')->first();
         $tingkat = TingkatKelas::all();
         $jurusan = Jurusan::all();
         $kelas = Kelas::all();
@@ -32,7 +32,7 @@ class LessonScheduleController extends Controller
         $hari = JadwalPelajaranDetail::HARI;
         $jam = JadwalPelajaranDetail::JAM;
 
-        return view('jadwal-pelajaran.index', compact('data', 'pelajaran', 'tingkat', 'jurusan', 'kelas', 'ruangan', 'guru', 'hari', 'jam'));
+        return view('jadwal-uts.index', compact('data', 'pelajaran', 'tingkat', 'jurusan', 'kelas', 'ruangan', 'guru', 'hari', 'jam'));
     }
 
     /**
@@ -46,16 +46,13 @@ class LessonScheduleController extends Controller
 
         $kelas = Kelas::all();
         $tahun = $this->tahun_akademik();
-        JadwalPelajaranDetail::truncate();
-        JadwalPelajaran::truncate();
-        $before = Str::of($tahun->nama)->before('/');
-        $after = Str::after($tahun->nama, '/');
+        JadwalUTS::truncate();
         foreach ($kelas as $kls) {
             $data = new JadwalPelajaran;
             $data->id = $this->generateUUID('JWP', 5);
             $data->kelas_id = $kls->id;
             $data->tahun_akademik_id = $tahun->id;
-            $data->slug = $this->slug('Jadwal Pelajaran Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
+            $data->slug = $this->slug('Jadwal Pelajaran Kelas' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . 'Tahun Akademik ' . $tahun->nama);
             foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pelajaran) {
                 $detail = new JadwalPelajaranDetail;
                 $detail->id = $this->generateUUID('DJW', 6);
@@ -65,10 +62,10 @@ class LessonScheduleController extends Controller
             }
             $data->save();
         }
-        return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
+        return redirect()->route('jadwal-uts')->with('success', 'Berhasil menambahkan data !');
         try {
         } catch (\Throwable $th) {
-            return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal menambahkan data !');
+            return redirect()->route('jadwal-uts')->with('danger', 'Gagal menambahkan data !');
         }
     }
 
@@ -142,8 +139,7 @@ class LessonScheduleController extends Controller
         $con2 = JadwalPelajaranDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -152,6 +148,7 @@ class LessonScheduleController extends Controller
         } else {
             return response()->json(true);
         }
+        
     }
 
     public function check_guru($guru_id, $hari, $mulai)
@@ -164,8 +161,7 @@ class LessonScheduleController extends Controller
         $con2 = JadwalPelajaranDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -188,9 +184,7 @@ class LessonScheduleController extends Controller
             ['ruangan_id', $ruangan_id],
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         $conr1 = JadwalPelajaranDetail::where([
             ['ruangan_id', $ruangan_id],
@@ -200,8 +194,7 @@ class LessonScheduleController extends Controller
         $conr2 = JadwalPelajaranDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         $cong1 = JadwalPelajaranDetail::where([
             ['guru_id', $guru_id],
@@ -211,8 +204,7 @@ class LessonScheduleController extends Controller
         $cong2 = JadwalPelajaranDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         $conh1 = JadwalPelajaranDetail::where([
             ['hari', $hari],
@@ -220,8 +212,7 @@ class LessonScheduleController extends Controller
         ])->count();
         $conh2 = JadwalPelajaranDetail::where([
             ['hari', $hari],
-            ['mulai', '<', $mulai],
-            ['selesai', '>', $mulai],
+            ['selesai', '>', $mulai]
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -276,27 +267,15 @@ class LessonScheduleController extends Controller
         //     return response()->json('guru');
         // } else if ($con3 >= 1) {
         //     return response()->json('hari');
-        // } else {
-        $jadwal = JadwalPelajaranDetail::find($request->id);
-        $jadwal->guru_id = $request->guru;
-        $jadwal->ruangan_id = $request->ruangan;
-        $jadwal->hari = $request->hari;
-        $jadwal->mulai = $request->start;
-        $jadwal->selesai = $request->end;
-        $jadwal->save();
-        return response()->json(200);
+        // } else { 
+            $jadwal = JadwalPelajaranDetail::find($request->id);
+            $jadwal->guru_id = $request->guru;
+            $jadwal->ruangan_id = $request->ruangan;
+            $jadwal->hari = $request->hari;
+            $jadwal->mulai = $request->start;
+            $jadwal->selesai = $request->end;
+            $jadwal->save();
+            return response()->json(200);
         // }
-    }
-
-    public function download($slug)
-    {
-        try {
-            $hari = JadwalPelajaranDetail::HARI;
-            $jadwal = JadwalPelajaran::where('slug', $slug)->first();
-            $data = JadwalPelajaranDetail::where('jadwal_pelajaran_id', $jadwal->id)->orderBy('hari', 'asc')->orderBy('mulai', 'asc')->get();
-            return view('jadwal-pelajaran.preview', compact('jadwal', 'data', 'hari'));
-        } catch (\Throwable $th) {
-            return abort(404);
-        }
     }
 }

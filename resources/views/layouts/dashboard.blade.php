@@ -138,7 +138,7 @@
                 <div id="jadwal" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('jadwal-pelajaran') }}">Jadwal Pelajaran</a>
-                        <a class="collapse-item" href="cards.html">Jadwal UTS</a>
+                        <a class="collapse-item" href="{{ route('jadwal-uts') }}">Jadwal UTS</a>
                         <a class="collapse-item" href="cards.html">Jadwal UAS</a>
                     </div>
                 </div>

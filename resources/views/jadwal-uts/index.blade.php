@@ -7,9 +7,6 @@
 
     <!-- Event Jadwal -->
     <script src="{{ asset('sb-admin/js/jadwal.js') }}"></script>
-
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.css"></script>
 @endsection
 
 @section('header')
@@ -50,11 +47,11 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <div class="col-6">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Jadwal Pelajaran</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Data Jadwal UTS</h6>
                 </div>
                 <div class="col-6">
                     <div class="text-right">
-                        <a href="{{ route('jadwal-pelajaran.download',[$data->slug]) }}" class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
+                        <a href="{{ route('jadwal-pelajaran.download', [$data->slug]) }}}}" class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download"></i> Download PDF
                         </a>
                     </div>
@@ -97,12 +94,12 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0" style="table-layout:fixed;">
+                <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th colspan="5">
                                 <h5 class="font-weight-bold text-center my-auto">
-                                    Jadwal Pelajaran
+                                    Jadwal UTS
                                     <span id="header-jadwal">{{ $data->kelas->tingkat->nama ?? 'Kelas' }}
                                         {{ $data->kelas->jurusan->kode ?? '' }}
                                         {{ $data->kelas->sub->nama ?? '' }}</span> <br>

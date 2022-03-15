@@ -133,10 +133,20 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
     {
         Route::get('/', 'LessonScheduleController@index')->name('jadwal-pelajaran');
         Route::post('/store', 'LessonScheduleController@store')->name('jadwal-pelajaran.store');
-        Route::patch('/update/{id}', 'LessonScheduleController@update')->name('jadwal-pelajaran.update');
-        Route::post('/active/{id}', 'LessonScheduleController@active')->name('jadwal-pelajaran.active');
+    });
+
+    //Route Jadwal UTS
+    Route::prefix('jadwal-uts')->group(function ()
+    {
+        Route::get('/', 'MidtermExamController@index')->name('jadwal-uts');
+        Route::post('/store', 'MidtermExamController@store')->name('jadwal-uts.store');
+        Route::get('/preview', 'MidtermExamController@preview')->name('jadwal-uts.preview');
     });
 });
+
+
+Route::get('/preview/{slug}', 'LessonScheduleController@preview')->name('jadwal-pelajaran.preview');
+Route::get('/download/{slug}', 'LessonScheduleController@download')->name('jadwal-pelajaran.download');
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()
 {
