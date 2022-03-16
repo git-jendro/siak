@@ -44,29 +44,29 @@ class LessonScheduleController extends Controller
     public function store(Request $request)
     {
 
-        $kelas = Kelas::all();
-        $tahun = $this->tahun_akademik();
-        JadwalPelajaranDetail::truncate();
-        JadwalPelajaran::truncate();
-        $before = Str::of($tahun->nama)->before('/');
-        $after = Str::after($tahun->nama, '/');
-        foreach ($kelas as $kls) {
-            $data = new JadwalPelajaran;
-            $data->id = $this->generateUUID('JWP', 5);
-            $data->kelas_id = $kls->id;
-            $data->tahun_akademik_id = $tahun->id;
-            $data->slug = $this->slug('Jadwal Pelajaran Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
-            foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pelajaran) {
-                $detail = new JadwalPelajaranDetail;
-                $detail->id = $this->generateUUID('DJW', 6);
-                $detail->jadwal_pelajaran_id = $data->id;
-                $detail->pelajaran_id = $pelajaran->pelajaran_id;
-                $detail->save();
-            }
-            $data->save();
-        }
-        return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
         try {
+            $kelas = Kelas::all();
+            $tahun = $this->tahun_akademik();
+            JadwalPelajaranDetail::truncate();
+            JadwalPelajaran::truncate();
+            $before = Str::of($tahun->nama)->before('/');
+            $after = Str::after($tahun->nama, '/');
+            foreach ($kelas as $kls) {
+                $data = new JadwalPelajaran;
+                $data->id = $this->generateUUID('JWP', 5);
+                $data->kelas_id = $kls->id;
+                $data->tahun_akademik_id = $tahun->id;
+                $data->slug = $this->slug('Jadwal Pelajaran Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
+                foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pelajaran) {
+                    $detail = new JadwalPelajaranDetail;
+                    $detail->id = $this->generateUUID('DJW', 6);
+                    $detail->jadwal_pelajaran_id = $data->id;
+                    $detail->pelajaran_id = $pelajaran->pelajaran_id;
+                    $detail->save();
+                }
+                $data->save();
+            }
+            return redirect()->route('jadwal-pelajaran')->with('success', 'Berhasil menambahkan data !');
         } catch (\Throwable $th) {
             return redirect()->route('jadwal-pelajaran')->with('danger', 'Gagal menambahkan data !');
         }

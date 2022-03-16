@@ -7,9 +7,7 @@
 
     <!-- Event Jadwal -->
     <script src="{{ asset('sb-admin/js/jadwal.js') }}"></script>
-
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.css"></script>
+    <script src="{{ asset('sb-admin/js/filter.js') }}"></script>
 @endsection
 
 @section('header')
@@ -54,9 +52,16 @@
                 </div>
                 <div class="col-6">
                     <div class="text-right">
-                        <a href="{{ route('jadwal-pelajaran.download',[$data->slug]) }}" class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
-                            <i class="fas fa-download"></i> Download PDF
-                        </a>
+                        @if ($data)
+                            <a href="{{ route('jadwal-pelajaran.download', [$data->slug]) }}"
+                                class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-download"></i> Download PDF
+                            </a>
+                        @else
+                            <a href="{{ route('jadwal-uts') }}" class="btn btn-sm btn-primary shadow-sm mx-2"
+                                target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-download"></i> Download PDF
+                        @endif
                     </div>
                 </div>
             </div>
@@ -130,6 +135,12 @@
                     <tbody id="tbody_jadwal">
                         <meta name="_token" content="{{ csrf_token() }}">
                         @if (!is_null($data))
+                            @php
+                                $start_time = $jam;
+                                $end_time = $jam;
+                                array_pop($start_time);
+                                array_shift($end_time);
+                            @endphp
                             @foreach ($data->detail as $item)
                                 <tr>
                                     <td>
@@ -173,7 +184,7 @@
                                             <div class="col-6">
                                                 <select class="form-control start" id="start-{{ $item->id }}">
                                                     <option value="">Mulai</option>
-                                                    @foreach ($jam as $s)
+                                                    @foreach ($start_time as $s)
                                                         <option value="{{ $s['id'] }}"
                                                             {{ $s['id'] == $item->mulai ? 'selected' : '' }}>
                                                             {{ $s['jam'] }}</option>
@@ -186,7 +197,7 @@
                                             <div class="col-6">
                                                 <select class="form-control end" id="end-{{ $item->id }}">
                                                     <option value="">Selesai</option>
-                                                    @foreach ($jam as $j)
+                                                    @foreach ($end_time as $j)
                                                         <option value="{{ $j['id'] }}"
                                                             {{ $j['id'] == $item->selesai ? 'selected' : '' }}>
                                                             {{ $j['jam'] }}</option>

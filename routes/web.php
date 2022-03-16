@@ -144,9 +144,11 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
     });
 });
 
-
-Route::get('/preview/{slug}', 'LessonScheduleController@preview')->name('jadwal-pelajaran.preview');
-Route::get('/download/{slug}', 'LessonScheduleController@download')->name('jadwal-pelajaran.download');
+Route::middleware('auth')->group(function ()
+{
+    Route::get('jadwal-pelajaran/download/{slug}', 'LessonScheduleController@download')->name('jadwal-pelajaran.download');
+    Route::get('jadwal-uts/download/{slug}', 'MidtermExamController@download')->name('jadwal-uts.download');
+});
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()
 {

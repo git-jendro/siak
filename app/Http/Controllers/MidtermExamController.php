@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Guru;
-use App\JadwalPelajaran;
 use App\JadwalPelajaranDetail;
 use App\JadwalUTS;
+use App\JadwalUTSDetail;
 use App\Jurusan;
 use App\Kelas;
 use App\Pelajaran;
 use App\Ruangan;
 use App\TingkatKelas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MidtermExamController extends Controller
 {
@@ -46,17 +47,20 @@ class MidtermExamController extends Controller
 
         $kelas = Kelas::all();
         $tahun = $this->tahun_akademik();
+        JadwalUTSDetail::truncate();
         JadwalUTS::truncate();
+        $before = Str::of($tahun->nama)->before('/');
+        $after = Str::after($tahun->nama, '/');
         foreach ($kelas as $kls) {
-            $data = new JadwalPelajaran;
-            $data->id = $this->generateUUID('JWP', 5);
+            $data = new JadwalUTS;
+            $data->id = $this->generateUUID('JUT', 5);
             $data->kelas_id = $kls->id;
             $data->tahun_akademik_id = $tahun->id;
-            $data->slug = $this->slug('Jadwal Pelajaran Kelas' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . 'Tahun Akademik ' . $tahun->nama);
+            $data->slug = $this->slug('Jadwal UTS Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
             foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pelajaran) {
-                $detail = new JadwalPelajaranDetail;
+                $detail = new JadwalUTSDetail;
                 $detail->id = $this->generateUUID('DJW', 6);
-                $detail->jadwal_pelajaran_id = $data->id;
+                $detail->jadwal_uts_id = $data->id;
                 $detail->pelajaran_id = $pelajaran->pelajaran_id;
                 $detail->save();
             }
@@ -69,45 +73,12 @@ class MidtermExamController extends Controller
         }
     }
 
-    public function filter_kelas($tingkat_id, $jurusan_id)
-    {
-        try {
-            $data = Kelas::where([
-                ['tingkat_kelas_id', $tingkat_id],
-                ['jurusan_id', $jurusan_id],
-            ])->with('tingkat', 'jurusan', 'sub',)->get();
-            return response()->json($data);
-        } catch (\Throwable $th) {
-            return response()->json(409);
-        }
-    }
-
-    public function filter_tingkat($tingkat_id)
-    {
-        try {
-            $data = Kelas::where('tingkat_kelas_id', $tingkat_id)->with('tingkat', 'jurusan', 'sub',)->get();
-            return response()->json($data);
-        } catch (\Throwable $th) {
-            return response()->json(409);
-        }
-    }
-
-    public function filter_jurusan($jurusan_id)
-    {
-        try {
-            $data = Kelas::where('jurusan_id', $jurusan_id)->with('tingkat', 'jurusan', 'sub',)->get();
-            return response()->json($data);
-        } catch (\Throwable $th) {
-            return response()->json(409);
-        }
-    }
-
     public function filter_jadwal($kelas_id)
     {
         try {
-            $conn = JadwalPelajaran::selecT('id')->where('kelas_id', $kelas_id);
-            $data = JadwalPelajaranDetail::whereHas('jadwal', function ($q) use ($conn) {
-                $q->whereIn('jadwal_pelajaran_id', $conn);
+            $conn = JadwalUTS::selecT('id')->where('kelas_id', $kelas_id);
+            $data = JadwalUTSDetail::whereHas('jadwal', function ($q) use ($conn) {
+                $q->whereIn('jadwal_uts_id', $conn);
             })->with('pelajaran', 'guru', 'ruangan')->get();
             $ruangan = Ruangan::all();
             $guru = Guru::all();
@@ -131,15 +102,16 @@ class MidtermExamController extends Controller
 
     public function check_ruangan($ruangan_id, $hari, $mulai)
     {
-        $con1 = JadwalPelajaranDetail::where([
+        $con1 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $con2 = JadwalPelajaranDetail::where([
+        $con2 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -148,20 +120,20 @@ class MidtermExamController extends Controller
         } else {
             return response()->json(true);
         }
-        
     }
 
     public function check_guru($guru_id, $hari, $mulai)
     {
-        $con1 = JadwalPelajaranDetail::where([
+        $con1 = JadwalUTSDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $con2 = JadwalPelajaranDetail::where([
+        $con2 = JadwalUTSDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -174,45 +146,50 @@ class MidtermExamController extends Controller
 
     public function check_both($ruangan_id, $guru_id, $hari, $mulai)
     {
-        $con1 = JadwalPelajaranDetail::where([
+        $con1 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['guru_id', $guru_id],
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $con2 = JadwalPelajaranDetail::where([
+        $con2 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
-        $conr1 = JadwalPelajaranDetail::where([
+        $conr1 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $conr2 = JadwalPelajaranDetail::where([
+        $conr2 = JadwalUTSDetail::where([
             ['ruangan_id', $ruangan_id],
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
-        $cong1 = JadwalPelajaranDetail::where([
+        $cong1 = JadwalUTSDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $cong2 = JadwalPelajaranDetail::where([
+        $cong2 = JadwalUTSDetail::where([
             ['guru_id', $guru_id],
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
-        $conh1 = JadwalPelajaranDetail::where([
+        $conh1 = JadwalUTSDetail::where([
             ['hari', $hari],
             ['mulai', $mulai]
         ])->count();
-        $conh2 = JadwalPelajaranDetail::where([
+        $conh2 = JadwalUTSDetail::where([
             ['hari', $hari],
-            ['selesai', '>', $mulai]
+            ['mulai', '<', $mulai],
+            ['selesai', '>', $mulai],
         ])->count();
         if ($con1 >= 1) {
             return response()->json(false);
@@ -237,27 +214,27 @@ class MidtermExamController extends Controller
 
     public function store_jadwal(Request $request)
     {
-        // $con1 = JadwalPelajaranDetail::where([
+        // $con1 = JadwalUTSDetail::where([
         //     ['ruangan_id', $request->ruangan],
         //     ['hari', $request->hari],
         //     ['mulai', $request->start],
         // ])->count();
-        // $con2 = JadwalPelajaranDetail::where([
+        // $con2 = JadwalUTSDetail::where([
         //     ['ruangan_id', $request->ruangan],
         //     ['hari', $request->hari],
         //     ['selesai', '>=', $request->start],
         // ])->count();
-        // $con3 = JadwalPelajaranDetail::where([
+        // $con3 = JadwalUTSDetail::where([
         //     ['guru_id', $request->guru],
         //     ['hari', $request->hari],
         //     ['mulai', $request->start],
         // ])->count();
-        // $con4 = JadwalPelajaranDetail::where([
+        // $con4 = JadwalUTSDetail::where([
         //     ['guru_id', $request->guru],
         //     ['hari', $request->hari],
         //     ['selesai', '>=', $request->start],
         // ])->count();
-        // $con5 = JadwalPelajaranDetail::where([
+        // $con5 = JadwalUTSDetail::where([
         //     ['hari', $request->hari],
         //     ['mulai', $request->start],
         // ])->count();
@@ -267,15 +244,27 @@ class MidtermExamController extends Controller
         //     return response()->json('guru');
         // } else if ($con3 >= 1) {
         //     return response()->json('hari');
-        // } else { 
-            $jadwal = JadwalPelajaranDetail::find($request->id);
-            $jadwal->guru_id = $request->guru;
-            $jadwal->ruangan_id = $request->ruangan;
-            $jadwal->hari = $request->hari;
-            $jadwal->mulai = $request->start;
-            $jadwal->selesai = $request->end;
-            $jadwal->save();
-            return response()->json(200);
+        // } else {
+        $jadwal = JadwalUTSDetail::find($request->id);
+        $jadwal->guru_id = $request->guru;
+        $jadwal->ruangan_id = $request->ruangan;
+        $jadwal->hari = $request->hari;
+        $jadwal->mulai = $request->start;
+        $jadwal->selesai = $request->end;
+        $jadwal->save();
+        return response()->json(200);
         // }
+    }
+
+    public function download($slug)
+    {
+        try {
+            $hari = JadwalPelajaranDetail::HARI;
+            $jadwal = JadwalUTS::where('slug', $slug)->first();
+            $data = JadwalUTSDetail::where('jadwal_uts_id', $jadwal->id)->orderBy('hari', 'asc')->orderBy('mulai', 'asc')->get();
+            return view('jadwal-uts.preview', compact('jadwal', 'data', 'hari'));
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        Jadwal_Pelajaran_{{ $jadwal->kelas->tingkat->nama }}_{{ $jadwal->kelas->jurusan->kode }}_{{ $jadwal->kelas->sub->nama }}_{{ $jadwal->tahun->nama }}
+        Jadwal_UTS_{{ $jadwal->kelas->tingkat->nama }}_{{ $jadwal->kelas->jurusan->kode }}_{{ $jadwal->kelas->sub->nama }}_{{ $jadwal->tahun->nama }}
     </title>
     <style>
         /*!
@@ -12679,7 +12679,7 @@
                     <tr style="border-top: 0;border-right:0; border-left:0;">
                         <th colspan="5" class="py-5">
                             <h4 class="font-weight-bold text-center my-auto">
-                                Jadwal Pelajaran
+                                Jadwal UTS
                                 <span id="header-jadwal">{{ $jadwal->kelas->tingkat->nama ?? 'Kelas' }}
                                     {{ $jadwal->kelas->jurusan->kode ?? '' }}
                                     {{ $jadwal->kelas->sub->nama ?? '' }}</span> <br>
@@ -12696,7 +12696,7 @@
                         <th class="text-center">Hari</th>
                         <th>Nama Pelajaran</th>
                         <th>Ruangan</th>
-                        <th>Guru Pengajar</th>
+                        <th>Guru Pengawas</th>
                         <th class="text-center">Jam</th>
                     </tr>
                 </thead>

@@ -6,7 +6,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
     <!-- Event Jadwal -->
-    <script src="{{ asset('sb-admin/js/jadwal.js') }}"></script>
+    <script src="{{ asset('sb-admin/js/jadwal-uts.js') }}"></script>
+    <script src="{{ asset('sb-admin/js/filter.js') }}"></script>
 @endsection
 
 @section('header')
@@ -15,10 +16,9 @@
         <button type="button" class="btn btn-sm btn-primary shadow-sm mt-3" data-toggle="modal" data-target="#create-modal">
             <i class="fas fa-calendar-plus fa-sm text-white-50"></i> Buat Jadwal Baru
         </button>
-        @include('jadwal-pelajaran.create')
+        @include('jadwal-uts.create')
     </div>
 @endsection
-
 @section('contain')
     @if (session('success'))
         <div class="alert alert-info" role="alert">
@@ -51,7 +51,8 @@
                 </div>
                 <div class="col-6">
                     <div class="text-right">
-                        <a href="{{ route('jadwal-pelajaran.download', [$data->slug]) }}}}" class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
+                        <a href="{{ $data != null ? route('jadwal-uts.download', [$data->slug]) : route('jadwal-uts') }}"
+                            class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download"></i> Download PDF
                         </a>
                     </div>
@@ -110,7 +111,7 @@
                         <tr>
                             <th>Nama Pelajaran</th>
                             <th>Ruangan</th>
-                            <th>Guru Pengajar</th>
+                            <th>Guru Pengawas</th>
                             <th>Hari</th>
                             <th class="text-center">Jam</th>
                         </tr>
@@ -119,13 +120,19 @@
                         <tr>
                             <th>Nama Pelajaran</th>
                             <th>Ruangan</th>
-                            <th>Guru Pengajar</th>
+                            <th>Guru Pengawas</th>
                             <th>Hari</th>
                             <th class="text-center">Jam</th>
                         </tr>
                     </tfoot>
                     <tbody id="tbody_jadwal">
                         <meta name="_token" content="{{ csrf_token() }}">
+                            @php
+                                $start_time = $jam;
+                                $end_time = $jam;
+                                array_pop($start_time);
+                                array_shift($end_time);
+                            @endphp
                         @if (!is_null($data))
                             @foreach ($data->detail as $item)
                                 <tr>
@@ -170,7 +177,7 @@
                                             <div class="col-6">
                                                 <select class="form-control start" id="start-{{ $item->id }}">
                                                     <option value="">Mulai</option>
-                                                    @foreach ($jam as $s)
+                                                    @foreach ($start_time as $s)
                                                         <option value="{{ $s['id'] }}"
                                                             {{ $s['id'] == $item->mulai ? 'selected' : '' }}>
                                                             {{ $s['jam'] }}</option>
@@ -183,7 +190,7 @@
                                             <div class="col-6">
                                                 <select class="form-control end" id="end-{{ $item->id }}">
                                                     <option value="">Selesai</option>
-                                                    @foreach ($jam as $j)
+                                                    @foreach ($end_time as $j)
                                                         <option value="{{ $j['id'] }}"
                                                             {{ $j['id'] == $item->selesai ? 'selected' : '' }}>
                                                             {{ $j['jam'] }}</option>
@@ -196,7 +203,7 @@
                                 <script>
                                     $(document).ready(function() {
                                         $('#guru-<?php print $item->id; ?>').select2({
-                                            placeholder: "Pilih Guru Pengajar",
+                                            placeholder: "Pilih Guru Pengawas",
                                         });
                                     });
                                 </script>
@@ -215,7 +222,4 @@
             </div>
         </div>
     </div>
-    <script>
-
-    </script>
 @endsection

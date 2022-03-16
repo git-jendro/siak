@@ -13,14 +13,14 @@
                     *Jika membuat Jadwal baru, maka Jadwal yang lama akan terhapus !
                 </p>
                     <p style="font-size: 1.3rem">
-                        Yakin ingin membuat Jadwal Pelajaran Baru ?
+                        Yakin ingin membuat Jadwal UTS Baru ?
                     </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" type="button" data-dismiss="modal">
                     Cancel
                 </button>
-                <form action="{{ route('jadwal-pelajaran.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('jadwal-uts.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <button type="submit" class="btn btn-primary">
                         Submit
