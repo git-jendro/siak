@@ -6,17 +6,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
     <!-- Event Jadwal -->
-    <script src="{{ asset('sb-admin/js/jadwal-uts.js') }}"></script>
+    <script src="{{ asset('sb-admin/js/jadwal-uas.js') }}"></script>
     <script src="{{ asset('sb-admin/js/filter.js') }}"></script>
 @endsection
 
 @section('header')
     <div class="div">
-        <h1 class="h3 mb-lg-0 text-gray-800">Jadwal Ujian Tengah Semester</h1>
+        <h1 class="h3 mb-lg-0 text-gray-800">Jadwal Ujian Akhir Semester</h1>
         <button type="button" class="btn btn-sm btn-primary shadow-sm mt-3" data-toggle="modal" data-target="#create-modal">
             <i class="fas fa-calendar-plus fa-sm text-white-50"></i> Buat Jadwal Baru
         </button>
-        @include('jadwal-uts.create')
+        @include('jadwal-uas.create')
     </div>
 @endsection
 @section('contain')
@@ -47,11 +47,11 @@
         <div class="card-header py-3">
             <div class="d-flex justify-content-between">
                 <div class="col-6">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Jadwal UTS</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Data Jadwal UAS   </h6>
                 </div>
                 <div class="col-6">
                     <div class="text-right">
-                        <a href="{{ $data != null ? route('jadwal-uts.download', [$data->slug]) : route('jadwal-uts') }}"
+                        <a href="{{ $data != null ? route('jadwal-uas.download', [$data->slug]) : route('jadwal-uas') }}"
                             class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download"></i> Download PDF
                         </a>
@@ -100,7 +100,7 @@
                         <tr>
                             <th colspan="5">
                                 <h5 class="font-weight-bold text-center my-auto">
-                                    Jadwal UTS
+                                    Jadwal UAS  
                                     <span id="header-jadwal">{{ $data->kelas->tingkat->nama ?? 'Kelas' }}
                                         {{ $data->kelas->jurusan->kode ?? '' }}
                                         {{ $data->kelas->sub->nama ?? '' }}</span> <br>

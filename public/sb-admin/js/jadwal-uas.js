@@ -3,7 +3,7 @@ $('#filter_kelas').change(function (e) {
     var kelas_id = $(this).val();
     $.ajax({
         type: "get",
-        url: "/api/dashboard/uts/jadwal/" + kelas_id,
+        url: "/api/dashboard/uas/jadwal/" + kelas_id,
         dataType: "json",
         success: function (res) {
             $('#tbody_jadwal').html('');
@@ -79,9 +79,9 @@ $('#filter_kelas').change(function (e) {
                 var hari = $('#hari-' + id).val();
                 var guru = $('#guru-' + id).val();
                 var ruangan = $('#ruangan-' + id).val();
-                var url_ruangan = '/api/dashboard/uts/check_ruangan/'+ ruangan +'/'+hari+'/'+start;
-                var url_guru = '/api/dashboard/uts/check_guru/'+ guru +'/'+hari+'/'+start;
-                var url_both = '/api/dashboard/uts/check_both/'+ ruangan +'/'+ guru +'/'+hari+'/'+start;
+                var url_ruangan = '/api/dashboard/uas/check_ruangan/'+ ruangan +'/'+hari+'/'+start;
+                var url_guru = '/api/dashboard/uas/check_guru/'+ guru +'/'+hari+'/'+start;
+                var url_both = '/api/dashboard/uas/check_both/'+ ruangan +'/'+ guru +'/'+hari+'/'+start;
                 if (ruangan && guru && hari) {
                     $.ajax({
                         type: "get",
@@ -262,7 +262,7 @@ $('#filter_kelas').change(function (e) {
                     if (pelajaran && guru && ruangan && hari && start && end) {
                         $.ajax({
                             type: "post",
-                            url: "/api/dashboard/uts/store",
+                            url: "/api/dashboard/uas/store",
                             data: {
                                 _token: _token,
                                 id: id,
@@ -377,9 +377,9 @@ $('.start').change(function (e) {
     var hari = $('#hari-' + id).val();
     var guru = $('#guru-' + id).val();
     var ruangan = $('#ruangan-' + id).val();
-    var url_ruangan = '/api/dashboard/uts/check_ruangan/'+ ruangan +'/'+hari+'/'+start;
-    var url_guru = '/api/dashboard/uts/check_guru/'+ guru +'/'+hari+'/'+start;
-    var url_both = '/api/dashboard/uts/check_both/'+ ruangan +'/'+ guru +'/'+hari+'/'+start;
+    var url_ruangan = '/api/dashboard/uas/check_ruangan/'+ ruangan +'/'+hari+'/'+start;
+    var url_guru = '/api/dashboard/uas/check_guru/'+ guru +'/'+hari+'/'+start;
+    var url_both = '/api/dashboard/uas/check_both/'+ ruangan +'/'+ guru +'/'+hari+'/'+start;
     if (ruangan && guru && hari) {
         $.ajax({
             type: "get",
@@ -560,7 +560,7 @@ $('.end').change(function (e) {
         if (pelajaran && guru && ruangan && hari && start && end) {
             $.ajax({
                 type: "post",
-                url: "/api/dashboard/uts/store",
+                url: "/api/dashboard/uas/store",
                 data: {
                     _token: _token,
                     id: id,

@@ -12,7 +12,7 @@
 
 @section('header')
     <div class="div">
-        <h1 class="h3 mb-lg-0 text-gray-800">Tahun Akademik</h1>
+        <h1 class="h3 mb-lg-0 text-gray-800">Jadwal Pelajaran</h1>
         <button type="button" class="btn btn-sm btn-primary shadow-sm mt-3" data-toggle="modal" data-target="#create-modal">
             <i class="fas fa-calendar-plus fa-sm text-white-50"></i> Buat Jadwal Baru
         </button>

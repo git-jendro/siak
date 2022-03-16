@@ -139,7 +139,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('jadwal-pelajaran') }}">Jadwal Pelajaran</a>
                         <a class="collapse-item" href="{{ route('jadwal-uts') }}">Jadwal UTS</a>
-                        <a class="collapse-item" href="cards.html">Jadwal UAS</a>
+                        <a class="collapse-item" href="{{ route('jadwal-uas') }}">Jadwal UAS</a>
                     </div>
                 </div>
             </li>

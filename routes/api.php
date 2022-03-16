@@ -38,9 +38,15 @@ Route::get('/dashboard/jadwal-pelajaran/check_guru/{guru_id}/{hari}/{mulai}', 'L
 Route::get('/dashboard/jadwal-pelajaran/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'LessonScheduleController@check_both');
 
 //Route Jadwal UTS
-Route::get('/dashboard/jadwal-uts/jadwal/{kelas_id}', 'LessonScheduleController@filter_jadwal');
-Route::post('/dashboard/jadwal-uts/store', 'MidtermExamController@store_jadwal');
-Route::get('/dashboard/jadwal-uts/check_ruangan/{ruangan_id}/{hari}/{mulai}', 'MidtermExamController@check_ruangan');
-Route::get('/dashboard/jadwal-uts/check_guru/{guru_id}/{hari}/{mulai}', 'MidtermExamController@check_guru');
-Route::get('/dashboard/jadwal-uts/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'MidtermExamController@check_both');
+Route::get('/dashboard/uts/jadwal/{kelas_id}', 'MidtermExamController@filter_jadwal');
+Route::post('/dashboard/uts/store', 'MidtermExamController@store_jadwal');
+Route::get('/dashboard/uts/check_ruangan/{ruangan_id}/{hari}/{mulai}', 'MidtermExamController@check_ruangan');
+Route::get('/dashboard/uts/check_guru/{guru_id}/{hari}/{mulai}', 'MidtermExamController@check_guru');
+Route::get('/dashboard/uts/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'MidtermExamController@check_both');
 
+//Route Jadwal UAS
+Route::get('/dashboard/uas/jadwal/{kelas_id}', 'FinalExamController@filter_jadwal');
+Route::post('/dashboard/uas/store', 'FinalExamController@store_jadwal');
+Route::get('/dashboard/uas/check_ruangan/{ruangan_id}/{hari}/{mulai}', 'FinalExamController@check_ruangan');
+Route::get('/dashboard/uas/check_guru/{guru_id}/{hari}/{mulai}', 'FinalExamController@check_guru');
+Route::get('/dashboard/uas/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'FinalExamController@check_both');

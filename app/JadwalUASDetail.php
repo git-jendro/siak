@@ -37,6 +37,6 @@ class JadwalUASDetail extends Model
     
     public function jadwal()
     {
-        return $this->belongsTo(JadwalUTS::class, 'jadwal_uts_id');
+        return $this->belongsTo(JadwalUAS::class, 'jadwal_uas_id');
     }
 }

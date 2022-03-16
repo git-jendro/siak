@@ -19,7 +19,7 @@ class CreateTblJadwalUasDetail extends Migration
             $table->string('pelajaran_id', 6);
             $table->string('guru_id', 7)->nullable();
             $table->time('mulai')->nullable();
-            $table->time('jam')->nullable();
+            $table->time('selesai')->nullable();
             $table->string('ruangan_id', 6)->nullable();
             $table->string('hari', 6)->nullable();
             $table->timestamps();
