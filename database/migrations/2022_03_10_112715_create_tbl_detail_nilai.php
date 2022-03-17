@@ -14,7 +14,8 @@ class CreateTblDetailNilai extends Migration
     public function up()
     {
         Schema::create('tbl_detail_nilai', function (Blueprint $table) {
-            $table->string('id', 10)->primary();
+            $table->uuid('id')->primary();
+            $table->string('siswa_id', 8);
             $table->string('nilai_id', 8);
             $table->string('pelajaran_id', 6);
             $table->integer('tugas_1')->default(0);

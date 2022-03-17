@@ -39,7 +39,7 @@ class HomeroomTeacherController extends Controller
             $data = Walikelas::find($request->id);
             $count = Walikelas::where('guru_id', $request->guru_id)->count();
             $tahun = $this->tahun_akademik();
-            if ($count < 1) {
+            if ($data->guru_id == $request->guru_id) {
                 $data->guru_id = $request->guru_id;
                 $data->save();
                 $conn = RiwayatKelas::where([
@@ -62,6 +62,27 @@ class HomeroomTeacherController extends Controller
                 }
                 
                 return response()->json(200);
+            } else if ($count < 1) {
+                $data->guru_id = $request->guru_id;
+                $data->save();
+                $conn = RiwayatKelas::where([
+                    ['kelas_id', '=', $data->kelas_id],
+                    ['tahun_akademik_id', '=', $tahun->id],
+                ])->first();
+                if ($conn == null) {
+                    $kelas = new RiwayatKelas;
+                    $kelas->id = $this->generateUUID('RYK', 5);
+                    $kelas->kelas_id = $data->kelas_id;
+                    $kelas->guru_id = $data->guru_id;
+                    $kelas->tahun_akademik_id = $tahun->id;
+                    $kelas->save();
+                } else {
+                    $kelas = RiwayatKelas::find($conn->id);
+                    $kelas->kelas_id = $data->kelas_id;
+                    $kelas->guru_id = $data->guru_id;
+                    $kelas->tahun_akademik_id = $tahun->id; 
+                    $kelas->save();
+                }
             } else {
                 return response()->json(409);
             }

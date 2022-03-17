@@ -172,8 +172,7 @@
                         <div class="col-sm-6 mb-3 mb-sm-0">
                             <input type="text"
                                 class="form-control @error('username-' . $item->id) is-invalid @enderror"
-                                name="username-{{ $item->id }}" value="{{ $item->username }}"
-                                placeholder="Username">
+                                name="username-{{ $item->id }}" placeholder="Username">
                             <sub>*Masukan username jika anda ingin merubah username</sub>
                             @error('username-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}" class="mt-2 error invalid-feedback d-block w-100">

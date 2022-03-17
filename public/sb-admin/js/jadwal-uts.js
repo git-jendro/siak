@@ -290,7 +290,7 @@ $('#filter_kelas').change(function (e) {
                                         }
                                     });
                                 } else if (res == 'ruangan') {
-                                    console.log(res);
+                                    
                                     $.confirm({
                                         title: 'Error',
                                         columnClass: 'col-md-6 col-md-offset-3',
@@ -308,7 +308,7 @@ $('#filter_kelas').change(function (e) {
                                     $('#end-' + id).val('').trigger('change');
                                     return false;
                                 } else if (res == 'guru') {
-                                    console.log(res);
+                                    
                                     $.confirm({
                                         title: 'Error',
                                         columnClass: 'col-md-6 col-md-offset-3',
@@ -326,7 +326,7 @@ $('#filter_kelas').change(function (e) {
                                     $('#end-' + id).val('').trigger('change');
                                     return false;
                                 } else if (res == 'hari') {
-                                    console.log(res);
+                                    
                                     $.confirm({
                                         title: 'Error',
                                         columnClass: 'col-md-6 col-md-offset-3',
@@ -350,7 +350,7 @@ $('#filter_kelas').change(function (e) {
                         $.confirm({
                             title: 'Error',
                             columnClass: 'col-md-6 col-md-offset-3',
-                            title: 'Peringatan',
+                            title: 'Error',
                             content: 'Isikan semua kolom agar data dapat tersimpan !',
                             type: 'red',
                             typeAnimated: true,
@@ -588,7 +588,6 @@ $('.end').change(function (e) {
                             }
                         });
                     } else if (res == 'ruangan') {
-                        console.log(res);
                         $.confirm({
                             title: 'Error',
                             columnClass: 'col-md-6 col-md-offset-3',
@@ -606,7 +605,6 @@ $('.end').change(function (e) {
                         $('#end-' + id).val('').trigger('change');
                         return false;
                     } else if (res == 'guru') {
-                        console.log(res);
                         $.confirm({
                             title: 'Error',
                             columnClass: 'col-md-6 col-md-offset-3',
@@ -624,7 +622,6 @@ $('.end').change(function (e) {
                         $('#end-' + id).val('').trigger('change');
                         return false;
                     } else if (res == 'hari') {
-                        console.log(res);
                         $.confirm({
                             title: 'Error',
                             columnClass: 'col-md-6 col-md-offset-3',
@@ -648,7 +645,7 @@ $('.end').change(function (e) {
             $.confirm({
                 title: 'Error',
                 columnClass: 'col-md-6 col-md-offset-3',
-                title: 'Peringatan',
+                title: 'Error',
                 content: 'Isikan semua kolom agar data dapat tersimpan !',
                 type: 'red',
                 typeAnimated: true,

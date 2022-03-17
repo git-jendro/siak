@@ -140,9 +140,36 @@
                 success: function(res) {
                     console.log(res);
                     if (res == 200) {
-                        alert('Berhasil memilih walikelas !');
+                        $.confirm({
+                            columnClass: 'col-md-6 col-md-offset-3',
+                            title: 'Success',
+                            content: 'Data jadwal berhasil disimpan !',
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                tryAgain: {
+                                    text: 'OK',
+                                    btnClass: 'btn-green',
+                                    action: function () { }
+                                },
+                            }
+                        });
                     } else {
-                        alert('Guru sudah menjadi walikelas lain !');
+                        $.confirm({
+                            title: 'Error',
+                            columnClass: 'col-md-6 col-md-offset-3',
+                            title: 'Error',
+                            content: 'Guru sudah menjadi walikelas lain !',
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                tryAgain: {
+                                    text: 'OK',
+                                    btnClass: 'btn-red',
+                                    action: function () { }
+                                },
+                            }
+                        });
                         $("#create-guru-" + id).val('').trigger('change');
                     }
                     return false;

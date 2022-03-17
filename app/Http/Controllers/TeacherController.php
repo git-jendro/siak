@@ -108,6 +108,7 @@ class TeacherController extends Controller
             $data->pendidikan = $request->pendidikan;
             $data->jurusan = $request->jurusan;
             $data->no_telp = $request->no_telp;
+            $data->slug = $this->slug($request->nama);
             $user = new User;
             $user->id = $this->generateUUID('USR', 8);
             $user->username = $request->username;
@@ -220,6 +221,7 @@ class TeacherController extends Controller
             $data->pendidikan = $request['pendidikan-' . $id];
             $data->jurusan = $request['jurusan-' . $id];
             $data->no_telp = $request['no_telp-' . $id];
+            $data->slug = $this->slug($request['nama-' . $id]);
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
                 $path = 'Guru/' .  $id . '/Foto';

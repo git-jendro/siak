@@ -145,7 +145,7 @@
             </li>
 
             <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('staff') }}">
+                <a class="nav-link" href="{{ route('nilai') }}">
                     <i class="fas fa-fw fa-file-medical-alt"></i>
                     <span>Nilai</span></a>
             </li>

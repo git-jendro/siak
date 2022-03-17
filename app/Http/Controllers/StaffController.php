@@ -96,6 +96,7 @@ class StaffController extends Controller
             $data->alamat = $request->alamat;
             $data->jabatan_id = $request->jabatan_id;
             $data->no_telp = $request->no_telp;
+            $data->slug = $this->slug($request->nama);
             $user = new User;
             $user->id = $this->generateUUID('USR', 8);
             $user->username = $request->username;
@@ -191,6 +192,7 @@ class StaffController extends Controller
             $data->alamat = $request['alamat-' . $id];
             $data->jabatan_id = $request['jabatan_id-' . $id];
             $data->no_telp = $request['no_telp-' . $id];
+            $data->slug = $this->slug($request['nama-' . $id]);
             if (request()->has('foto-' . $id)) {
                 $filename = $request['foto-' . $id]->getClientOriginalName();
                 $path = 'Staff/' . $id . '/Foto';

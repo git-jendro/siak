@@ -17,7 +17,6 @@ class CreateTblNilai extends Migration
             $table->string('id', 8)->primary();
             $table->string('kelas_id', 8);
             $table->string('tahun_akademik_id', 5);
-            $table->string('siswa_id', 8);
             $table->string('slug');
             $table->timestamps();
         });

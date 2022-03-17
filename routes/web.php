@@ -150,6 +150,14 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::post('/store', 'FinalExamController@store')->name('jadwal-uas.store');
         Route::get('/preview', 'FinalExamController@preview')->name('jadwal-uas.preview');
     });
+
+    //Route Jadwal UAS
+    Route::prefix('nilai')->group(function ()
+    {
+        Route::get('/', 'ValueController@index')->name('nilai');
+        Route::post('/store', 'ValueController@store')->name('nilai.store');
+        Route::get('/{slug}', 'ValueController@show')->name('nilai.show');
+    });
 });
 
 Route::middleware('auth')->group(function ()
