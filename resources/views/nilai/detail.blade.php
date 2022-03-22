@@ -10,9 +10,9 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('sb-admin/js/demo/datatables-demo.js') }}"></script>
-    
+
     <!-- Select2 -->
-    <script src="{{ asset('sb-admin/js/filter.js') }}"></script>
+    <script src="{{ asset('sb-admin/js/nilai.js') }}"></script>
 @endsection
 
 @section('header')
@@ -93,34 +93,42 @@
                                         {{ $item->pelajaran->nama }}
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control tugas-1" id="tugas-1-{{ $item->id }}" value="{{ $item->tugas_1 }}">
+                                        @include('nilai.store-nilai')
+                                        <input type="text" class="form-control tugas1" id="{{ $item->id }}"
+                                            value="{{ $item->tugas_1 }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control tugas-2" id="tugas-2-{{ $item->id }}" value="{{ $item->tugas_2 }}">
+                                        <input type="text" class="form-control tugas2" id="{{ $item->id }}"
+                                            value="{{ $item->tugas_2 }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control tugas-3" id="tugas-3-{{ $item->id }}" value="{{ $item->tugas_3 }}">
+                                        <input type="text" class="form-control tugas3" id="{{ $item->id }}"
+                                            value="{{ $item->tugas_3 }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control tugas-4" id="tugas-4-{{ $item->id }}" value="{{ $item->tugas_4 }}">
+                                        <input type="text" class="form-control tugas4" id="{{ $item->id }}"
+                                            value="{{ $item->tugas_4 }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control tugas-5" id="tugas-5-{{ $item->id }}" value="{{ $item->tugas_5 }}">
+                                        <input type="text" class="form-control tugas5" id="{{ $item->id }}"
+                                            value="{{ $item->tugas_5 }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control uts" id="uts-{{ $item->id }}" value="{{ $item->uts }}">
+                                        <input type="text" class="form-control uts" id="{{ $item->id }}"
+                                            value="{{ $item->uts }}" maxlength="2">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control uas" id="uas-{{ $item->id }}" value="{{ $item->uas }}">
+                                        <input type="text" class="form-control uas" id="{{ $item->id }}"
+                                            value="{{ $item->uas }}" maxlength="2">
                                     </td>
                                     <td>
-                                        {{ $item->nilai }}
+                                        <span id="total-{{ $item->id }}">{{ $item->nilai }}</span>
                                     </td>
                                     <td>
-                                        {{ $item->grade }}
+                                        <span id="grade-{{ $item->id }}">{{ $item->grade }}</span>
                                     </td>
                                     <td>
-                                        {{ $item->status }}
+                                        <span id="status-{{ $item->id }}">{{ $item->status }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -130,6 +138,4 @@
             </div>
         </div>
     </div>
-    <script>
-    </script>
 @endsection

@@ -100,37 +100,124 @@ class ValueController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function store_tugas1(Request $request)
     {
-        //
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->tugas_1 = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function store_tugas2(Request $request)
     {
-        //
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->tugas_2 = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function store_tugas3(Request $request)
     {
-        //
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->tugas_3 = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
+    }
+
+    public function store_tugas4(Request $request)
+    {
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->tugas_4 = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
+    }
+
+    public function store_tugas5(Request $request)
+    {
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->tugas_5 = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
+    }
+
+    public function store_uts(Request $request)
+    {
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->uts = $request->nilai;
+            $data->save();
+            return response()->json([
+                'message' => 200
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
+    }
+
+    public function store_uas(Request $request)
+    {
+        try {
+            $data = DetailNilai::find($request->id);
+            $data->uas = $request->nilai;
+            $sum = collect([$data->tugas_1, $data->tugas_2, $data->tugas_3, $data->tugas_4, $data->tugas_5, $data->uts, $data->uas]);
+            $total = $sum->average();
+            $data->nilai = number_format((float)$total, 0, '.', '');
+            
+            if ($data->nilai >= 80) {
+                $data->grade = 'A';
+            } elseif ($data->nilai >= 70){
+                $data->grade = 'B';
+            } elseif ($data->nilai >= 50){
+                $data->grade = 'C';
+            } elseif ($data->nilai >= 40){
+                $data->grade = 'D';
+            } else {
+                $data->grade = 'E';
+            }
+
+            if ($data->nilai >= $data->pelajaran->kkm) {
+                $data->status = 'Lulus';
+            }
+            $data->save();
+
+            return response()->json([
+                'message' => 200,
+                'nilai' => $data->nilai,
+                'grade' => $data->grade,
+                'status' => $data->status,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(419);
+        }
     }
 }

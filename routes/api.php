@@ -50,3 +50,12 @@ Route::post('/dashboard/uas/store', 'FinalExamController@store_jadwal');
 Route::get('/dashboard/uas/check_ruangan/{ruangan_id}/{hari}/{mulai}', 'FinalExamController@check_ruangan');
 Route::get('/dashboard/uas/check_guru/{guru_id}/{hari}/{mulai}', 'FinalExamController@check_guru');
 Route::get('/dashboard/uas/check_both/{ruangan_id}/{guru_id}/{hari}/{mulai}', 'FinalExamController@check_both');
+
+//Route Nilai
+Route::post('/dashboard/store/tugas1', 'ValueController@store_tugas1');
+Route::post('/dashboard/store/tugas2', 'ValueController@store_tugas2');
+Route::post('/dashboard/store/tugas3', 'ValueController@store_tugas3');
+Route::post('/dashboard/store/tugas4', 'ValueController@store_tugas4');
+Route::post('/dashboard/store/tugas5', 'ValueController@store_tugas5');
+Route::post('/dashboard/store/uts', 'ValueController@store_uts');
+Route::post('/dashboard/store/uas', 'ValueController@store_uas');
