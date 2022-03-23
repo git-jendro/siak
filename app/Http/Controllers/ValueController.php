@@ -100,6 +100,20 @@ class ValueController extends Controller
         }
     }
 
+    public function filter_kelas($kelas_id)
+    {
+        try {
+            $tahun = $this->tahun_akademik();
+            $data = Siswa::where('kelas_id', $kelas_id)->get();
+            return response()->json([
+                'data' => $data,
+                'tahun' => $tahun,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(404);
+        }
+    }
+
     public function store_tugas1(Request $request)
     {
         try {
@@ -192,18 +206,42 @@ class ValueController extends Controller
             $sum = collect([$data->tugas_1, $data->tugas_2, $data->tugas_3, $data->tugas_4, $data->tugas_5, $data->uts, $data->uas]);
             $total = $sum->average();
             $data->nilai = number_format((float)$total, 0, '.', '');
-            
-            if ($data->nilai >= 80) {
+
+            if ($data->nilai >= 95) {
+                $data->grade = 'A+';
+            } elseif ($data->nilai >= 90) {
                 $data->grade = 'A';
-            } elseif ($data->nilai >= 70){
+            } elseif ($data->nilai >= 85) {
+                $data->grade = 'A-';
+            } elseif ($data->nilai >= 80) {
+                $data->grade = 'B+';
+            } elseif ($data->nilai >= 75) {
                 $data->grade = 'B';
-            } elseif ($data->nilai >= 50){
+            } elseif ($data->nilai >= 70) {
+                $data->grade = 'B-';
+            } elseif ($data->nilai >= 65) {
+                $data->grade = 'C+';
+            } elseif ($data->nilai >= 60) {
                 $data->grade = 'C';
-            } elseif ($data->nilai >= 40){
+            } elseif ($data->nilai >= 55) {
+                $data->grade = 'C-';
+            } elseif ($data->nilai >= 50) {
                 $data->grade = 'D';
             } else {
                 $data->grade = 'E';
             }
+
+            // if ($data->nilai >= 80) {
+            //     $data->grade = 'A';
+            // } elseif ($data->nilai >= 70) {
+            //     $data->grade = 'B';
+            // } elseif ($data->nilai >= 50) {
+            //     $data->grade = 'C';
+            // } elseif ($data->nilai >= 40) {
+            //     $data->grade = 'D';
+            // } else {
+            //     $data->grade = 'E';
+            // }
 
             if ($data->nilai >= $data->pelajaran->kkm) {
                 $data->status = 'Lulus';

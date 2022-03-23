@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\KategoriPelajaran;
 use App\Pelajaran;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,9 @@ class SubjectController extends Controller
     public function index()
     {
         $data = Pelajaran::all();
+        $category = KategoriPelajaran::all();
 
-        return view('pelajaran.index', compact('data'));
+        return view('pelajaran.index', compact('data', 'category'));
     }
 
     /**
@@ -28,8 +30,9 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|min:5|max:50|regex:/^[a-zA-Z ]*$/',
+            'nama' => 'required|min:5|max:50|regex:/^[&a-zA-Z ]*$/',
             'kkm' => 'required|numeric|digits:2',
+            'kategori_id' => 'required|exists:tbl_kategori_pelajaran,id',
         ], [
             'nama.required' => 'Nama pelajaran tidak boleh kosong !',
             'nama.min' => 'Nama pelajaran minimal 5 karakter !',
@@ -38,6 +41,8 @@ class SubjectController extends Controller
             'kkm.required' => 'KKM tidak boleh kosong !',
             'kkm.numeric' => 'KKM hanya boleh diisi angka !',
             'kkm.digits' => 'KKM hanya boleh diisi 2 angka !',
+            'kategori_id.required' => 'Kategori tidak boleh kosong !',
+            'kategori_id.exists' => 'Data tidak cocok !',
         ]);
 
         try {
@@ -45,6 +50,7 @@ class SubjectController extends Controller
             $data->id = 'MPJ' . sprintf('%03u', $data->count() + 1);
             $data->nama = $request->nama;
             $data->kkm = $request->kkm;
+            $data->kategori_id = $request->kategori_id;
             $data->slug = $this->slug($request->nama);
             $data->save();
 
@@ -64,8 +70,9 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama-'.$id => 'required|min:5|max:50|regex:/^[a-zA-Z ]*$/',
+            'nama-'.$id => 'required|min:5|max:50|regex:/^[&a-zA-Z ]*$/',
             'kkm-'.$id => 'required|numeric|digits:2',
+            'kategori_id-'.$id => 'required|exists:tbl_kategori_pelajaran,id',
         ], [
             'nama-'.$id.'.required' => 'Nama pelajaran tidak boleh kosong !',
             'nama-'.$id.'.min' => 'Nama pelajaran minimal 5 karakter !',
@@ -74,12 +81,15 @@ class SubjectController extends Controller
             'kkm-'.$id.'.required' => 'KKM tidak boleh kosong !',
             'kkm-'.$id.'.numeric' => 'KKM hanya boleh diisi angka !',
             'kkm-'.$id.'.digits' => 'KKM hanya boleh diisi 2 angka !',
+            'kategori_id-'.$id.'.required' => 'Kategori tidak boleh kosong !',
+            'kategori_id-'.$id.'.exists' => 'Data tidak cocok !',
         ]);
 
         try {
             $data = Pelajaran::find($id);
             $data->nama = $request['nama-'.$id];
             $data->kkm = $request['kkm-'.$id];
+            $data->kategori_id = $request['kategori_id-'.$id];
             $data->slug = $this->slug($request['nama-'.$id]);
             $data->save();
 

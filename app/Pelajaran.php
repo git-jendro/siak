@@ -14,4 +14,9 @@ class Pelajaran extends Model
     {
         return $this->hasMany(DetailKurikulum::class, 'pelajaran_id');
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriPelajaran::class, 'kategori_id');
+    }
 }

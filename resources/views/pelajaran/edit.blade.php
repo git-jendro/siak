@@ -17,13 +17,27 @@
                     <div class="form-group">
                         <input type="text" class="form-control" value="{{ $item->id }}" readonly>
                     </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control @error('nama-' . $item->id) is-invalid @enderror"
+                            name="nama-{{ $item->id }}" placeholder="Nama Mata Pelajaran"
+                            value="{{ $item->nama }}">
+                        @error('nama-' . $item->id)
+                            <div id="edit-error-{{ $item->id }}"
+                                class="mt-2 error invalid-feedback d-block w-100 text-left">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <input type="text"
-                                class="form-control @error('nama-' . $item->id) is-invalid @enderror"
-                                name="nama-{{ $item->id }}" placeholder="Nama Mata Pelajaran"
-                                value="{{ $item->nama }}">
-                            @error('nama-' . $item->id)
+                            <select class="form-control @error('kategori_id-' . $item->id) is-invalid @enderror"
+                                name="kategori_id-{{ $item->id }}">
+                                <option value="">Pilih Kategori</option>
+                                @foreach ($category as $cat)
+                                    <option value="{{ $cat->id }}"{{ $cat->id == $item->kategori_id ? 'selected' : ''}}>{{ $cat->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('kategori_id-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
                                     class="mt-2 error invalid-feedback d-block w-100 text-left">
                                     {{ $message }}
@@ -31,8 +45,7 @@
                             @enderror
                         </div>
                         <div class="col-sm-6">
-                            <input type="number"
-                                class="form-control @error('kkm-' . $item->id) is-invalid @enderror"
+                            <input type="number" class="form-control @error('kkm-' . $item->id) is-invalid @enderror"
                                 name="kkm-{{ $item->id }}" placeholder="KKM" value="{{ $item->kkm }}">
                             @error('kkm-' . $item->id)
                                 <div id="edit-error-{{ $item->id }}"
@@ -42,7 +55,6 @@
                             @enderror
                         </div>
                     </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" type="button" data-dismiss="modal">

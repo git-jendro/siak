@@ -140,7 +140,6 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
     {
         Route::get('/', 'MidtermExamController@index')->name('jadwal-uts');
         Route::post('/store', 'MidtermExamController@store')->name('jadwal-uts.store');
-        Route::get('/preview', 'MidtermExamController@preview')->name('jadwal-uts.preview');
     });
 
     //Route Jadwal UAS
@@ -148,15 +147,22 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
     {
         Route::get('/', 'FinalExamController@index')->name('jadwal-uas');
         Route::post('/store', 'FinalExamController@store')->name('jadwal-uas.store');
-        Route::get('/preview', 'FinalExamController@preview')->name('jadwal-uas.preview');
     });
 
-    //Route Jadwal UAS
+    //Route Nilai
     Route::prefix('nilai')->group(function ()
     {
         Route::get('/', 'ValueController@index')->name('nilai');
         Route::post('/store', 'ValueController@store')->name('nilai.store');
         Route::get('/{slug}', 'ValueController@show')->name('nilai.show');
+    });
+
+    //Route Rapot
+    Route::prefix('rapot')->group(function ()
+    {
+        Route::get('/', 'ReportCardController@index')->name('rapot');
+        Route::post('/store', 'ReportCardController@store')->name('rapot.store');
+        Route::get('/{slug}', 'ReportCardController@show')->name('rapot.show');
     });
 });
 
@@ -165,6 +171,7 @@ Route::middleware('auth')->group(function ()
     Route::get('jadwal-pelajaran/download/{slug}', 'LessonScheduleController@download')->name('jadwal-pelajaran.download');
     Route::get('jadwal-uts/download/{slug}', 'MidtermExamController@download')->name('jadwal-uts.download');
     Route::get('jadwal-uas/download/{slug}', 'FinalExamController@download')->name('jadwal-uas.download');
+    Route::get('rapot/download/{slug}', 'ReportCardController@download')->name('rapot.download');
 });
 
 Route::prefix('grup-kelas')->middleware('auth')->group(function ()

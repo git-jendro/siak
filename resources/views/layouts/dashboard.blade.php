@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="SMKN 4">
     <meta name="description" content="Sistem Informasi Akademik SMK Negeri 4">
+    @csrf
 
     <title>{{ config('app.name') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('logos/logo.ico') }}">
@@ -144,14 +145,14 @@
                 </div>
             </li>
 
-            <li class="nav-item" id="">
+            <li class="nav-item" id="nilai">
                 <a class="nav-link" href="{{ route('nilai') }}">
                     <i class="fas fa-fw fa-file-medical-alt"></i>
                     <span>Nilai</span></a>
             </li>
 
-            <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('staff') }}">
+            <li class="nav-item" id="rapot">
+                <a class="nav-link" href="{{ route('rapot') }}">
                     <i class="fas fa-fw fa-file-invoice"></i>
                     <span>Rapot</span></a>
             </li>

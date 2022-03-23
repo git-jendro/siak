@@ -64,6 +64,9 @@
                             <th>Nilai Tugas 5</th>
                             <th>Nilai UTS</th>
                             <th>Nilai UAS</th>
+                            <th>Total Nilai</th>
+                            <th>Grade</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -76,6 +79,9 @@
                             <th>Nilai Tugas 5</th>
                             <th>Nilai UTS</th>
                             <th>Nilai UAS</th>
+                            <th>Total Nilai</th>
+                            <th>Grade</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -114,6 +120,15 @@
                                     <td>
                                         <input type="text" class="form-control uas" id="{{ $item->id }}"
                                             value="{{ $item->uas }}" maxlength="2">
+                                    </td>
+                                    <td>
+                                        <span id="total-{{ $item->id }}">{{ $item->nilai }}</span>
+                                    </td>
+                                    <td>
+                                        <span id="grade-{{ $item->id }}">{{ $item->grade }}</span>
+                                    </td>
+                                    <td>
+                                        <span id="status-{{ $item->id }}">{{ $item->status }}</span>
                                     </td>
                                 </tr>
                             @endforeach

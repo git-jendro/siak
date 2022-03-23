@@ -10,7 +10,7 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('sb-admin/js/demo/datatables-demo.js') }}"></script>
-
+    
     <!-- Select2 -->
     <script src="{{ asset('sb-admin/js/filter.js') }}"></script>
 @endsection
@@ -23,13 +23,6 @@
                 {{ $data->tingkat->nama }} {{ $data->jurusan->kode }} {{ $data->sub->nama }}
             @endif
         </h1>
-        @if (Auth::user()->staff)
-            <button type="button" class="btn btn-sm btn-primary shadow-sm mt-3" data-toggle="modal"
-                data-target="#create-modal">
-                <i class="fas fa-cogs fa-sm text-white-50"></i> Generate Nilai
-            </button>
-            @include('nilai.create')
-        @endif
     </div>
 @endsection
 
@@ -80,8 +73,7 @@
                             <select class="form-control" id="filter_jurusan">
                                 <option value="">Pilih Jurusan</option>
                                 @foreach ($jurusan as $jrs)
-                                    <option value="{{ $jrs->id }}">{{ $jrs->kode }} ({{ $jrs->nama }})
-                                    </option>
+                                    <option value="{{ $jrs->id }}">{{ $jrs->kode }} ({{ $jrs->nama }})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -115,7 +107,8 @@
                             <th class="text-center">Aksi</th>
                         </tr>
                     </tfoot>
-                    <tbody id="tbody">
+                    <tbody>
+                        <meta name="_token" content="{{ csrf_token() }}">
                         @if (!is_null($data))
                             @foreach ($data->siswa as $item)
                                 <tr>
@@ -129,10 +122,17 @@
                                         {{ $tahun->nama }}
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ route('nilai.show', [$item->slug]) }}" class="btn btn-info">
-                                            <i class="fas fa-file-signature"></i> Kelola Nilai
-                                        </a>
+                                        <div class="d-flex justify-content-around">
+                                            <a href="{{ route('nilai.show', [$item->slug]) }}" class="btn btn-link ">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {{-- <button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target="#approve-{{ $item->id }}">
+                                                <i class="fas fa-check-double"></i> Setujui Rapot
+                                            </button> --}}
+                                        </div>
                                     </td>
+                                    @include('rapot.approve')
                                 </tr>
                             @endforeach
                         @endif
@@ -142,28 +142,5 @@
         </div>
     </div>
     <script>
-        $(document).ready(function() {
-            $('#nilai').addClass('active');
-        });
-        $('#filter_kelas').change(function(e) {
-            var kelas_id = $(this).val();
-            $('#tbody').html('');
-            $.ajax({
-                type: "get",
-                url: "/api/dashboard/nilai/" + kelas_id,
-                dataType: "json",
-                success: function(res) {
-                    $.each(res.data, function(index, value) {
-                        var url = "{{ route('nilai.show', ':id') }}";
-                        url = url.replace(':id', value.slug);
-                        $('#tbody').append('<tr><td>' + value.nisn + '</td><td>' + value.nama +
-                            '</td><td class="text-center">' + res.tahun.nama +
-                            '</td><td class="text-center"><a href="' + url +
-                            '" class="btn btn-info"><i class="fas fa-file-signature"></i> Kelola Nilai</a></td></tr>'
-                        );
-                    });
-                }
-            });
-        });
     </script>
 @endsection

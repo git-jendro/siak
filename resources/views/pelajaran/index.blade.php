@@ -56,6 +56,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Pelajaran</th>
+                            <th>Kategori Pelajaran</th>
                             <th>KKM</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -64,6 +65,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Pelajaran</th>
+                            <th>Kategori Pelajaran</th>
                             <th>KKM</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -76,6 +78,9 @@
                                 </td>
                                 <td>
                                     {{ $item->nama }}
+                                </td>
+                                <td>
+                                    {{ $item->kategori_id != null ? $item->kategori->nama : '' }}
                                 </td>
                                 <td>
                                     {{ $item->kkm }}

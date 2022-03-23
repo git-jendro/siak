@@ -2,6 +2,9 @@ var _token = $('meta[name="_token"]').attr('content');
 var id = '';
 var nilai = '';
 var url = '';
+$(document).ready(function() {
+    $('#nilai').addClass('active');
+});
 $('.tugas1').keyup(function (e) {
     let check = $(this).val().charAt(0);
     if (check == 1) {
@@ -14,7 +17,7 @@ $('.tugas1').keyup(function (e) {
     url = '/api/dashboard/store/tugas1';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('Tugas 1');
+    $('#store-nilai').html('Tugas 1');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -54,7 +57,7 @@ $('.tugas2').keyup(function (e) {
     url = '/api/dashboard/store/tugas2';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('Tugas 2');
+    $('#store-nilai').html('Tugas 2');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -94,7 +97,7 @@ $('.tugas3').keyup(function (e) {
     url = '/api/dashboard/store/tugas3';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('Tugas 3');
+    $('#store-nilai').html('Tugas 3');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -134,7 +137,7 @@ $('.tugas4').keyup(function (e) {
     url = '/api/dashboard/store/tugas4';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('Tugas 4');
+    $('#store-nilai').html('Tugas 4');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -174,7 +177,7 @@ $('.tugas5').keyup(function (e) {
     url = '/api/dashboard/store/tugas5';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('Tugas 5');
+    $('#store-nilai').html('Tugas 5');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -214,7 +217,7 @@ $('.uts').keyup(function (e) {
     url = '/api/dashboard/store/uts';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('UTS');
+    $('#store-nilai').html('UTS');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -254,7 +257,7 @@ $('.uas').keyup(function (e) {
     url = '/api/dashboard/store/uas';
     $(this).val($(this).val().replace(/[^\d]/g, ''));
     $('#nilai-' + id).html($(this).val());
-    $('#nilai').html('UAS');
+    $('#store-nilai').html('UAS');
     if ($(this).val().length == 2) {
         if (check == 0) {
             $.confirm({
@@ -296,22 +299,10 @@ $('.submit').click(function (e) {
         },
         dataType: "json",
         success: function (res) {
-            console.log(res.nilai, res.grade, res.status, id);
             $('#' + id).modal('hide');
             $('#total-'+id).html(res.nilai);
             $('#grade-'+id).html(res.grade);
             $('#status-'+id).html(res.status);
-            if (res.grade > 80) {
-                alert('A');
-            } else if (res.grade <= 80 || res.grade >= 60) {
-                alert('B');
-            } else if (res.grade <= 60 || res.grade >= 40) {
-                alert('C');
-            } else if (res.grade <= 40 || res.grade >= 20) {
-                alert('D');
-            } else if (res.grade <= 20) {
-                alert('E');
-            }
             if (res.message) {
                 $.confirm({
                     title: 'Success',

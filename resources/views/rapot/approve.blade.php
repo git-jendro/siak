@@ -1,5 +1,5 @@
 <!-- Logout Modal-->
-<div class="modal fade" id="{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="approve-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
         <div class="modal-content">
@@ -10,8 +10,7 @@
             </div>
             <div class="modal-body">
                 <p style="font-size: 1.3rem">
-                    Masukan nilai <span id="nilai-{{ $item->id }}"></span> untuk <span id="store-nilai"></span> pelajaran
-                    {{ $item->pelajaran->nama }} ?
+                    Setujui {{ $item->nama }} untuk mencetak Rapot ?
                 </p>
             </div>
             <div class="modal-footer">
