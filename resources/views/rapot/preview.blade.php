@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        Jadwal_UTS_{{ $jadwal->kelas->tingkat->nama }}_{{ $jadwal->kelas->jurusan->kode }}_{{ $jadwal->kelas->sub->nama }}_{{ $jadwal->tahun->nama }}
+        Rapot_{{ $data->nama }}_Kelas_{{ $data->kelas->tingkat->nama }}_{{ $data->kelas->jurusan->kode }}_{{ $data->kelas->sub->nama }}
     </title>
     <style>
         /*!
@@ -12672,22 +12672,48 @@
     </style>
 </head>
 
-{{-- <body onload=" window.print();window.onfocus=function(){ window.close();}"> --}}
+<body onload=" window.print();window.onfocus=function(){ window.close();}">
 
-<body>
+{{-- <body> --}}
     <div class="d-flex justify-content-center">
         <div class="container">
-            <div class="col-12">
+            <div class="col-12 my-5">
                 <h4 class="font-weight-bold text-center my-auto">
-                    Jadwal UTS
-                    <span id="header-jadwal">{{ $jadwal->kelas->tingkat->nama ?? 'Kelas' }}
-                        {{ $jadwal->kelas->jurusan->kode ?? '' }}
-                        {{ $jadwal->kelas->sub->nama ?? '' }}</span> <br>
-                    {{ $data == null ? '' : 'Tahun Akademik ' }}{{ $jadwal->tahun->nama ?? '' }} <br>
-                    SMK Negri 4
+                    <p>
+                        KARTU HASIL STUDI (KHS) <br>
+                        SMK Negeri 4 Jakarta
+                    </p>
                 </h4>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="col-8  my-3">
+            <div class="row">
+                <div class="col-6 mx-auto">
+                    <h4 class="font-weight-bold my-auto" style="font-size: 1rem">
+                        <p>
+                            Nama <br>
+                            Kelas <br>
+                            Tahun Akademik <br>
+                            Semester <br>
+                        </p>
+                    </h4>
+                </div>
+                <div class="col-6 mx-auto">
+                    <h4 class="font-weight-bold my-auto" style="font-size: 1rem">
+                        <p>
+                            : {{ $data->nama }} <br>
+                            : {{ $data->kelas->tingkat->nama }} {{ $data->kelas->jurusan->kode }} ({{ $data->kelas->jurusan->nama }}) {{ $data->kelas->sub->nama }} <br>
+                            : {{ $tahun->nama }} <br>
+                            : {{ $tahun->semester == 1 ? 'Ganjil' : 'Genap' }} <br>
+                        </p>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
         <div class="col-12">
             <table class="table" width="100%" cellspacing="0" border="5px" style="border: #000">
                 <thead>
@@ -12700,28 +12726,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($hari as $hr)
-                        <tr>
-                            <td rowspan="{{ $data->where('hari', $hr['id'])->count() }}"
-                                class="align-middle text-center">
-                                {{ $hr['hari'] }}
-                            </td>
-                            @foreach ($data->where('hari', $hr['id']) as $item)
-                                <td>
-                                    {{ $item->pelajaran->nama }}
+                    @php
+                            $i = 1;
+                        @endphp
+                        <meta name="_token" content="{{ csrf_token() }}">
+                        @if (!is_null($data))
+                            @foreach ($category as $cat)
+                            <tr>
+                                <td colspan="6">
+                                    <b style="font-size:16px">{{ $cat->nama }}</b>
                                 </td>
-                                <td>
-                                    {{ $item->ruangan->nama }}
-                                </td>
-                                <td>
-                                    {{ $item->guru->nama }}
-                                </td>
-                                <td class="text-center">
-                                    {{ substr($item->mulai, 0, -3) }} - {{ substr($item->selesai, 0, -3) }}
-                                </td>
-                        </tr>
-                    @endforeach
-                    @endforeach
+
+                            </tr>
+                                @foreach ($data->nilai as $item)
+                                    @if ($item->pelajaran->kategori->id == $cat->id)
+                                    <tr>
+                                        <td>
+                                            {{ $i++ }}
+                                        </td>
+                                        <td>
+                                            {{ $item->pelajaran->nama }}
+                                        </td>
+                                        <td>
+                                            {{ $item->pelajaran->kkm }}
+                                        </td>
+                                        <td>
+                                            <span id="total-{{ $item->id }}">{{ $item->nilai }}</span>
+                                        </td>
+                                        <td>
+                                            <span id="grade-{{ $item->id }}">{{ $item->grade }}</span>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        @endif
                 </tbody>
             </table>
         </div>

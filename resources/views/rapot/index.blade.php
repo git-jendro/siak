@@ -136,5 +136,8 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            $('#rapot').addClass('active');
+        });
     </script>
 @endsection

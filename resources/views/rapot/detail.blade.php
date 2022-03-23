@@ -12,7 +12,6 @@
     <script src="{{ asset('sb-admin/js/demo/datatables-demo.js') }}"></script>
 
     <!-- Select2 -->
-    <script src="{{ asset('sb-admin/js/nilai.js') }}"></script>
 @endsection
 
 @section('header')
@@ -55,7 +54,7 @@
                 </div>
                 <div class="col-6">
                     <div class="text-right">
-                        <a href="{{ $data != null ? route('jadwal-uts.download', [$data->slug]) : route('jadwal-uts') }}"
+                        <a href="{{ $data != null ? route('rapot.download', [$data->slug]) : route('rapot') }}"
                             class="btn btn-sm btn-primary shadow-sm mx-2" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download"></i> Download PDF
                         </a>
@@ -125,4 +124,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#rapot').addClass('active');
+        });
+    </script>
 @endsection
