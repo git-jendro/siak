@@ -138,7 +138,6 @@
                 },
                 dataType: "json",
                 success: function(res) {
-                    console.log(res);
                     if (res == 200) {
                         $.confirm({
                             columnClass: 'col-md-6 col-md-offset-3',

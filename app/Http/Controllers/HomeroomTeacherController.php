@@ -68,7 +68,7 @@ class HomeroomTeacherController extends Controller
                 $conn = RiwayatKelas::where([
                     ['kelas_id', '=', $data->kelas_id],
                     ['tahun_akademik_id', '=', $tahun->id],
-                ])->first();
+                    ])->first();
                 if ($conn == null) {
                     $kelas = new RiwayatKelas;
                     $kelas->id = $this->generateUUID('RYK', 5);
@@ -83,6 +83,7 @@ class HomeroomTeacherController extends Controller
                     $kelas->tahun_akademik_id = $tahun->id; 
                     $kelas->save();
                 }
+                return response()->json(200);
             } else {
                 return response()->json(409);
             }

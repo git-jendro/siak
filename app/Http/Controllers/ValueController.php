@@ -44,40 +44,39 @@ class ValueController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $tahun = $this->tahun_akademik();
-            $kelas = Kelas::all();
-            $before = Str::of($tahun->nama)->before('/');
-            $after = Str::after($tahun->nama, '/');
-            $pelajaran = Pelajaran::all();
-            $con = Nilai::select('id')->where('tahun_akademik_id', $tahun->id);
-            $count = DetailNilai::whereHas('nilai', function ($q) use ($con) {
-                $q->whereIn('nilai_id', $con);
-            })->count();
-            if ($count >= 1) {
-                Nilai::turncate();
-                DetailNilai::turncate();
-            }
-            foreach ($kelas as $kls) {
-                $nilai = new Nilai;
-                $nilai->id = 'NIL' . sprintf('%05u', $nilai->count() + 1);
-                $nilai->kelas_id = $kls->id;
-                $nilai->tahun_akademik_id = $tahun->id;
-                $nilai->slug = $this->slug('Nilai Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
-                $siswa = Siswa::where('kelas_id', $kls->id)->get();
-                foreach ($siswa as $sis) {
-                    foreach ($pelajaran as $pel) {
-                        $d_nilai = new DetailNilai;
-                        $d_nilai->id = Uuid::uuid4()->toString();
-                        $d_nilai->siswa_id = $sis->id;
-                        $d_nilai->nilai_id = $nilai->id;
-                        $d_nilai->pelajaran_id = $pel->id;
-                        $d_nilai->save();
-                    }
+        $tahun = $this->tahun_akademik();
+        $kelas = Kelas::all();
+        $before = Str::of($tahun->nama)->before('/');
+        $after = Str::after($tahun->nama, '/');
+        $con = Nilai::select('id')->where('tahun_akademik_id', $tahun->id);
+        $count = DetailNilai::whereHas('nilai', function ($q) use ($con) {
+            $q->whereIn('nilai_id', $con);
+        })->count();
+        if ($count >= 1) {
+            DetailNilai::truncate();
+            Nilai::truncate();
+        }
+        foreach ($kelas as $kls) {
+            $nilai = new Nilai;
+            $nilai->id = 'NIL' . sprintf('%05u', $nilai->count() + 1);
+            $nilai->kelas_id = $kls->id;
+            $nilai->tahun_akademik_id = $tahun->id;
+            $nilai->slug = $this->slug('Nilai Kelas ' . $kls->tingkat->nama . ' ' . $kls->jurusan->kode . ' ' . $kls->sub->nama . ' Tahun Akademik ' . $before . ' ' . $after);
+            $siswa = Siswa::where('kelas_id', $kls->id)->get();
+            foreach ($siswa as $sis) {
+                foreach ($kls->tingkat->kurikulum->kurikulum_detail as $pel) {
+                    $d_nilai = new DetailNilai;
+                    $d_nilai->id = Uuid::uuid4()->toString();
+                    $d_nilai->siswa_id = $sis->id;
+                    $d_nilai->nilai_id = $nilai->id;
+                    $d_nilai->pelajaran_id = $pel->pelajaran_id;
+                    $d_nilai->save();
                 }
-                $nilai->save();
             }
-            return redirect()->route('nilai')->with('success', 'Berhasil menambahkan data !');
+            $nilai->save();
+        }
+        return redirect()->route('nilai')->with('success', 'Berhasil menambahkan data !');
+        try {
         } catch (\Throwable $th) {
             return redirect()->route('nilai')->with('danger', 'Gagal mengubah data !');
         }

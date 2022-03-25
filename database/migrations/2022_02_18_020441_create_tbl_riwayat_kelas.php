@@ -18,6 +18,7 @@ class CreateTblRiwayatKelas extends Migration
             $table->string('tahun_akademik_id', 5)->nullable();
             $table->string('kelas', 15)->nullable();
             $table->string('guru_id', 7)->nullable();
+            $table->string('slug');
             $table->timestamps();
         });
     }

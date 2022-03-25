@@ -164,6 +164,14 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::post('/store', 'ReportCardController@store')->name('rapot.store');
         Route::get('/{slug}', 'ReportCardController@show')->name('rapot.show');
     });
+
+    //Route Riwayat Kelas
+    Route::prefix('riwayat')->group(function ()
+    {
+        Route::get('/', 'ClassHistoryController@index')->name('riwayat');
+        Route::post('/store', 'ClassHistoryController@store')->name('riwayat.store');
+        Route::get('/{slug}', 'ClassHistoryController@show')->name('riwayat.show');
+    });
 });
 
 Route::middleware('auth')->group(function ()

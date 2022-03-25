@@ -68,7 +68,10 @@ class ClassController extends Controller
                 $kelas = new RiwayatKelas;
                 $kelas->id = $this->generateUUID('RYK', 5);
                 $kelas->kelas_id = $data->id;
-                $kelas->tahun_akademik_id = $tahun->id;
+                if ($tahun->id != null) {
+                    $kelas->tahun_akademik_id = $tahun->id;
+                }
+                $kelas->slug = $this->slug($data->tingkat->nama.'_'.$data->jurusan->kode.'_'.$data->sub->nama);
                 $kelas->save();
             }
 
@@ -120,6 +123,7 @@ class ClassController extends Controller
             if ($tahun->id != null) {
                 $kelas->tahun_akademik_id = $tahun->id;
             }
+            $kelas->slug = $this->slug($data->tingkat->nama.'_'.$data->jurusan->kode.'_'.$data->sub->nama);
             $kelas->save();
 
             return redirect()->route('kelas')->with('update', 'Berhasil mengubah data kelas !');

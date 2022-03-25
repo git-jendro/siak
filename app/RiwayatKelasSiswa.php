@@ -18,4 +18,9 @@ class RiwayatKelasSiswa extends Model
     {
         return $this->belongsTo(RiwayatKelas::class, 'riwayat_kelas_id');
     }
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 }

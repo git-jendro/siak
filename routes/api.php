@@ -60,3 +60,7 @@ Route::post('/dashboard/store/tugas4', 'ValueController@store_tugas4');
 Route::post('/dashboard/store/tugas5', 'ValueController@store_tugas5');
 Route::post('/dashboard/store/uts', 'ValueController@store_uts');
 Route::post('/dashboard/store/uas', 'ValueController@store_uas');
+
+//Route Riwayat
+Route::post('/dashboard/riwayat/filter_kelas', 'ClassHistoryController@filter_kelas');
+Route::post('/dashboard/riwayat/filter_tahun', 'ClassHistoryController@filter_tahun');

@@ -157,8 +157,8 @@
                     <span>Rapot</span></a>
             </li>
 
-            <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('staff') }}">
+            <li class="nav-item" id="riwayat">
+                <a class="nav-link" href="{{ route('riwayat') }}">
                     <i class="fas fa-fw fa-history"></i>
                     <span>Riwayat Kelas</span></a>
             </li>
