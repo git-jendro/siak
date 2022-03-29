@@ -172,6 +172,15 @@ Route::prefix('dashboard')->middleware('auth')->group(function ()
         Route::post('/store', 'ClassHistoryController@store')->name('riwayat.store');
         Route::get('/{slug}', 'ClassHistoryController@show')->name('riwayat.show');
     });
+
+    //Route Pembayaran
+    Route::prefix('pembayaran')->group(function ()
+    {
+        Route::get('/', 'FinanceController@index')->name('pembayaran');
+        Route::get('/detail-pembayaran', 'FinanceController@detail_pembayaran')->name('pembayaran.detail');
+        Route::post('/store', 'FinanceController@store')->name('pembayaran.store');
+        Route::get('/{slug}', 'FinanceController@show')->name('pembayaran.show');
+    });
 });
 
 Route::middleware('auth')->group(function ()

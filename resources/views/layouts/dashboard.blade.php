@@ -166,8 +166,8 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item" id="">
-                <a class="nav-link" href="{{ route('staff') }}">
+            <li class="nav-item" id="pembayaran">
+                <a class="nav-link" href="{{ route('pembayaran') }}">
                     <i class="fas fa-fw fa-file-invoice-dollar"></i>
                     <span>Pembayaran</span></a>
             </li>
